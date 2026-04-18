@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://jiggyj744-ctrl.github.io/jauction/sitemap.xml

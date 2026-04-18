@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>jauction ㅣ무료경매사이트 - 전국 법원 경매 부동산 정보</title>
+<meta name="description" content="전국 법원 경매 부동산 32,618건 - 아파트, 토지, 상업용 부동산 경매 정보 100% 무료 제공. 경매컨설팅 상담: 010-6899-1601">
+<meta name="keywords" content="법원경매,부동산경매,경매물건,jauction,jauction ㅣ무료경매사이트 - 전국 법원 경매 부동산 정보">
+<meta property="og:type" content="website">
+<meta property="og:title" content="jauction ㅣ무료경매사이트 - 전국 법원 경매 부동산 정보">
+<meta property="og:description" content="전국 법원 경매 부동산 32,618건 - 아파트, 토지, 상업용 부동산 경매 정보 100% 무료 제공. 경매컨설팅 상담: 010-6899-1601">
+<meta property="og:site_name" content="jauction">
+<meta property="og:image" content="https://jiggyj744-ctrl.github.io/jauction/images/kakao_img.png">
+<link rel="canonical" href="https://jiggyj744-ctrl.github.io/jauction/">
+<link rel="stylesheet" href="/style.css">
+<meta name="NaverBot" content="All"/>
+<meta name="NaverBot" content="index,follow"/>
+<meta name="Yeti" content="All"/>
+<meta name="Yeti" content="index,follow"/>
+<base href="/jauction/">
+</head>
+<body>
+<header class="site-header">
+<div class="container">
+<a href="/" class="logo">🏷️ jauction</a>
+<div class="header-search">
+<form action="/" method="get" style="display:flex;gap:4px">
+<input type="text" name="q" placeholder="사건번호, 주소 검색..." style="padding:6px 12px;border:1px solid var(--gray-300);border-radius:20px;font-size:0.85em;outline:none;width:180px">
+<button type="submit" style="padding:6px 12px;background:var(--primary);color:#fff;border:none;border-radius:20px;font-size:0.85em;cursor:pointer">🔍</button>
+</form>
+</div>
+<a href="tel:010-6899-1601" class="header-phone">
+<span class="header-phone-icon">📞</span>
+010-6899-1601
+</a>
+<nav class="nav"><a href="/" class="nav-link active">홈</a>
+<a href="/apartment/" class="nav-link">아파트/주거</a>
+<a href="/land/" class="nav-link">토지</a>
+<a href="/commercial/" class="nav-link">상업용</a>
+<a href="/region/" class="nav-link">지역별</a>
+<a href="/faq/" class="nav-link">FAQ</a></nav>
+</div>
+</header>
+<section class="hero">
+<div class="container">
+<h1>🏷️ 전국 법원 경매 정보</h1>
+<p>아파트, 토지, 상업용 부동산 등 32,618건 경매 물건 무료 검색</p>
+<div class="stats-bar">
+<div class="stat-card"><div class="num">32,618</div><div class="label">전체 물건</div></div>
+<div class="stat-card"><div class="num">16,500</div><div class="label">주거용</div></div>
+<div class="stat-card"><div class="num">8,806</div><div class="label">토지</div></div>
+<div class="stat-card"><div class="num">6,252</div><div class="label">상업용</div></div>
+<div class="stat-card"><div class="num">1,060</div><div class="label">기타</div></div>
+</div>
+</div>
+</section>
+
+<section class="search-section">
+<div class="container">
+<div class="search-box">
+<input type="text" id="searchInput" placeholder="사건번호, 주소로 검색..." onkeyup="handleSearch(event)">
+<button onclick="doSearch()">검색</button>
+</div>
+<div class="filters" id="filters">
+<a href="/" class="filter-btn active" data-cat="all">전체</a>
+<a href="/apartment/" class="filter-btn" data-cat="주거용 부동산">주거용</a>
+<a href="/land/" class="filter-btn" data-cat="토지">토지</a>
+<a href="/commercial/" class="filter-btn" data-cat="상업용 부동산">상업용</a>
+<a href="/other/" class="filter-btn" data-cat="기타">기타</a>
+</div>
+</div>
+</section>
+
+<main class="container">
+<div class="item-grid" id="itemGrid"></div>
+<div class="pagination" id="pagination"></div>
+</main>
+
+<footer class="site-footer">
+<div class="container">
+<div class="footer-links">
+<a href="/about/">사이트 소개</a>
+<a href="/privacy/">개인정보처리방침</a>
+<a href="/terms/">이용약관</a>
+<a href="/faq/">자주묻는질문</a>
+<a href="/feed.xml">RSS</a>
+</div>
+<p class="footer-copy">© 2026 jauction. 본 사이트는 참고용이며, 실제 경매 정보는 해당 법원에서 확인하세요.</p>
+</div>
+</footer>
+
+<!-- 모바일 플로팅 CTA -->
+<div class="mobile-bottom-nav">
+<a href="tel:010-6899-1601"><span class="pulse"></span> 📞 무료 경매 상담 010-6899-1601</a>
+</div>
+
+<script>
+const ITEMS_PER_PAGE = 30;
+let allItems = [];
+let filteredItems = [];
+let currentPage = 1;
+
+async function loadData() {
+    const resp = await fetch('/data.json');
+    allItems = await resp.json();
+    filteredItems = allItems;
+    renderPage(1);
+}
+
+function doSearch() {
+    const q = document.getElementById('searchInput').value.toLowerCase();
+    filteredItems = allItems.filter(item =>
+        (item.cn || '').toLowerCase().includes(q) ||
+        (item.addr || '').toLowerCase().includes(q) ||
+        (item.court || '').toLowerCase().includes(q)
+    );
+    renderPage(1);
+}
+
+function handleSearch(e) {
+    if (e.key === 'Enter') doSearch();
+}
+
+function filterCategory(cat) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`[data-cat="${cat}"]`)?.classList.add('active');
+    filteredItems = cat === 'all' ? allItems : allItems.filter(i => i.cat === cat);
+    renderPage(1);
+}
+
+function formatPrice(p) {
+    if (!p) return '-';
+    if (p >= 100000000) return (p/100000000).toFixed(1) + '억';
+    if (p >= 10000) return (p/10000).toFixed(0) + '만';
+    return p.toLocaleString();
+}
+
+function getCatBadge(cat) {
+    const m = {'주거용 부동산':'badge-residential','토지':'badge-land','상업용 부동산':'badge-commercial','기타':'badge-other'};
+    return m[cat] || 'badge-other';
+}
+
+function getStatusBadge(s) {
+    const m = {'진행':'status-proceeding','낙찰':'status-bid','재진행':'status-proceeding','정지':'status-stop','취하':'status-cancel','기각':'status-cancel'};
+    return m[s] || 'status-other';
+}
+
+function renderPage(page) {
+    currentPage = page;
+    const start = (page - 1) * ITEMS_PER_PAGE;
+    const items = filteredItems.slice(start, start + ITEMS_PER_PAGE);
+    const grid = document.getElementById('itemGrid');
+    grid.innerHTML = items.map(i => `
+        <a href="/auction/${i.id}.html" class="item-card">
+            <div class="card-header">
+                <span class="case-num">${i.cn || '-'}</span>
+                <span class="category-badge ${getCatBadge(i.cat)}">${i.cat || '미분류'}</span>
+            </div>
+            <div class="card-body">
+                <div class="address">${i.addr || '주소 미확인'}</div>
+                <div class="price-row">
+                    <div class="price-item"><div class="price-label">감정가</div><div class="price-value">${formatPrice(i.ap)}</div></div>
+                    <div class="price-item"><div class="price-label">최저가</div><div class="price-value accent">${formatPrice(i.mp)}</div></div>
+                    <div class="price-item"><div class="price-label">매각일</div><div class="price-value">${i.sd || '-'}</div></div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <span>${i.court || '-'}</span>
+                <span class="status-badge ${getStatusBadge(i.st)}">${i.st || '-'}</span>
+            </div>
+        </a>
+    `).join('');
+
+    const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE);
+    const pg = document.getElementById('pagination');
+    if (totalPages <= 1) { pg.innerHTML = ''; return; }
+    let html = '';
+    if (page > 1) html += `<a href="#" onclick="renderPage(${page-1})">이전</a>`;
+    for (let p = Math.max(1,page-3); p <= Math.min(totalPages,page+3); p++) {
+        html += p === page ? `<span class="active">${p}</span>` : `<a href="#" onclick="renderPage(${p})">${p}</a>`;
+    }
+    if (page < totalPages) html += `<a href="#" onclick="renderPage(${page+1})">다음</a>`;
+    pg.innerHTML = html;
+    window.scrollTo(0, 0);
+}
+
+loadData();
+</script>
+</body>

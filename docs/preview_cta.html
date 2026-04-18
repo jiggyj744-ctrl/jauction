@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CTA 컨설팅 배너 프리뷰</title>
+<style>
+:root {
+    --primary: #1a73e8;
+    --primary-dark: #1557b0;
+    --cta-orange: #ff6d00;
+    --cta-orange-dark: #e65100;
+    --danger: #ea4335;
+    --gray-50: #f8f9fa;
+    --gray-100: #f1f3f4;
+    --gray-200: #e8eaed;
+    --gray-300: #dadce0;
+    --gray-500: #9aa0a6;
+    --gray-700: #5f6368;
+    --gray-900: #202124;
+    --shadow: 0 1px 3px rgba(0,0,0,0.12);
+    --shadow-lg: 0 10px 25px rgba(0,0,0,0.1);
+    --radius: 8px;
+    --radius-lg: 12px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', sans-serif;
+    color: var(--gray-900);
+    background: var(--gray-50);
+    line-height: 1.6;
+}
+.container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+
+/* ==========================================
+   CTA 1: 헤더 전화번호 (모든 페이지 상단)
+   ========================================== */
+.site-header {
+    background: #fff;
+    border-bottom: 1px solid var(--gray-200);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+.site-header .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+}
+.logo { font-size: 1.3em; font-weight: 700; color: var(--primary); text-decoration: none; }
+.header-cta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.header-phone {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: var(--cta-orange);
+    font-weight: 700;
+    font-size: 1.1em;
+    transition: color 0.2s;
+}
+.header-phone:hover { color: var(--cta-orange-dark); }
+.header-phone-icon {
+    background: var(--cta-orange);
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1em;
+}
+.header-cta-btn {
+    background: var(--cta-orange);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9em;
+    transition: background 0.2s;
+}
+.header-cta-btn:hover { background: var(--cta-orange-dark); }
+
+/* ==========================================
+   메인 영역 (예시 콘텐츠)
+   ========================================== */
+.hero {
+    background: linear-gradient(135deg, var(--primary), #4285f4);
+    color: #fff;
+    padding: 40px 0;
+    text-align: center;
+}
+.hero h1 { font-size: 2em; margin-bottom: 8px; }
+
+/* ==========================================
+   CTA 2: 메인 페이지 컨설팅 섹션
+   ========================================== */
+.consulting-section {
+    background: linear-gradient(135deg, #fff3e0, #ffe0b2);
+    border: 2px solid var(--cta-orange);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    margin: 32px auto;
+    max-width: 800px;
+    text-align: center;
+}
+.consulting-section h2 {
+    font-size: 1.5em;
+    margin-bottom: 16px;
+    color: var(--cta-orange-dark);
+}
+.consulting-features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 20px 0;
+    text-align: left;
+}
+.consulting-feature {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95em;
+}
+.consulting-feature .icon {
+    color: var(--cta-orange);
+    font-size: 1.2em;
+}
+.consulting-phone-box {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    margin: 20px 0;
+    box-shadow: var(--shadow);
+}
+.consulting-phone-number {
+    font-size: 2em;
+    font-weight: 800;
+    color: var(--cta-orange);
+    text-decoration: none;
+    display: block;
+    margin: 8px 0;
+}
+.consulting-phone-number:hover { color: var(--cta-orange-dark); }
+.consulting-phone-label {
+    color: var(--gray-500);
+    font-size: 0.9em;
+}
+.consulting-cta-btn {
+    display: inline-block;
+    background: var(--cta-orange);
+    color: #fff;
+    padding: 16px 48px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.2em;
+    margin-top: 12px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(255,109,0,0.3);
+}
+.consulting-cta-btn:hover {
+    background: var(--cta-orange-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255,109,0,0.4);
+}
+.consulting-note {
+    font-size: 0.85em;
+    color: var(--gray-500);
+    margin-top: 12px;
+}
+
+/* ==========================================
+   상세 페이지 예시
+   ========================================== */
+.detail-container { max-width: 800px; margin: 24px auto; padding: 0 16px; }
+.detail-card {
+    background: #fff;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 16px;
+}
+.detail-card h2 { font-size: 1.3em; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--gray-200); }
+.detail-table { width: 100%; border-collapse: collapse; }
+.detail-table th, .detail-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--gray-200); }
+.detail-table th { width: 120px; color: var(--gray-500); font-weight: 500; }
+.price-highlight { font-weight: 700; color: var(--danger); }
+
+/* ==========================================
+   CTA 3: 상세 페이지 하단 배너 (핵심!)
+   ========================================== */
+.detail-cta-banner {
+    background: linear-gradient(135deg, #1a73e8, #4285f4);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    margin: 24px 0;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.detail-cta-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 200px;
+    height: 200px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+}
+.detail-cta-banner h3 {
+    font-size: 1.3em;
+    margin-bottom: 8px;
+}
+.detail-cta-banner p {
+    opacity: 0.9;
+    margin-bottom: 16px;
+    font-size: 0.95em;
+}
+.detail-cta-features {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+.detail-cta-features span {
+    background: rgba(255,255,255,0.2);
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 0.85em;
+}
+.detail-cta-phone {
+    display: inline-block;
+    background: var(--cta-orange);
+    color: #fff;
+    padding: 14px 40px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.3em;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(255,109,0,0.4);
+}
+.detail-cta-phone:hover {
+    background: var(--cta-orange-dark);
+    transform: translateY(-2px);
+}
+.detail-cta-sub {
+    font-size: 0.8em;
+    opacity: 0.7;
+    margin-top: 8px;
+}
+
+/* ==========================================
+   CTA 4: 플로팅 버튼 (모바일 하단 고정)
+   ========================================== */
+.floating-cta {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--cta-orange);
+    color: #fff;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    z-index: 1000;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.1em;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+    transition: background 0.2s;
+}
+.floating-cta:hover { background: var(--cta-orange-dark); }
+.floating-cta .pulse {
+    width: 12px;
+    height: 12px;
+    background: #4caf50;
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(76,175,80,0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(76,175,80,0); }
+    100% { box-shadow: 0 0 0 0 rgba(76,175,80,0); }
+}
+
+/* 여백 (플로팅 버튼 공간) */
+body { padding-bottom: 60px; }
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .consulting-features { grid-template-columns: 1fr; }
+    .consulting-phone-number { font-size: 1.6em; }
+    .header-cta-btn { display: none; }
+    .detail-cta-features { gap: 8px; }
+    .detail-cta-features span { font-size: 0.8em; padding: 3px 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ==========================================
+     CTA 1: 헤더 전화번호 (모든 페이지)
+     ========================================== -->
+<header class="site-header">
+<div class="container">
+<a href="/" class="logo">🏷️ 경매정보</a>
+<div class="header-cta">
+<a href="tel:010-6899-1601" class="header-phone">
+    <span class="header-phone-icon">📞</span>
+    010-6899-1601
+</a>
+<a href="tel:010-6899-1601" class="header-cta-btn">무료 상담</a>
+</div>
+</div>
+</header>
+
+<!-- 메인 Hero -->
+<section class="hero">
+<div class="container">
+<h1>🏷️ 전국 법원 경매 정보</h1>
+<p>아래는 CTA 컨설팅 배너 예시입니다</p>
+</div>
+</section>
+
+<!-- ==========================================
+     CTA 2: 메인 페이지 컨설팅 섹션
+     ========================================== -->
+<main class="container">
+
+<div class="consulting-section">
+<h2>⚖️ 경매 투자, 혼자 하기 막막하신가요?</h2>
+<p>전문가의 컨설팅으로 안전하고 수익성 높은 경매 투자를 시작하세요</p>
+
+<div class="consulting-features">
+    <div class="consulting-feature"><span class="icon">✅</span> 꼼꼼한 권리관계 분석으로 위험 물건 걸러내기</div>
+    <div class="consulting-feature"><span class="icon">✅</span> 감정가 대비 실제 시장가 비교로 낙찰가 예측</div>
+    <div class="consulting-feature"><span class="icon">✅</span> 입찰 전 필수 체크리스트 안내</div>
+    <div class="consulting-feature"><span class="icon">✅</span> 낙찰 후 명도·소유권이전까지 A to Z</div>
+</div>
+
+<div class="consulting-phone-box">
+    <div class="consulting-phone-label">경매컨설팅상담</div>
+    <a href="tel:010-6899-1601" class="consulting-phone-number">📞 010-6899-1601</a>
+    <a href="tel:010-6899-1601" class="consulting-cta-btn">☎ 지금 무료 상담받기</a>
+</div>
+<p class="consulting-note">💡 지금 통화하시면, 오늘 보신 물건을 바로 분석해드립니다.</p>
+</div>
+
+<!-- ==========================================
+     상세 페이지 예시 (물건 정보)
+     ========================================== -->
+<div class="detail-card">
+<h2>🏠 2018-12857 수원지방법원 임야 경매</h2>
+<table class="detail-table">
+<tr><th>사건번호</th><td>2018-12857</td></tr>
+<tr><th>법원</th><td>수원지방법원</td></tr>
+<tr><th>소재지</th><td>경기도 용인시 처인구 유방동 912-5</td></tr>
+<tr><th>물건종류</th><td>임야</td></tr>
+<tr><th>감정가</th><td class="price-highlight">4.5억원 (451,753,000원)</td></tr>
+<tr><th>최저가</th><td class="price-highlight">1.5억원 (154,951,000원)</td></tr>
+<tr><th>매각일</th><td>2026.04.21</td></tr>
+<tr><th>상태</th><td>재진행</td></tr>
+</table>
+</div>
+
+<!-- ==========================================
+     CTA 3: 상세 페이지 하단 배너 (★핵심★)
+     ========================================== -->
+<div class="detail-cta-banner">
+<h3>🏠 이 물건, 투자 가치가 있을까요?</h3>
+<p>권리관계·시세분석·입찰전략까지 전문가가 분석해드립니다</p>
+<div class="detail-cta-features">
+    <span>✅ 권리관계 분석</span>
+    <span>✅ 시세 비교</span>
+    <span>✅ 입찰 전략</span>
+    <span>✅ 낙찰 후 A to Z</span>
+</div>
+<a href="tel:010-6899-1601" class="detail-cta-phone">📞 010-6899-1601</a>
+<p class="detail-cta-sub">경매컨설팅상담 · 지금 통화하면 이 물건 바로 분석</p>
+</div>
+
+</main>
+
+<!-- ==========================================
+     CTA 4: 플로팅 버튼 (모바일 하단 고정)
+     ========================================== -->
+<a href="tel:010-6899-1601" class="floating-cta">
+<span class="pulse"></span>
+📞 무료 경매 상담 010-6899-1601
+</a>
+
+</body>
+</html>
