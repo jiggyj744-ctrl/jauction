@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>jauction ㅣ무료경매사이트 - 전국 법원 경매 부동산 정보</title>
-<meta name="description" content="전국 법원 경매 부동산 32,809건 - 아파트, 토지, 상업용 부동산 경매 정보 100% 무료 제공. 경매컨설팅 상담: 010-6899-1601">
-<meta name="keywords" content="법원경매,부동산경매,경매물건,jauction,jauction ㅣ무료경매사이트 - 전국 법원 경매 부동산 정보">
+<title>JAuction ㅣ 전국 법원 경매 부동산 정보</title>
+<meta name="description" content="전국 법원 경매 부동산 32,809건 - 아파트, 토지, 상업용 부동산 경매 정보 제공. 경매컨설팅 상담: 010-6899-1601">
+<meta name="keywords" content="법원경매,부동산경매,경매물건,jauction,JAuction ㅣ 전국 법원 경매 부동산 정보">
 <meta property="og:type" content="website">
-<meta property="og:title" content="jauction ㅣ무료경매사이트 - 전국 법원 경매 부동산 정보">
-<meta property="og:description" content="전국 법원 경매 부동산 32,809건 - 아파트, 토지, 상업용 부동산 경매 정보 100% 무료 제공. 경매컨설팅 상담: 010-6899-1601">
+<meta property="og:title" content="JAuction ㅣ 전국 법원 경매 부동산 정보">
+<meta property="og:description" content="전국 법원 경매 부동산 32,809건 - 아파트, 토지, 상업용 부동산 경매 정보 제공. 경매컨설팅 상담: 010-6899-1601">
 <meta property="og:site_name" content="jauction">
 <meta property="og:image" content="https://jiggyj744-ctrl.github.io/jauction/images/kakao_img.png">
 <link rel="canonical" href="https://jiggyj744-ctrl.github.io/jauction/">
@@ -41,16 +41,16 @@
 <a href="/faq/" class="nav-link">FAQ</a></nav>
 </div>
 </header>
+
 <section class="hero">
 <div class="container">
-<h1>🏷️ 전국 법원 경매 정보</h1>
-<p>아파트, 토지, 상업용 부동산 등 32,809건 경매 물건 무료 검색</p>
+<h1 style="font-size:1.8em;font-weight:800;margin-bottom:8px;">전국 법원 경매 정보</h1>
+<p style="opacity:0.85;font-size:1em;">아파트·토지·상업용 부동산 32,809건 실시간 제공</p>
 <div class="stats-bar">
 <div class="stat-card"><div class="num">32,809</div><div class="label">전체 물건</div></div>
 <div class="stat-card"><div class="num">16,631</div><div class="label">주거용</div></div>
 <div class="stat-card"><div class="num">8,823</div><div class="label">토지</div></div>
 <div class="stat-card"><div class="num">6,291</div><div class="label">상업용</div></div>
-<div class="stat-card"><div class="num">1,064</div><div class="label">기타</div></div>
 </div>
 </div>
 </section>
@@ -58,58 +58,30 @@
 <section class="search-section">
 <div class="container">
 <div class="search-box">
-<input type="text" id="searchInput" placeholder="사건번호, 주소로 검색..." onkeyup="handleSearch(event)">
+<input type="text" id="searchInput" placeholder="사건번호, 주소, 법원명으로 검색..." onkeyup="handleSearch(event)">
 <button onclick="doSearch()">검색</button>
 </div>
 <div class="filters" id="filters">
-<a href="/" class="filter-btn active" data-cat="all">전체</a>
-<a href="/apartment/" class="filter-btn" data-cat="주거용 부동산">주거용</a>
-<a href="/land/" class="filter-btn" data-cat="토지">토지</a>
-<a href="/commercial/" class="filter-btn" data-cat="상업용 부동산">상업용</a>
-<a href="/other/" class="filter-btn" data-cat="기타">기타</a>
+<a href="#" class="filter-btn active" data-cat="all" onclick="filterCategory('all');return false">전체</a>
+<a href="#" class="filter-btn" data-cat="주거용 부동산" onclick="filterCategory('주거용 부동산');return false">주거용</a>
+<a href="#" class="filter-btn" data-cat="토지" onclick="filterCategory('토지');return false">토지</a>
+<a href="#" class="filter-btn" data-cat="상업용 부동산" onclick="filterCategory('상업용 부동산');return false">상업용</a>
+<a href="#" class="filter-btn" data-cat="기타" onclick="filterCategory('기타');return false">기타</a>
 </div>
+<div style="text-align:center;margin-top:8px;"><span style="color:var(--gray-400);font-size:0.8em;">최종 업데이트: 2026-04-19</span></div>
 </div>
 </section>
 
 <main class="container">
-<div class="item-grid" id="itemGrid"></div>
+<div class="item-grid" id="itemGrid">
+<div style="text-align:center;padding:60px 0;color:var(--gray-400);">
+<div style="font-size:2em;margin-bottom:12px;">⏳</div>
+<div>물건 정보를 불러오는 중...</div>
+</div>
+</div>
 <div class="pagination" id="pagination"></div>
+<div id="resultCount" style="text-align:center;color:var(--gray-400);font-size:0.9em;padding:8px 0;"></div>
 </main>
-
-
-<section class="update-status-section">
-<div class="container">
-<div class="update-status-card">
-    <h2>📊 사이트 업데이트 현황</h2>
-    <div class="update-grid">
-        <div class="update-item">
-            <span class="update-label">마지막 크롤링</span>
-            <span class="update-value">2026-04-19 11:37:49</span>
-        </div>
-        <div class="update-item">
-            <span class="update-label">다음 업데이트</span>
-            <span class="update-value">매일 새벽 6:00</span>
-        </div>
-        <div class="update-item">
-            <span class="update-label">크롤링 상태</span>
-            <span class="update-value">⚠️ running</span>
-        </div>
-        <div class="update-item">
-            <span class="update-label">스캔 건수</span>
-            <span class="update-value">0건</span>
-        </div>
-        <div class="update-item">
-            <span class="update-label">신규 추가</span>
-            <span class="update-value" style="color:var(--success)">🆕 0건</span>
-        </div>
-        <div class="update-item">
-            <span class="update-label">변경 감지</span>
-            <span class="update-value" style="color:var(--warning)">🔄 0건</span>
-        </div>
-    </div>
-</div>
-</div>
-</section>
 
 <footer class="site-footer">
 <div class="container">
@@ -136,19 +108,32 @@ let filteredItems = [];
 let currentPage = 1;
 
 async function loadData() {
-    const resp = await fetch('/data.json');
-    allItems = await resp.json();
-    filteredItems = allItems;
-    renderPage(1);
+    try {
+        const resp = await fetch('data.json');
+        if (!resp.ok) throw new Error('data.json 로드 실패');
+        allItems = await resp.json();
+        filteredItems = allItems;
+        document.getElementById('resultCount').textContent = '총 ' + allItems.length.toLocaleString() + '건';
+        renderPage(1);
+    } catch(e) {
+        document.getElementById('itemGrid').innerHTML = '<div style="text-align:center;padding:60px;color:var(--danger);">⚠️ 데이터를 불러오지 못했습니다. 페이지를 새로고침해주세요.</div>';
+        console.error(e);
+    }
 }
 
 function doSearch() {
-    const q = document.getElementById('searchInput').value.toLowerCase();
-    filteredItems = allItems.filter(item =>
-        (item.cn || '').toLowerCase().includes(q) ||
-        (item.addr || '').toLowerCase().includes(q) ||
-        (item.court || '').toLowerCase().includes(q)
-    );
+    const q = document.getElementById('searchInput').value.toLowerCase().trim();
+    if (!q) {
+        filteredItems = allItems;
+    } else {
+        filteredItems = allItems.filter(item =>
+            (item.cn || '').toLowerCase().includes(q) ||
+            (item.addr || '').toLowerCase().includes(q) ||
+            (item.court || '').toLowerCase().includes(q) ||
+            (item.sido || '').toLowerCase().includes(q)
+        );
+    }
+    document.getElementById('resultCount').textContent = '검색결과 ' + filteredItems.length.toLocaleString() + '건';
     renderPage(1);
 }
 
@@ -158,8 +143,10 @@ function handleSearch(e) {
 
 function filterCategory(cat) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector(`[data-cat="${cat}"]`)?.classList.add('active');
+    const btn = document.querySelector('[data-cat="'+cat+'"]');
+    if (btn) btn.classList.add('active');
     filteredItems = cat === 'all' ? allItems : allItems.filter(i => i.cat === cat);
+    document.getElementById('resultCount').textContent = (cat === 'all' ? '총 ' : cat + ' ') + filteredItems.length.toLocaleString() + '건';
     renderPage(1);
 }
 
@@ -170,13 +157,23 @@ function formatPrice(p) {
     return p.toLocaleString();
 }
 
+function getRate(ap, mp) {
+    if (!ap || !mp) return '';
+    return Math.round(mp / ap * 100) + '%';
+}
+
 function getCatBadge(cat) {
     const m = {'주거용 부동산':'badge-residential','토지':'badge-land','상업용 부동산':'badge-commercial','기타':'badge-other'};
     return m[cat] || 'badge-other';
 }
 
+function getCatShort(cat) {
+    const m = {'주거용 부동산':'주거','토지':'토지','상업용 부동산':'상업','기타':'기타'};
+    return m[cat] || '기타';
+}
+
 function getStatusBadge(s) {
-    const m = {'진행':'status-proceeding','낙찰':'status-bid','재진행':'status-proceeding','정지':'status-stop','취하':'status-cancel','기각':'status-cancel'};
+    const m = {'진행':'status-proceeding','낙찰':'status-bid','재진행':'status-proceeding','정지':'status-stop','취하':'status-cancel','기각':'status-cancel','신건':'status-new'};
     return m[s] || 'status-other';
 }
 
@@ -185,36 +182,46 @@ function renderPage(page) {
     const start = (page - 1) * ITEMS_PER_PAGE;
     const items = filteredItems.slice(start, start + ITEMS_PER_PAGE);
     const grid = document.getElementById('itemGrid');
-    grid.innerHTML = items.map(i => `
-        <a href="/auction/${i.id}.html" class="item-card">
+
+    if (items.length === 0) {
+        grid.innerHTML = '<div style="text-align:center;padding:60px;color:var(--gray-400);">🔍 검색 결과가 없습니다</div>';
+        document.getElementById('pagination').innerHTML = '';
+        return;
+    }
+
+    grid.innerHTML = items.map(i => {
+        const rate = getRate(i.ap, i.mp);
+        const rateColor = rate ? (parseInt(rate) <= 40 ? '#dc2626' : parseInt(rate) <= 60 ? '#f59e0b' : '#16a34a') : '#6b7280';
+        return `
+        <a href="auction/${i.id}.html" class="item-card">
             <div class="card-header">
                 <span class="case-num">${i.cn || '-'}</span>
-                <span class="category-badge ${getCatBadge(i.cat)}">${i.cat || '미분류'}</span>
+                <span class="category-badge ${getCatBadge(i.cat)}">${getCatShort(i.cat)}</span>
             </div>
             <div class="card-body">
                 <div class="address">${i.addr || '주소 미확인'}</div>
                 <div class="price-row">
                     <div class="price-item"><div class="price-label">감정가</div><div class="price-value">${formatPrice(i.ap)}</div></div>
                     <div class="price-item"><div class="price-label">최저가</div><div class="price-value accent">${formatPrice(i.mp)}</div></div>
-                    <div class="price-item"><div class="price-label">매각일</div><div class="price-value">${i.sd || '-'}</div></div>
+                    ${rate ? `<div class="price-item"><div class="price-label">최저가율</div><div class="price-value" style="color:${rateColor};font-weight:800">${rate}</div></div>` : ''}
                 </div>
             </div>
             <div class="card-footer">
-                <span>${i.court || '-'}</span>
+                <span>${i.court || '-'} ${i.sd ? '· ' + i.sd : ''}</span>
                 <span class="status-badge ${getStatusBadge(i.st)}">${i.st || '-'}</span>
             </div>
-        </a>
-    `).join('');
+        </a>`;
+    }).join('');
 
     const totalPages = Math.ceil(filteredItems.length / ITEMS_PER_PAGE);
     const pg = document.getElementById('pagination');
     if (totalPages <= 1) { pg.innerHTML = ''; return; }
     let html = '';
-    if (page > 1) html += `<a href="#" onclick="renderPage(${page-1})">이전</a>`;
+    if (page > 1) html += `<a href="#" onclick="renderPage(${page-1});return false">이전</a>`;
     for (let p = Math.max(1,page-3); p <= Math.min(totalPages,page+3); p++) {
-        html += p === page ? `<span class="active">${p}</span>` : `<a href="#" onclick="renderPage(${p})">${p}</a>`;
+        html += p === page ? `<span class="active">${p}</span>` : `<a href="#" onclick="renderPage(${p});return false">${p}</a>`;
     }
-    if (page < totalPages) html += `<a href="#" onclick="renderPage(${page+1})">다음</a>`;
+    if (page < totalPages) html += `<a href="#" onclick="renderPage(${page+1});return false">다음</a>`;
     pg.innerHTML = html;
     window.scrollTo(0, 0);
 }
