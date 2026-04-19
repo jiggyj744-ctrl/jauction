@@ -5,7 +5,7 @@
 <link>https://jiggyj744-ctrl.github.io/jauction</link>
 <description>주거용 부동산 경매</description>
 <language>ko</language>
-<pubDate>Sun, 19 Apr 2026 16:46:05 +0900</pubDate>
+<pubDate>Mon, 20 Apr 2026 06:26:46 +0900</pubDate>
 <atom:link href="https://jiggyj744-ctrl.github.io/jauction/feed-residential.xml" rel="self" type="application/rss+xml"/>
 
 <item>
@@ -216,6 +216,13 @@
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1239196.html</link>
 <description>성남지원 주거용 부동산 경매 - 소재지: 경기도 광주시 곤지암읍 장심길 20-10구) 경기도 광주시 곤지암읍 장심리 304-24, 감정가: 204,570,000원, 최저가: 49,117,000원, 매각일: 2026.04.27</description>
 <pubDate>2026-04-27</pubDate>
+<category>주거용 부동산</category>
+</item>
+<item>
+<title>[2022타경434] 경상남도 거제시 장목면 율천리 488 - 감정가 270,778,880원</title>
+<link>https://jiggyj744-ctrl.github.io/jauction/auction/1242300.html</link>
+<description>통영지원 주거용 부동산 경매 - 소재지: 경상남도 거제시 장목면 율천리 488, 감정가: 270,778,880원, 최저가: 138,638,000원, 매각일: 2026.05.04</description>
+<pubDate>2026-05-04</pubDate>
 <category>주거용 부동산</category>
 </item>
 <item>
@@ -779,6 +786,13 @@
 <category>주거용 부동산</category>
 </item>
 <item>
+<title>[2023타경4907] 경상남도 거제시 거제대로 3696, 103동 2층203호 (옥포동,미진타 - 감정가 147,000,000원</title>
+<link>https://jiggyj744-ctrl.github.io/jauction/auction/1306515.html</link>
+<description>통영지원 주거용 부동산 경매 - 소재지: 경상남도 거제시 거제대로 3696, 103동 2층203호 (옥포동,미진타워펠리스)구) 경상남도 거제시 옥포동 556-11, 감정가: 147,000,000원, 최저가: 94,080,000원, 매각일: 2026.05.04</description>
+<pubDate>2026-05-04</pubDate>
+<category>주거용 부동산</category>
+</item>
+<item>
 <title>[2023타경114847] 서울특별시 양천구 은행정로7길 48, 제4층 제403호 (신정동, 타임아 - 감정가 286,000,000원</title>
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1306937.html</link>
 <description>서울남부지방법원 주거용 부동산 경매 - 소재지: 서울특별시 양천구 은행정로7길 48, 제4층 제403호 (신정동, 타임아트빌)구) 서울특별시 양천구 신정동 974-13, 감정가: 286,000,000원, 최저가: 228,800,000원, 매각일: 2026.04.21</description>
@@ -1259,6 +1273,13 @@
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1329848.html</link>
 <description>인천지방법원 주거용 부동산 경매 - 소재지: 인천광역시 남동구 만수로100번길 19, 9층902호 (만수동,파크원26)구) 인천광역시 남동구 만수동 5-230, 감정가: 271,000,000원, 최저가: 1,838,000원, 매각일: 2026.04.23</description>
 <pubDate>2026-04-23</pubDate>
+<category>주거용 부동산</category>
+</item>
+<item>
+<title>[2023타경3590] 경상북도 포항시 남구 오천읍 원리 1343-1 - 감정가 1,292,065,680원</title>
+<link>https://jiggyj744-ctrl.github.io/jauction/auction/1330175.html</link>
+<description>포항지원 주거용 부동산 경매 - 소재지: 경상북도 포항시 남구 오천읍 원리 1343-1, 감정가: 1,292,065,680원, 최저가: 633,111,000원, 매각일: 2026.05.04</description>
+<pubDate>2026-05-04</pubDate>
 <category>주거용 부동산</category>
 </item>
 <item>
@@ -3485,27 +3506,6 @@
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1377950.html</link>
 <description>서울중앙지방법원 주거용 부동산 경매 - 소재지: 서울특별시 관악구 남현6길 13, 5층502호 (남현동,한샘빌라)구) 서울특별시 관악구 남현동 1082-33, 감정가: 409,000,000원, 최저가: 167,526,000원, 매각일: 2026.04.23</description>
 <pubDate>2026-04-23</pubDate>
-<category>주거용 부동산</category>
-</item>
-<item>
-<title>[2023타경3842 [4]] 서울특별시 관악구 남현6길 13, 6층601호 (남현동,한샘빌라)구) 서 - 감정가 276,000,000원</title>
-<link>https://jiggyj744-ctrl.github.io/jauction/auction/1377951.html</link>
-<description>서울중앙지방법원 주거용 부동산 경매 - 소재지: 서울특별시 관악구 남현6길 13, 6층601호 (남현동,한샘빌라)구) 서울특별시 관악구 남현동 1082-33, 감정가: 276,000,000원, 최저가: 113,050,000원, 매각일: 2026.04.23</description>
-<pubDate>2026-04-23</pubDate>
-<category>주거용 부동산</category>
-</item>
-<item>
-<title>[2024타경77361] 경기도 의정부시 시민로122번길 59-7, 8층802호 (의정부동,현대탑 - 감정가 210,000,000원</title>
-<link>https://jiggyj744-ctrl.github.io/jauction/auction/1378005.html</link>
-<description>의정부지방법원 주거용 부동산 경매 - 소재지: 경기도 의정부시 시민로122번길 59-7, 8층802호 (의정부동,현대탑캐슬)구) 경기도 의정부시 의정부동 136-15, 감정가: 210,000,000원, 최저가: 5,932,000원, 매각일: 2026.04.23</description>
-<pubDate>2026-04-23</pubDate>
-<category>주거용 부동산</category>
-</item>
-<item>
-<title>[2024타경5047] 전북특별자치도 전주시 덕진구 호반8길 26, 203호구) 전북특별자치도  - 감정가 79,500,000원</title>
-<link>https://jiggyj744-ctrl.github.io/jauction/auction/1378182.html</link>
-<description>전주지방법원 주거용 부동산 경매 - 소재지: 전북특별자치도 전주시 덕진구 호반8길 26, 203호구) 전북특별자치도 전주시 덕진구 덕진동2가 168-78, 감정가: 79,500,000원, 최저가: 2,245,621원, 매각일: 2026.05.11</description>
-<pubDate>2026-05-11</pubDate>
 <category>주거용 부동산</category>
 </item>
 </channel>

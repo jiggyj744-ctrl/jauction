@@ -5,7 +5,7 @@
 <link>https://jiggyj744-ctrl.github.io/jauction</link>
 <description>토지 경매</description>
 <language>ko</language>
-<pubDate>Sun, 19 Apr 2026 16:46:05 +0900</pubDate>
+<pubDate>Mon, 20 Apr 2026 06:26:46 +0900</pubDate>
 <atom:link href="https://jiggyj744-ctrl.github.io/jauction/feed-land.xml" rel="self" type="application/rss+xml"/>
 
 <item>
@@ -1266,6 +1266,13 @@
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1365862.html</link>
 <description>진주지원 토지 경매 - 소재지: 경상남도 남해군 남면 당항리 산53, 감정가: 33,060,000원, 최저가: 1,988,000원, 매각일: 2026.04.27</description>
 <pubDate>2026-04-27</pubDate>
+<category>토지</category>
+</item>
+<item>
+<title>[2024타경3680] 경상남도 통영시 정량동 883-7 - 감정가 45,691,800원</title>
+<link>https://jiggyj744-ctrl.github.io/jauction/auction/1366165.html</link>
+<description>통영지원 토지 경매 - 소재지: 경상남도 통영시 정량동 883-7, 감정가: 45,691,800원, 최저가: 9,171,000원, 매각일: 2026.05.04</description>
+<pubDate>2026-05-04</pubDate>
 <category>토지</category>
 </item>
 <item>
@@ -2970,6 +2977,13 @@
 <category>토지</category>
 </item>
 <item>
+<title>[2024타경4423] 경상남도 고성군 동해면 장좌리 1091 - 감정가 987,628,000원</title>
+<link>https://jiggyj744-ctrl.github.io/jauction/auction/1397456.html</link>
+<description>통영지원 토지 경매 - 소재지: 경상남도 고성군 동해면 장좌리 1091, 감정가: 987,628,000원, 최저가: 323,626,000원, 매각일: 2026.05.04</description>
+<pubDate>2026-05-04</pubDate>
+<category>토지</category>
+</item>
+<item>
 <title>[2024타경27624] 경상남도 거제시 연초면 연사리 450 - 감정가 507,720,000원</title>
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1397460.html</link>
 <description>통영지원 토지 경매 - 소재지: 경상남도 거제시 연초면 연사리 450, 감정가: 507,720,000원, 최저가: 93,167,000원, 매각일: 2026.05.04</description>
@@ -3492,20 +3506,6 @@
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1401567.html</link>
 <description>진주지원 토지 경매 - 소재지: 경상남도 사천시 향촌동 504-2, 감정가: 457,847,000원, 최저가: 187,534,400원, 매각일: 2026.04.27</description>
 <pubDate>2026-04-27</pubDate>
-<category>토지</category>
-</item>
-<item>
-<title>[2024타경36793] 경상남도 사천시 서포면 선전리 산14-20 - 감정가 490,245,000원</title>
-<link>https://jiggyj744-ctrl.github.io/jauction/auction/1401577.html</link>
-<description>진주지원 토지 경매 - 소재지: 경상남도 사천시 서포면 선전리 산14-20, 감정가: 490,245,000원, 최저가: 200,805,000원, 매각일: 2026.04.27</description>
-<pubDate>2026-04-27</pubDate>
-<category>토지</category>
-</item>
-<item>
-<title>[2024타경4973] 경상남도 고성군 구만면 효락리 687-4 - 감정가 476,741,000원</title>
-<link>https://jiggyj744-ctrl.github.io/jauction/auction/1401591.html</link>
-<description>통영지원 토지 경매 - 소재지: 경상남도 고성군 구만면 효락리 687-4, 감정가: 476,741,000원, 최저가: 119,605,000원, 매각일: 2026.04.20</description>
-<pubDate>2026-04-20</pubDate>
 <category>토지</category>
 </item>
 </channel>
