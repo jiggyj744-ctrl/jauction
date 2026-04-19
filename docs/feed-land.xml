@@ -5,7 +5,7 @@
 <link>https://jiggyj744-ctrl.github.io/jauction</link>
 <description>토지 경매</description>
 <language>ko</language>
-<pubDate>Sun, 19 Apr 2026 00:50:16 +0900</pubDate>
+<pubDate>Sun, 19 Apr 2026 12:04:27 +0900</pubDate>
 <atom:link href="https://jiggyj744-ctrl.github.io/jauction/feed-land.xml" rel="self" type="application/rss+xml"/>
 
 <item>
@@ -265,6 +265,13 @@
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1294449.html</link>
 <description>제주지방법원 토지 경매 - 소재지: 제주특별자치도 제주시 구좌읍 세화리 산29, 감정가: 2,783,802,641원, 최저가: 1,948,662,000원, 매각일: 2026.05.19</description>
 <pubDate>2026-05-19</pubDate>
+<category>토지</category>
+</item>
+<item>
+<title>[2023타경75875] 전라남도 곡성군 곡성읍 구원리 53-1 - 감정가 8,153,600원</title>
+<link>https://jiggyj744-ctrl.github.io/jauction/auction/1294664.html</link>
+<description>광주지방법원 토지 경매 - 소재지: 전라남도 곡성군 곡성읍 구원리 53-1, 감정가: 8,153,600원, 최저가: 768,000원, 매각일: 2026.05.28</description>
+<pubDate>2026-05-28</pubDate>
 <category>토지</category>
 </item>
 <item>
@@ -634,15 +641,15 @@
 <item>
 <title>[2024타경2485] 광주광역시 북구 월출동 91 - 감정가 1,907,121,000원</title>
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1340133.html</link>
-<description>광주지방법원 토지 경매 - 소재지: 광주광역시 북구 월출동 91, 감정가: 1,907,121,000원, 최저가: 1,067,988,000원, 매각일: 2026.04.17</description>
-<pubDate>2026-04-17</pubDate>
+<description>광주지방법원 토지 경매 - 소재지: 광주광역시 북구 월출동 91, 감정가: 1,907,121,000원, 최저가: 854,391,000원, 매각일: 2026.05.29</description>
+<pubDate>2026-05-29</pubDate>
 <category>토지</category>
 </item>
 <item>
 <title>[2024타경63572] 전라남도 화순군 도곡면 대곡리 산71-5 - 감정가 68,501,280원</title>
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1340148.html</link>
-<description>광주지방법원 토지 경매 - 소재지: 전라남도 화순군 도곡면 대곡리 산71-5, 감정가: 68,501,280원, 최저가: 19,642,000원, 매각일: 2026.04.17</description>
-<pubDate>2026-04-17</pubDate>
+<description>광주지방법원 토지 경매 - 소재지: 전라남도 화순군 도곡면 대곡리 산71-5, 감정가: 68,501,280원, 최저가: 15,714,000원, 매각일: 2026.05.29</description>
+<pubDate>2026-05-29</pubDate>
 <category>토지</category>
 </item>
 <item>
@@ -3196,8 +3203,8 @@
 <item>
 <title>[2024타경9563] 경상북도 영천시 금호읍 원제리 73 - 감정가 436,391,000원</title>
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1398695.html</link>
-<description>대구지방법원 토지 경매 - 소재지: 경상북도 영천시 금호읍 원제리 73, 감정가: 436,391,000원, 최저가: 73,343,000원, 매각일: 2026.04.17</description>
-<pubDate>2026-04-17</pubDate>
+<description>대구지방법원 토지 경매 - 소재지: 경상북도 영천시 금호읍 원제리 73, 감정가: 436,391,000원, 최저가: 51,340,000원, 매각일: 2026.05.20</description>
+<pubDate>2026-05-20</pubDate>
 <category>토지</category>
 </item>
 <item>
@@ -3498,13 +3505,6 @@
 <title>[2024타경4973] 경상남도 고성군 구만면 효락리 687-4 - 감정가 476,741,000원</title>
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1401591.html</link>
 <description>통영지원 토지 경매 - 소재지: 경상남도 고성군 구만면 효락리 687-4, 감정가: 476,741,000원, 최저가: 119,605,000원, 매각일: 2026.04.20</description>
-<pubDate>2026-04-20</pubDate>
-<category>토지</category>
-</item>
-<item>
-<title>[2024타경5136 [1]] 경상남도 통영시 욕지면 서산리 산1-45 - 감정가 31,239,000원</title>
-<link>https://jiggyj744-ctrl.github.io/jauction/auction/1401593.html</link>
-<description>통영지원 토지 경매 - 소재지: 경상남도 통영시 욕지면 서산리 산1-45, 감정가: 31,239,000원, 최저가: 7,837,000원, 매각일: 2026.04.20</description>
 <pubDate>2026-04-20</pubDate>
 <category>토지</category>
 </item>

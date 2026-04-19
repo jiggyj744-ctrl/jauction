@@ -5,7 +5,7 @@
 <link>https://jiggyj744-ctrl.github.io/jauction</link>
 <description>전국 법원 경매 전체</description>
 <language>ko</language>
-<pubDate>Sun, 19 Apr 2026 00:50:16 +0900</pubDate>
+<pubDate>Sun, 19 Apr 2026 12:04:27 +0900</pubDate>
 <atom:link href="https://jiggyj744-ctrl.github.io/jauction/feed.xml" rel="self" type="application/rss+xml"/>
 
 <item>
@@ -1196,6 +1196,13 @@
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1294449.html</link>
 <description>제주지방법원 토지 경매 - 소재지: 제주특별자치도 제주시 구좌읍 세화리 산29, 감정가: 2,783,802,641원, 최저가: 1,948,662,000원, 매각일: 2026.05.19</description>
 <pubDate>2026-05-19</pubDate>
+<category>토지</category>
+</item>
+<item>
+<title>[2023타경75875] 전라남도 곡성군 곡성읍 구원리 53-1 - 감정가 8,153,600원</title>
+<link>https://jiggyj744-ctrl.github.io/jauction/auction/1294664.html</link>
+<description>광주지방법원 토지 경매 - 소재지: 전라남도 곡성군 곡성읍 구원리 53-1, 감정가: 8,153,600원, 최저가: 768,000원, 매각일: 2026.05.28</description>
+<pubDate>2026-05-28</pubDate>
 <category>토지</category>
 </item>
 <item>
@@ -2804,15 +2811,15 @@
 <item>
 <title>[2024타경2485] 광주광역시 북구 월출동 91 - 감정가 1,907,121,000원</title>
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1340133.html</link>
-<description>광주지방법원 토지 경매 - 소재지: 광주광역시 북구 월출동 91, 감정가: 1,907,121,000원, 최저가: 1,067,988,000원, 매각일: 2026.04.17</description>
-<pubDate>2026-04-17</pubDate>
+<description>광주지방법원 토지 경매 - 소재지: 광주광역시 북구 월출동 91, 감정가: 1,907,121,000원, 최저가: 854,391,000원, 매각일: 2026.05.29</description>
+<pubDate>2026-05-29</pubDate>
 <category>토지</category>
 </item>
 <item>
 <title>[2024타경63572] 전라남도 화순군 도곡면 대곡리 산71-5 - 감정가 68,501,280원</title>
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1340148.html</link>
-<description>광주지방법원 토지 경매 - 소재지: 전라남도 화순군 도곡면 대곡리 산71-5, 감정가: 68,501,280원, 최저가: 19,642,000원, 매각일: 2026.04.17</description>
-<pubDate>2026-04-17</pubDate>
+<description>광주지방법원 토지 경매 - 소재지: 전라남도 화순군 도곡면 대곡리 산71-5, 감정가: 68,501,280원, 최저가: 15,714,000원, 매각일: 2026.05.29</description>
+<pubDate>2026-05-29</pubDate>
 <category>토지</category>
 </item>
 <item>
@@ -3500,13 +3507,6 @@
 <description>목포지원 기타 경매 - 소재지: 전라남도 함평군 손불면 석창리 522-12, 감정가: 537,242,200원, 최저가: 154,038,000원, 매각일: 2026.04.27</description>
 <pubDate>2026-04-27</pubDate>
 <category>기타</category>
-</item>
-<item>
-<title>[2023타경60858 [1]] 전라남도 순천시 주암면 행정리 370-1 - 감정가 4,821,100원</title>
-<link>https://jiggyj744-ctrl.github.io/jauction/auction/1350325.html</link>
-<description>순천지원 토지 경매 - 소재지: 전라남도 순천시 주암면 행정리 370-1, 감정가: 4,821,100원, 최저가: 566,000원, 매각일: 2026.05.26</description>
-<pubDate>2026-05-26</pubDate>
-<category>토지</category>
 </item>
 </channel>
 </rss>

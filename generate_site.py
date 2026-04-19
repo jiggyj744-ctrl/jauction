@@ -4,6 +4,7 @@ gfauction 경매 정보 웹사이트 일괄 생성기
 - 병렬 처리 (multiprocessing)
 - sitemap.xml, RSS feed, robots.txt 생성
 - CTA 컨설팅 배너 포함
+- 전문가 분석 코멘트 자동 생성
 """
 import sys
 sys.path.insert(0, r"C:\Users\Work\AppData\Local\Programs\Python\Python312\Lib\site-packages")
@@ -15,6 +16,7 @@ import html
 from datetime import datetime
 from multiprocessing import Pool, cpu_count
 from collections import defaultdict
+from expert_comment import generate_expert_comment
 
 # ======================================
 # 설정
@@ -1025,6 +1027,74 @@ loadData();
 </body>'''
 
 # ======================================
+# 전문가 분석 섹션 HTML
+# ======================================
+def generate_expert_section(item):
+    """전문가 분석 코멘트를 HTML 섹션으로 생성"""
+    try:
+        comment = generate_expert_comment(item)
+    except Exception:
+        return ''
+
+    risk = comment.get('risk_level', 'low')
+    risk_colors = {'high': '#dc2626', 'medium': '#f59e0b', 'low': '#16a34a'}
+    risk_labels = {'high': '고위험', 'medium': '보통', 'low': '낮은위험'}
+    risk_bgs = {'high': '#fef2f2', 'medium': '#fffbeb', 'low': '#f0fdf4'}
+    risk_borders = {'high': '#fecaca', 'medium': '#fde68a', 'low': '#bbf7d0'}
+
+    color = risk_colors.get(risk, '#6b7280')
+    label = risk_labels.get(risk, '분석')
+    bg = risk_bgs.get(risk, '#f9fafb')
+    border = risk_borders.get(risk, '#e5e7eb')
+
+    summary = html.escape(comment.get('summary', ''))
+    opportunity = comment.get('opportunity', '')
+    risk_factors = comment.get('risk_factors', '')
+    market = comment.get('market', '')
+    rec_target = html.escape(comment.get('rec_target', ''))
+    rec_tip = html.escape(comment.get('rec_tip', ''))
+    cta_msg = html.escape(comment.get('cta_message', ''))
+
+    opp_html = ''
+    if opportunity:
+        for line in opportunity.strip().split('\n'):
+            if line.strip():
+                opp_html += f'<div style="padding:4px 0;font-size:13px;color:#15803d;">✅ {html.escape(line.replace("• ",""))}</div>'
+
+    risk_html = ''
+    if risk_factors:
+        for line in risk_factors.strip().split('\n'):
+            if line.strip():
+                risk_html += f'<div style="padding:4px 0;font-size:13px;color:#b45309;">⚠️ {html.escape(line.replace("• ",""))}</div>'
+
+    market_html = ''
+    if market:
+        market_html = f'''<div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:6px;padding:10px 14px;margin-top:10px;font-size:13px;color:#0369a1;">
+📊 {html.escape(market)}
+</div>'''
+
+    return f'''
+<div style="background:{bg};border:1px solid {border};border-radius:12px;padding:20px;margin:16px 0;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <span style="background:{color};color:#fff;padding:3px 12px;border-radius:12px;font-size:12px;font-weight:700;">🔍 전문가 분석</span>
+        <span style="background:{color}22;color:{color};padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;">{label}</span>
+    </div>
+    <div style="font-size:15px;font-weight:600;color:#1f2937;margin-bottom:12px;line-height:1.6;">{summary}</div>
+    {opp_html}
+    {risk_html}
+    {market_html}
+    <div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px 14px;margin-top:12px;">
+        <div style="font-size:12px;color:#6b7280;font-weight:600;margin-bottom:4px;">💡 추천 대상</div>
+        <div style="font-size:13px;color:#374151;">{rec_target}</div>
+        <div style="font-size:13px;color:#6b7280;margin-top:4px;">{rec_tip}</div>
+    </div>
+    <div style="text-align:center;margin-top:14px;">
+        <a href="tel:{PHONE_NUMBER}" style="display:inline-block;background:#ff6d00;color:#fff;padding:10px 28px;border-radius:20px;text-decoration:none;font-weight:700;font-size:14px;box-shadow:0 2px 8px rgba(255,109,0,0.3);">{cta_msg}</a>
+    </div>
+</div>
+'''
+
+# ======================================
 # 상세 HTML 페이지
 # ======================================
 def generate_detail_html(item):
@@ -1307,6 +1377,9 @@ a:hover {{ text-decoration: underline; }}
 <body>
 
 <h1>{html.escape(cn_display)} <span class="badge {badge_cls}">{html.escape(status or "-")}</span></h1>
+
+<!-- 전문가 분석 -->
+{generate_expert_section(item)}
 
 <!-- 상단 CTA 바 -->
 <div style="background:#1a73e8;color:#fff;text-align:center;padding:10px 16px;border-radius:8px;margin-bottom:16px;font-size:15px;">
