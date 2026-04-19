@@ -56,7 +56,7 @@ REM 4단계: Git 푸시
 REM ============================================
 echo.
 echo [4/4] GitHub 푸시...
-git push origin main
+git push origin master
 if %errorlevel% neq 0 (
     echo ❌ 푸시 실패! 네트워크를 확인하세요.
     exit /b 1
