@@ -72,22 +72,23 @@ def get_head(title, description='', canonical=''):
 <meta property="og:site_name" content="{SITE_NAME}">
 <meta property="og:image" content="{SITE_URL}/images/kakao_img.png">
 <link rel="canonical" href="{canonical}">
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="style.css">
 <meta name="NaverBot" content="All"/>
 <meta name="NaverBot" content="index,follow"/>
 <meta name="Yeti" content="All"/>
 <meta name="Yeti" content="index,follow"/>
+<meta name="google-site-verification" content="VNMGQ8RFZK8mPlJU1cM00-lW4PwxPrA9ZAYGv_cEm_M" />
 <base href="/jauction/">
 </head>'''
 
 def get_header(current='', show_search=False):
     nav_items = [
-        ('/', '홈'),
-        ('/apartment/', '아파트/주거'),
-        ('/land/', '토지'),
-        ('/commercial/', '상업용'),
-        ('/region/', '지역별'),
-        ('/faq/', 'FAQ'),
+        ('./', '홈'),
+        ('apartment/', '아파트/주거'),
+        ('land/', '토지'),
+        ('commercial/', '상업용'),
+        ('region/', '지역별'),
+        ('faq/', 'FAQ'),
     ]
     nav_html = '\n'.join(
         f'<a href="{url}" class="nav-link{" active" if current == url else ""}">{label}</a>'
@@ -103,7 +104,7 @@ def get_header(current='', show_search=False):
 </div>'''
     return f'''<header class="site-header">
 <div class="container">
-<a href="/" class="logo">🏷️ {SITE_NAME}</a>
+<a href="./" class="logo">🏷️ {SITE_NAME}</a>
 {search_html}
 <a href="tel:{PHONE_NUMBER}" class="header-phone">
 <span class="header-phone-icon">📞</span>
@@ -117,11 +118,11 @@ def get_footer():
     return f'''<footer class="site-footer">
 <div class="container">
 <div class="footer-links">
-<a href="/about/">사이트 소개</a>
-<a href="/privacy/">개인정보처리방침</a>
-<a href="/terms/">이용약관</a>
-<a href="/faq/">자주묻는질문</a>
-<a href="/feed.xml">RSS</a>
+<a href="about/">사이트 소개</a>
+<a href="privacy/">개인정보처리방침</a>
+<a href="terms/">이용약관</a>
+<a href="faq/">자주묻는질문</a>
+<a href="feed.xml">RSS</a>
 </div>
 <p class="footer-copy">© {datetime.now().year} {SITE_NAME}. 본 사이트는 참고용이며, 실제 경매 정보는 해당 법원에서 확인하세요.</p>
 </div>
@@ -361,6 +362,8 @@ a:hover {{ text-decoration: underline; }}
     border: 1px solid var(--gray-200);
 }}
 .item-card:hover {{ transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--primary-light); text-decoration: none; }}
+.item-card .card-body {{ padding: 4px 20px 16px; }}
+.item-card .address {{ font-size: 0.9em; color: var(--gray-600); margin-bottom: 12px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.7em; }}
 .item-card .card-header {{
     padding: 20px 20px 12px;
     display: flex;
@@ -378,8 +381,6 @@ a:hover {{ text-decoration: underline; }}
 .badge-land {{ background: #dcfce7; color: #15803d; }}
 .badge-commercial {{ background: #fef3c7; color: #92400e; }}
 .badge-other {{ background: var(--gray-100); color: var(--gray-600); }}
-.item-card .card-body {{ padding: 0 20px 16px; }}
-.item-card .address {{ font-size: 0.95em; color: var(--gray-600); margin-bottom: 14px; line-height: 1.5; }}
 .item-card .price-row {{
     display: flex;
     justify-content: space-between;
@@ -387,8 +388,8 @@ a:hover {{ text-decoration: underline; }}
 }}
 .price-item {{ text-align: center; flex: 1; }}
 .price-item .price-label {{ font-size: 0.75em; color: var(--gray-400); font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }}
-.price-item .price-value {{ font-weight: 700; font-size: 1.05em; margin-top: 2px; }}
-.price-value.accent {{ color: var(--danger); }}
+.price-item .price-value {{ font-weight: 700; font-size: 1em; }}
+.price-value.accent {{ color: var(--danger); font-size: 1.15em; }}
 .item-card .card-footer {{
     padding: 12px 20px;
     background: var(--gray-50);
@@ -1233,7 +1234,7 @@ def generate_detail_html(item):
                 bid_rows = '<tr style="background:#37474F;color:#fff;"><td>회차</td><td>날짜</td><td>최저가</td><td>결과</td></tr>'
                 for b in bids:
                     bid_rows += f'<tr><td>{html.escape(str(b.get("bid_round","")))}</td><td>{html.escape(str(b.get("bid_date","")))}</td><td>{html.escape(str(b.get("min_bid_price","")))}</td><td>{html.escape(str(b.get("result","")))}</td></tr>'
-                bid_html = f'''<div class="section"><h2>📊 입찰이력</h2><table>{bid_rows}</table></div>'''
+                bid_html = f'''<div class="section"><h2>📊 입찰이력</h2><table class="bid-table">{bid_rows}</table></div>'''
         except:
             pass
 
@@ -1265,12 +1266,12 @@ def generate_detail_html(item):
     if photo_urls:
         images_tags = ''
         for purl in photo_urls[:5]:
-            images_tags += f'<img src="{html.escape(purl)}" alt="{html.escape(title)}" style="max-width:100%;border-radius:8px;margin:4px" loading="lazy">\n'
+            images_tags += f'<img src="{html.escape(purl)}" alt="{html.escape(title)}" style="max-width:100%;border-radius:8px;margin:4px" loading="lazy" onerror="this.style.display=\'none\'">\n'
         img_html = f'''<div class="section"><h2>📷 이미지</h2><div style="text-align:center">{images_tags}</div></div>'''
     elif thumb:
-        img_html = f'''<div class="section"><h2>📷 이미지</h2><div style="text-align:center"><img src="{thumb}" alt="{html.escape(title)}" style="max-width:100%;border-radius:8px" loading="lazy"></div></div>'''
+        img_html = f'''<div class="section"><h2>📷 이미지</h2><div style="text-align:center"><img src="{thumb}" alt="{html.escape(title)}" style="max-width:100%;border-radius:8px" loading="lazy" onerror="this.style.display=\'none\'"></div></div>'''
     else:
-        img_html = '''<div class="section"><h2>📷 이미지</h2><p>이미지 파일 없음</p></div>'''
+        img_html = '''<div class="section"><h2>📷 이미지</h2><p style="color:#999;text-align:center;padding:20px;">이미지를 불러올 수 없습니다</p></div>'''
 
     # Schema.org
     schema = json.dumps({
@@ -1321,6 +1322,10 @@ table {{ width: 100%; border-collapse: collapse; }}
 td {{ padding: 8px 12px; border-bottom: 1px solid #eee; font-size: 14px; }}
 td:first-child {{ font-weight: bold; color: #555; width: 140px; background: #fafafa; }}
 td:last-child {{ color: #222; }}
+
+/* 입찰이력 테이블 - 모든 셀 동일 너비 */
+.bid-table td {{ width: auto; background: transparent; text-align: center; }}
+.bid-table td:first-child {{ width: auto; background: transparent; }}
 
 .price {{ color: #1B5E20; font-weight: bold; font-size: 16px; }}
 .note {{ background: #FFF3E0; padding: 12px; border-radius: 6px; margin-top: 8px; font-size: 13px; line-height: 1.6; white-space: pre-wrap; }}
@@ -1466,7 +1471,7 @@ def generate_category_landing(cat_key, cat_name, cat_korean, items_data):
             return f'{p/10000:.0f}만'
 
         items_html += f'''
-        <a href="/auction/{i["id"]}.html" class="item-card">
+        <a href="auction/{i["id"]}.html" class="item-card">
             <div class="card-header">
                 <span class="case-num">{i.get("cn","-")}</span>
                 <span class="status-badge status-proceeding">{i.get("st","-")}</span>
@@ -1519,7 +1524,7 @@ def generate_region_landing(region_key, region_name, items_data):
             return f'{p/10000:.0f}만'
 
         items_html += f'''
-        <a href="/auction/{i["id"]}.html" class="item-card">
+        <a href="auction/{i["id"]}.html" class="item-card">
             <div class="card-header">
                 <span class="case-num">{i.get("cn","-")}</span>
                 <span class="category-badge badge-residential">{i.get("cat","")}</span>
@@ -1551,6 +1556,50 @@ def generate_region_landing(region_key, region_name, items_data):
 </div>
 <script type="application/ld+json">
 {{"@context":"https://schema.org","@type":"CollectionPage","name":"{region_name} 경매","description":"{desc}","url":"{canonical}","numberOfItems":{len(items_data)}}}
+</script>
+</body>'''
+
+def generate_region_index_html(sido_items):
+    """지역별 인덱스 페이지 (region/index.html)"""
+    title = f'지역별 경매 부동산 - {SITE_NAME}'
+    desc = '전국 시도별 법원 경매 부동산 정보 - 서울, 경기, 부산, 인천 등 지역별 경매 물건 검색'
+    canonical = f'{SITE_URL}/region/'
+
+    head = get_head(title, desc, canonical)
+
+    region_cards = ''
+    for sido, slug in REGION_MAP.items():
+        count = len(sido_items.get(sido, []))
+        region_name = REGION_TITLE.get(slug, sido)
+        region_cards += f'''
+        <a href="region/{slug}/" class="region-card">
+            <div class="region-name">{region_name}</div>
+            <div class="region-count">{count:,}건</div>
+        </a>'''
+
+    return f'''{head}
+<body>
+{get_header('region/')}
+
+<section class="hero" style="padding:40px 0">
+<div class="container">
+<h1 style="font-size:1.8em;font-weight:800;margin-bottom:8px;">🗺️ 지역별 경매 부동산</h1>
+<p style="opacity:0.85;font-size:1em;">전국 17개 시도 경매 물건을 한눈에</p>
+</div>
+</section>
+
+<main class="container">
+<div class="region-grid">{region_cards}</div>
+</main>
+
+{get_footer()}
+
+<div class="mobile-bottom-nav">
+<a href="tel:{PHONE_NUMBER}"><span class="pulse"></span> 📞 무료 경매 상담 {PHONE_NUMBER}</a>
+</div>
+
+<script type="application/ld+json">
+{{"@context":"https://schema.org","@type":"CollectionPage","name":"지역별 경매 부동산","description":"{desc}","url":"{canonical}"}}
 </script>
 </body>'''
 
@@ -1958,6 +2007,13 @@ def main():
             f.write(html_content)
         print(f"  {region_name}: {len(items):,}건 → /region/{slug}/")
 
+    # 지역별 인덱스 페이지
+    region_index_html = generate_region_index_html(sido_items)
+    region_index_path = os.path.join(DOCS_DIR, 'region', 'index.html')
+    with open(region_index_path, 'w', encoding='utf-8') as f:
+        f.write(region_index_html)
+    print(f"  지역별 인덱스 → /region/")
+
     # 정적 페이지
     static_pages = generate_static_pages()
     for path, content in static_pages.items():
@@ -2189,6 +2245,18 @@ def generate_incremental(changed_ids=None):
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(html_content)
+
+    # 지역별 인덱스 페이지 갱신
+    sido_items = defaultdict(list)
+    for item in all_items:
+        sido = item.get('address_sido', '')
+        if sido in REGION_MAP:
+            sido_items[sido].append({'id': item['internal_id']})
+    region_index_html = generate_region_index_html(sido_items)
+    region_index_path = os.path.join(DOCS_DIR, 'region', 'index.html')
+    os.makedirs(os.path.dirname(region_index_path), exist_ok=True)
+    with open(region_index_path, 'w', encoding='utf-8') as f:
+        f.write(region_index_html)
 
     conn.close()
 
