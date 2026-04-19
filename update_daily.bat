@@ -2,6 +2,9 @@
 chcp 65001 >nul
 setlocal enabledelayedexpansion
 
+REM Git 경로 설정
+set PATH=C:\Program Files\Git\cmd;%PATH%
+
 echo ============================================================
 echo   jauction 데일리 업데이트
 echo   시작: %date% %time%
@@ -14,10 +17,9 @@ REM 1단계: 증분 크롤링
 REM ============================================
 echo.
 echo [1/4] 증분 크롤링 시작...
-python crawler_incremental.py --pages 10
+python crawler_incremental.py --pages 700
 if %errorlevel% neq 0 (
     echo ❌ 크롤링 실패! 오류 코드: %errorlevel%
-    pause
     exit /b 1
 )
 echo ✅ 크롤링 완료
@@ -30,7 +32,6 @@ echo [2/4] 증분 사이트 생성 시작...
 python generate_site.py --incremental
 if %errorlevel% neq 0 (
     echo ❌ 사이트 생성 실패! 오류 코드: %errorlevel%
-    pause
     exit /b 1
 )
 echo ✅ 사이트 생성 완료
@@ -58,7 +59,6 @@ echo [4/4] GitHub 푸시...
 git push origin main
 if %errorlevel% neq 0 (
     echo ❌ 푸시 실패! 네트워크를 확인하세요.
-    pause
     exit /b 1
 )
 echo ✅ 푸시 완료
@@ -69,4 +69,3 @@ echo   ✅ 데일리 업데이트 완료!
 echo   종료: %date% %time%
 echo ============================================================
 echo.
-pause
