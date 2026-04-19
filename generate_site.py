@@ -91,7 +91,12 @@ CATEGORY_MAP = {
 # ======================================
 # 공통 HTML 템플릿
 # ======================================
-def get_head(title, description='', canonical=''):
+def get_head(title, description='', canonical='', additional_meta='', use_legacy_google_verification=True):
+    legacy_google = ''
+    if use_legacy_google_verification:
+        legacy_google = '<meta name="google-site-verification" content="VNMGQ8RFZK8mPlJU1cM00-lW4PwxPrA9ZAYGv_cEm_M" />\n'
+    extra = additional_meta.strip()
+    extra_block = (extra + '\n') if extra else ''
     return f'''<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -111,8 +116,7 @@ def get_head(title, description='', canonical=''):
 <meta name="NaverBot" content="index,follow"/>
 <meta name="Yeti" content="All"/>
 <meta name="Yeti" content="index,follow"/>
-<meta name="google-site-verification" content="VNMGQ8RFZK8mPlJU1cM00-lW4PwxPrA9ZAYGv_cEm_M" />
-<base href="/jauction/">
+{extra_block}{legacy_google}<base href="/jauction/">
 </head>'''
 
 def get_header(current='', show_search=False):
@@ -871,7 +875,10 @@ def generate_index_html(stats, crawl_info=None):
     head = get_head(
         f'JAuction ㅣ 전국 법원 경매 부동산 정보',
         f'전국 법원 경매 부동산 {stats["total"]:,}건 - 아파트, 토지, 상업용 부동산 경매 정보 제공. 경매컨설팅 상담: {PHONE_NUMBER}',
-        f'{SITE_URL}/'
+        f'{SITE_URL}/',
+        additional_meta='''<meta name="naver-site-verification" content="3bf2b707098dc68bbe5e8db7aad10955cad77bc0" />
+<meta name="google-site-verification" content="S4l-oN4_HbEy6dMoYED7Q645H9LF-8DOkM7_hkgyha4" />''',
+        use_legacy_google_verification=False,
     )
 
     # 업데이트 현황 (작게 표시)
