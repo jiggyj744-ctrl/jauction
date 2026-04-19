@@ -41,7 +41,8 @@ td:last-child { color: #222; }
 .bid-table td:first-child { width: auto; background: transparent; }
 
 .price { color: #1B5E20; font-weight: bold; font-size: 16px; }
-.note { background: #FFF3E0; padding: 12px; border-radius: 6px; margin-top: 8px; font-size: 13px; line-height: 1.6; white-space: pre-wrap; }
+.note { background: #FFF3E0; padding: 12px; border-radius: 6px; margin-top: 8px; font-size: 13px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; }
+td.text-long-wrap { white-space: pre-wrap; line-height: 1.7; word-break: break-word; overflow-wrap: anywhere; vertical-align: top; }
 
 a { color: #1565C0; }
 a:hover { text-decoration: underline; }
@@ -162,9 +163,18 @@ a:hover { text-decoration: underline; }
 
 <div class="section"><h2>📐 면적정보</h2><table><tr><td>건물면적</td><td class="">121.80㎡(36.84평)</td></tr></table></div>
 <div class="section"><h2>👤 당사자정보</h2><table><tr><td>채권자</td><td class="">송OO외 3명</td></tr><tr><td>채무자</td><td class="">주OOO OO</td></tr><tr><td>소유자</td><td class="">주OOO OO</td></tr></table></div>
-<div class="section"><h2>📝 참고사항</h2><div class="note">[2021.04.06]채권자 오OO 유치권배제의견서 제출[2020.09.29]근저당권자 남OOOOOOOOO OOO OOOO OOO 매각기일연기신청서 제출[2020.07.29]근저당권자 남OOOOOOOOO OOO OOOO OOO 매각기일연기신청서 제출[2019.07.25]유치권자 나OOO OOOO 유치권신고서 제출[2019.07.25]유치권자 금OOOOOOOOO 유치권신고서 제출[2019.07.25]유치권자 삼OOOOOOO 유치권신고서 제출[2019.07.25]유치권자 주OOO OOOOO 유치권신고서 제출[2019.07.24]유치권자 대OOOOO OOOO 유치권신고서 제출유치권신고(대양종합건설, 나정건설㈜, 삼우석재㈜, 금강전기산업㈜, ㈜삼보이엔지)가 있으나, 근저당권자 남세종농업협동조합으 로부터 유치권부존재확인판결(대전지방법원 2019가합109807, 대전고등법원 2020나14541)이 제출되어 있음 대지권미등기이며, 대지권유무는 알 수 없음. 최저매각가격에 대지권 가격이 포함됨 남세종농업협동조합이 한국토지주택공사 등을 상대로 한 대지에 대한 소유권이전등기청구소송 판결 제출되어 있음(대전지방법 원 2019가합109555, 대전고등법원 2021나11440, 대법원 2021다259459, 대전고등법원 2023나13341) 본건 소재지는 현황 &#x27;소담동 527번지&#x27;이고, 등기사항전부증명서 및 토지대장상 &#x27;한국토지주택공사&#x27;소유임 대양종합건설(주)에서 유치권행사중이라는 표지가 부착되어 있음 농업협동조합자산관리회사 등이 한국토지주택공사 등을 상대로 대전지방법원 2024가합206900 소유권이전등기청구의소 진행중 임(2026. 1. 13. 정정?변경)</div></div>
+<div class="section"><h2>📝 참고사항</h2><div class="note">[2021.04.06]채권자 오OO 유치권배제의견서 제출
+[2020.09.29]근저당권자 남OOOOOOOOO OOO OOOO OOO 매각기일연기신청서 제출
+[2020.07.29]근저당권자 남OOOOOOOOO OOO OOOO OOO 매각기일연기신청서 제출
+[2019.07.25]유치권자 나OOO OOOO 유치권신고서 제출
+[2019.07.25]유치권자 금OOOOOOOOO 유치권신고서 제출
+[2019.07.25]유치권자 삼OOOOOOO 유치권신고서 제출
+[2019.07.25]유치권자 주OOO OOOOO 유치권신고서 제출
+[2019.07.24]유치권자 대OOOOO OOOO 유치권신고서 제출유치권신고(대양종합건설, 나정건설㈜, 삼우석재㈜, 금강전기산업㈜, ㈜삼보이엔지)가 있으나, 근저당권자 남세종농업협동조합으 로부터 유치권부존재확인판결(대전지방법원 2019가합109807, 대전고등법원 2020나14541)이 제출되어 있음 대지권미등기이며, 대지권유무는 알 수 없음. 최저매각가격에 대지권 가격이 포함됨 남세종농업협동조합이 한국토지주택공사 등을 상대로 한 대지에 대한 소유권이전등기청구소송 판결 제출되어 있음(대전지방법 원 2019가합109555, 대전고등법원 2021나11440, 대법원 2021다259459, 대전고등법원 2023나13341) 본건 소재지는 현황 &#x27;소담동 527번지&#x27;이고, 등기사항전부증명서 및 토지대장상 &#x27;한국토지주택공사&#x27;소유임 대양종합건설(주)에서 유치권행사중이라는 표지가 부착되어 있음 농업협동조합자산관리회사 등이 한국토지주택공사 등을 상대로 대전지방법원 2024가합206900 소유권이전등기청구의소 진행중 임(2026.
+1.
+13. 정정?변경)</div></div>
 
-<div class="section"><h2>🏠 임차/권리정보</h2><table><tr><td>임차내역</td><td class="">조사된 임차내역이 없습니다.</td></tr></table></div>
+<div class="section"><h2>🏠 임차/권리정보</h2><table><tr><td>임차내역</td><td class="text-long-wrap">조사된 임차내역이 없습니다.</td></tr></table></div>
 
 <div class="section"><h2>📊 입찰이력</h2><table class="bid-table"><tr style="background:#37474F;color:#fff;"><td>회차</td><td>날짜</td><td>최저가</td><td>결과</td></tr><tr><td></td><td>입찰기일</td><td>0</td><td>결과</td></tr><tr><td>1차</td><td>2020/08/11</td><td>967000000</td><td>변경</td></tr><tr><td>2차</td><td>2026/01/15</td><td>702000000</td><td>유찰</td></tr><tr><td>3차</td><td>2026/02/12</td><td>491400000</td><td>유찰</td></tr><tr><td>4차</td><td>2026/03/19</td><td>343980000</td><td>유찰</td></tr><tr><td>5차</td><td>2026/04/22</td><td>240786000</td><td>진행</td></tr></table></div>
 <div class="section"><h2>📊 경매 통계</h2><table><tr><td>3개월</td><td>건수: 12건 / 평균감정가: 436,000,000원 / 평균매각가: 197,210,852원 / 실패: 3.6회</td></tr><tr><td>6개월</td><td>건수: 18건 / 평균감정가: 454,666,667원 / 평균매각가: 196,212,752원 / 실패: 3.3회</td></tr><tr><td>12개월</td><td>건수: 54건 / 평균감정가: 815,467,136원 / 평균매각가: 330,895,234원 / 실패: 3.5회</td></tr></table></div>

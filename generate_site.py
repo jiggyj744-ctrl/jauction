@@ -7,16 +7,50 @@ gfauction 경매 정보 웹사이트 일괄 생성기
 - 전문가 분석 코멘트 자동 생성
 """
 import sys
+if hasattr(sys.stdout, 'reconfigure'):
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+        sys.stderr.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
 sys.path.insert(0, r"C:\Users\Work\AppData\Local\Programs\Python\Python312\Lib\site-packages")
 
 import sqlite3
 import os
 import json
 import html
+import re
 from datetime import datetime
 from multiprocessing import Pool, cpu_count
 from collections import defaultdict
 from expert_comment import generate_expert_comment
+
+
+def format_long_text_readability(text):
+    """
+    스크래핑된 긴 법무 텍스트 가독성 개선: 날짜 괄호, 번호 목록, 탭 구분 필드 등에 줄바꿈 삽입.
+    """
+    if text is None:
+        return ''
+    t = str(text).replace('\r\n', '\n').replace('\r', '\n').strip()
+    if not t:
+        return ''
+    # 탭으로 이어 붙인 항목(라벨\t내용) 분리
+    if '\t' in t:
+        t = re.sub(r'\t+', '\n', t)
+    # [YYYY.MM.DD] 각 항목을 한 줄씩 (붙어 있는 타임라인)
+    t = re.sub(r'(?<=[^\n\[])(\[\d{4}\.\d{2}\.\d{2}\])', r'\n\1', t)
+    # '제출1.' 처럼 붙은 번호 목록 시작 분리
+    t = re.sub(r'(제출)(?=\d+\.\s)', r'\1\n', t)
+    # '. 2. ' '. 3. ' 형태의 번호 조항
+    t = re.sub(r'(?<=[\.。．])\s+(?=(?:[1-9]|[1-9]\d)\.\s)', '\n', t)
+    t = re.sub(r'\n{3,}', '\n\n', t)
+    return t.strip()
+
+
+def html_escape_formatted_long_text(text):
+    return html.escape(format_long_text_readability(text))
+
 
 # ======================================
 # 설정
@@ -1151,6 +1185,10 @@ def generate_detail_html(item):
         v = html.escape(str(value or '-'))
         return f'<tr><td>{label}</td><td class="{css}">{v}</td></tr>'
 
+    def row_long(label, value):
+        v = html_escape_formatted_long_text(value or '')
+        return f'<tr><td>{html.escape(label)}</td><td class="text-long-wrap">{v}</td></tr>'
+
     # 기본정보 섹션
     basic_rows = ''
     basic_rows += row('사건번호', cn_display)
@@ -1195,20 +1233,20 @@ def generate_detail_html(item):
     # 참고사항 섹션
     notes_html = ''
     if item.get('notes'):
-        notes_html = f'''<div class="section"><h2>📝 참고사항</h2><div class="note">{html.escape(item["notes"])}</div></div>'''
+        notes_html = f'''<div class="section"><h2>📝 참고사항</h2><div class="note">{html_escape_formatted_long_text(item["notes"])}</div></div>'''
 
     # 관련사건
     related_case_html = ''
     if item.get('related_case'):
-        related_case_html = f'''<div class="section"><h2>🔗 관련사건</h2><table>{row('관련사건', item['related_case'])}</table></div>'''
+        related_case_html = f'''<div class="section"><h2>🔗 관련사건</h2><table>{row_long('관련사건', item['related_case'])}</table></div>'''
 
     # 임차/권리정보 섹션
     rights_html = ''
-    if item.get('tenant_info') or item.get('non_extinguishable_rights'):
+    if item.get('tenant_info') or item.get('non_extinguishable_rights') or item.get('non_extinguishable_easement'):
         rights_rows = ''
-        if item.get('tenant_info'): rights_rows += row('임차내역', item['tenant_info'])
-        if item.get('non_extinguishable_rights'): rights_rows += row('소멸되지않는권리', item['non_extinguishable_rights'])
-        if item.get('non_extinguishable_easement'): rights_rows += row('소멸되지않는지상권', item['non_extinguishable_easement'])
+        if item.get('tenant_info'): rights_rows += row_long('임차내역', item['tenant_info'])
+        if item.get('non_extinguishable_rights'): rights_rows += row_long('소멸되지않는권리', item['non_extinguishable_rights'])
+        if item.get('non_extinguishable_easement'): rights_rows += row_long('소멸되지않는지상권', item['non_extinguishable_easement'])
         rights_html = f'''<div class="section"><h2>🏠 임차/권리정보</h2><table>{rights_rows}</table></div>'''
 
     # 차량정보 섹션
@@ -1328,7 +1366,8 @@ td:last-child {{ color: #222; }}
 .bid-table td:first-child {{ width: auto; background: transparent; }}
 
 .price {{ color: #1B5E20; font-weight: bold; font-size: 16px; }}
-.note {{ background: #FFF3E0; padding: 12px; border-radius: 6px; margin-top: 8px; font-size: 13px; line-height: 1.6; white-space: pre-wrap; }}
+.note {{ background: #FFF3E0; padding: 12px; border-radius: 6px; margin-top: 8px; font-size: 13px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; }}
+td.text-long-wrap {{ white-space: pre-wrap; line-height: 1.7; word-break: break-word; overflow-wrap: anywhere; vertical-align: top; }}
 
 a {{ color: #1565C0; }}
 a:hover {{ text-decoration: underline; }}

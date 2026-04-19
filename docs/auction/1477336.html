@@ -41,7 +41,8 @@ td:last-child { color: #222; }
 .bid-table td:first-child { width: auto; background: transparent; }
 
 .price { color: #1B5E20; font-weight: bold; font-size: 16px; }
-.note { background: #FFF3E0; padding: 12px; border-radius: 6px; margin-top: 8px; font-size: 13px; line-height: 1.6; white-space: pre-wrap; }
+.note { background: #FFF3E0; padding: 12px; border-radius: 6px; margin-top: 8px; font-size: 13px; line-height: 1.7; white-space: pre-wrap; word-break: break-word; overflow-wrap: anywhere; }
+td.text-long-wrap { white-space: pre-wrap; line-height: 1.7; word-break: break-word; overflow-wrap: anywhere; vertical-align: top; }
 
 a { color: #1565C0; }
 a:hover { text-decoration: underline; }
@@ -160,9 +161,11 @@ a:hover { text-decoration: underline; }
 
 <div class="section"><h2>📐 면적정보</h2><table><tr><td>토지면적</td><td class="">168.79㎡(51.06평)</td></tr><tr><td>건물면적</td><td class="">240.39㎡(72.72평)</td></tr></table></div>
 <div class="section"><h2>👤 당사자정보</h2><table><tr><td>채권자</td><td class="">전OOO OOOOO</td></tr><tr><td>채무자</td><td class="">주OOO OOOOO</td></tr><tr><td>소유자</td><td class="">주OOO OOOOO</td></tr></table></div>
-<div class="section"><h2>📝 참고사항</h2><div class="note">1. 일괄매각 2. 목록 1,2는 4층상가 건물의 3층에 있는 각 사무실로 외관상 특이사항 없음, 출입문에 호실이 표시되어 있지 아니함. 3. 1,2는 구분건물 상호간 내벽이 철거된 튼상가이나, 집합건축물대장 건축물현황도면 및 기둥에 의한 위치 특정과 경계구분이 가능한 상태임. 4. 현재 공실임</div></div>
+<div class="section"><h2>📝 참고사항</h2><div class="note">1. 일괄매각 2. 목록 1,2는 4층상가 건물의 3층에 있는 각 사무실로 외관상 특이사항 없음, 출입문에 호실이 표시되어 있지 아니함.
+3. 1,2는 구분건물 상호간 내벽이 철거된 튼상가이나, 집합건축물대장 건축물현황도면 및 기둥에 의한 위치 특정과 경계구분이 가능한 상태임.
+4. 현재 공실임</div></div>
 
-<div class="section"><h2>🏠 임차/권리정보</h2><table><tr><td>임차내역</td><td class="">조사된 임차내역이 없습니다.</td></tr><tr><td>소멸되지않는권리</td><td class="">해당사항없음</td></tr><tr><td>소멸되지않는지상권</td><td class="">해당사항없음</td></tr></table></div>
+<div class="section"><h2>🏠 임차/권리정보</h2><table><tr><td>임차내역</td><td class="text-long-wrap">조사된 임차내역이 없습니다.</td></tr><tr><td>소멸되지않는권리</td><td class="text-long-wrap">해당사항없음</td></tr><tr><td>소멸되지않는지상권</td><td class="text-long-wrap">해당사항없음</td></tr></table></div>
 
 <div class="section"><h2>📊 입찰이력</h2><table class="bid-table"><tr style="background:#37474F;color:#fff;"><td>회차</td><td>날짜</td><td>최저가</td><td>결과</td></tr><tr><td></td><td>입찰기일</td><td>0</td><td>결과</td></tr><tr><td>1차</td><td>2026/03/23</td><td>221000000</td><td>유찰</td></tr><tr><td>2차</td><td>2026/05/11</td><td>154700000</td><td>진행</td></tr></table></div>
 
