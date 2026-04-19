@@ -36,6 +36,10 @@ td { padding: 8px 12px; border-bottom: 1px solid #eee; font-size: 14px; }
 td:first-child { font-weight: bold; color: #555; width: 140px; background: #fafafa; }
 td:last-child { color: #222; }
 
+/* 입찰이력 테이블 - 모든 셀 동일 너비 */
+.bid-table td { width: auto; background: transparent; text-align: center; }
+.bid-table td:first-child { width: auto; background: transparent; }
+
 .price { color: #1B5E20; font-weight: bold; font-size: 16px; }
 .note { background: #FFF3E0; padding: 12px; border-radius: 6px; margin-top: 8px; font-size: 13px; line-height: 1.6; white-space: pre-wrap; }
 
@@ -95,6 +99,30 @@ a:hover { text-decoration: underline; }
 
 <h1>2025타경51308 [1] <span class="badge badge-fail">유찰</span></h1>
 
+<!-- 전문가 분석 -->
+
+<div style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:20px;margin:16px 0;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <span style="background:#f59e0b;color:#fff;padding:3px 12px;border-radius:12px;font-size:12px;font-weight:700;">🔍 전문가 분석</span>
+        <span style="background:#f59e0b22;color:#f59e0b;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;">보통</span>
+    </div>
+    <div style="font-size:15px;font-weight:600;color:#1f2937;margin-bottom:12px;line-height:1.6;">목포지원 경매 주택 물건. 최저가율 70%로 보통 수준.</div>
+    <div style="padding:4px 0;font-size:13px;color:#15803d;">✅ 임차인 이슈 없어 명도 용이</div>
+    <div style="padding:4px 0;font-size:13px;color:#b45309;">⚠️ 일괄매각 조건 — 전체 물건 동시 인수 필요</div><div style="padding:4px 0;font-size:13px;color:#b45309;">⚠️ 소멸되지 않는 권리 존재</div>
+    <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:6px;padding:10px 14px;margin-top:10px;font-size:13px;color:#0369a1;">
+📊 최근 3개월 동종 2건 낙찰 | 평균 감정가 70,653,845원 | 평균 낙찰가 22,605,500원 | 평균 유찰 5.5회
+</div>
+    <div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px 14px;margin-top:12px;">
+        <div style="font-size:12px;color:#6b7280;font-weight:600;margin-bottom:4px;">💡 추천 대상</div>
+        <div style="font-size:13px;color:#374151;">실거주 또는 투자 목적의 개인 투자자</div>
+        <div style="font-size:13px;color:#6b7280;margin-top:4px;">💡 주의 깊은 권리 분석이 필요합니다</div>
+    </div>
+    <div style="text-align:center;margin-top:14px;">
+        <a href="tel:010-6899-1601" style="display:inline-block;background:#ff6d00;color:#fff;padding:10px 28px;border-radius:20px;text-decoration:none;font-weight:700;font-size:14px;box-shadow:0 2px 8px rgba(255,109,0,0.3);">💡 상세 권리 분석과 시세 비교가 필요하시면 상담 가능합니다</a>
+    </div>
+</div>
+
+
 <!-- 상단 CTA 바 -->
 <div style="background:#1a73e8;color:#fff;text-align:center;padding:10px 16px;border-radius:8px;margin-bottom:16px;font-size:15px;">
 <a href="tel:010-6899-1601" style="color:#fff;text-decoration:none;font-weight:700;">📞 이 물건 전문가 분석 문의 010-6899-1601</a>
@@ -138,7 +166,7 @@ a:hover { text-decoration: underline; }
 <div class="section"><h2>🔗 관련사건</h2><table><tr><td>관련사건</td><td class="">인천지방법원 2012가소428935 판결정본</td></tr></table></div>
 <div class="section"><h2>🏠 임차/권리정보</h2><table><tr><td>임차내역</td><td class="">조사된 임차내역이 없습니다.</td></tr><tr><td>소멸되지않는권리</td><td class="">해당사항없음</td></tr><tr><td>소멸되지않는지상권</td><td class="">해당사항없음</td></tr></table></div>
 
-<div class="section"><h2>📊 입찰이력</h2><table><tr style="background:#37474F;color:#fff;"><td>회차</td><td>날짜</td><td>최저가</td><td>결과</td></tr><tr><td></td><td>입찰기일</td><td>0</td><td>결과</td></tr><tr><td>1차</td><td>2026/03/16</td><td>24793440</td><td>유찰</td></tr><tr><td>2차</td><td>2026/04/27</td><td>17355000</td><td>진행</td></tr></table></div>
+<div class="section"><h2>📊 입찰이력</h2><table class="bid-table"><tr style="background:#37474F;color:#fff;"><td>회차</td><td>날짜</td><td>최저가</td><td>결과</td></tr><tr><td></td><td>입찰기일</td><td>0</td><td>결과</td></tr><tr><td>1차</td><td>2026/03/16</td><td>24793440</td><td>유찰</td></tr><tr><td>2차</td><td>2026/04/27</td><td>17355000</td><td>진행</td></tr></table></div>
 <div class="section"><h2>📊 경매 통계</h2><table><tr><td>3개월</td><td>건수: 2건 / 평균감정가: 70,653,845원 / 평균매각가: 22,605,500원 / 실패: 5.5회</td></tr><tr><td>6개월</td><td>건수: 5건 / 평균감정가: 226,594,734원 / 평균매각가: 82,986,322원 / 실패: 5.6회</td></tr><tr><td>12개월</td><td>건수: 12건 / 평균감정가: 149,872,220원 / 평균매각가: 62,448,134원 / 실패: 4.4회</td></tr></table></div>
 <div class="section"><h2>📷 이미지</h2><div style="text-align:center"><img src="https://photo.nuriauction.com/admin/data/2025/000511/1001/20250130051308/pic_courtauction_1.jpg" alt="2025타경51308 [1] 목포지원 주택 경매 - jauction" style="max-width:100%;border-radius:8px;margin:4px" loading="lazy">
 <img src="https://photo.nuriauction.com/admin/data/2025/000511/1001/20250130051308/pic_courtauction_6.jpg" alt="2025타경51308 [1] 목포지원 주택 경매 - jauction" style="max-width:100%;border-radius:8px;margin:4px" loading="lazy">

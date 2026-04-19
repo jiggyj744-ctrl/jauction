@@ -36,6 +36,10 @@ td { padding: 8px 12px; border-bottom: 1px solid #eee; font-size: 14px; }
 td:first-child { font-weight: bold; color: #555; width: 140px; background: #fafafa; }
 td:last-child { color: #222; }
 
+/* 입찰이력 테이블 - 모든 셀 동일 너비 */
+.bid-table td { width: auto; background: transparent; text-align: center; }
+.bid-table td:first-child { width: auto; background: transparent; }
+
 .price { color: #1B5E20; font-weight: bold; font-size: 16px; }
 .note { background: #FFF3E0; padding: 12px; border-radius: 6px; margin-top: 8px; font-size: 13px; line-height: 1.6; white-space: pre-wrap; }
 
@@ -95,6 +99,30 @@ a:hover { text-decoration: underline; }
 
 <h1>2025타경54801 <span class="badge badge-fail">유찰</span></h1>
 
+<!-- 전문가 분석 -->
+
+<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;margin:16px 0;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <span style="background:#16a34a;color:#fff;padding:3px 12px;border-radius:12px;font-size:12px;font-weight:700;">🔍 전문가 분석</span>
+        <span style="background:#16a34a22;color:#16a34a;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;">낮은위험</span>
+    </div>
+    <div style="font-size:15px;font-weight:600;color:#1f2937;margin-bottom:12px;line-height:1.6;">수원지방법원 경매 다세대(빌라) 물건. 최저가율 34%로 시장 평균 이하.</div>
+    <div style="padding:4px 0;font-size:13px;color:#15803d;">✅ 최저가율 34% — 감정가 대비 66% 할인</div>
+    <div style="padding:4px 0;font-size:13px;color:#b45309;">⚠️ 소멸되지 않는 권리 존재</div>
+    <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:6px;padding:10px 14px;margin-top:10px;font-size:13px;color:#0369a1;">
+📊 최근 3개월 동종 24건 낙찰 | 평균 감정가 201,333,333원 | 평균 낙찰가 111,741,806원 | 평균 유찰 2.2회
+</div>
+    <div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px 14px;margin-top:12px;">
+        <div style="font-size:12px;color:#6b7280;font-weight:600;margin-bottom:4px;">💡 추천 대상</div>
+        <div style="font-size:13px;color:#374151;">실거주 또는 투자 목적의 개인 투자자</div>
+        <div style="font-size:13px;color:#6b7280;margin-top:4px;">실제 내부 상태와 주변 시세 확인이 중요합니다</div>
+    </div>
+    <div style="text-align:center;margin-top:14px;">
+        <a href="tel:010-6899-1601" style="display:inline-block;background:#ff6d00;color:#fff;padding:10px 28px;border-radius:20px;text-decoration:none;font-weight:700;font-size:14px;box-shadow:0 2px 8px rgba(255,109,0,0.3);">🎯 저가 매물 — 투자 가치 상세 분석 도와드립니다</a>
+    </div>
+</div>
+
+
 <!-- 상단 CTA 바 -->
 <div style="background:#1a73e8;color:#fff;text-align:center;padding:10px 16px;border-radius:8px;margin-bottom:16px;font-size:15px;">
 <a href="tel:010-6899-1601" style="color:#fff;text-decoration:none;font-weight:700;">📞 이 물건 전문가 분석 문의 010-6899-1601</a>
@@ -138,7 +166,7 @@ a:hover { text-decoration: underline; }
 <div class="section"><h2>🔗 관련사건</h2><table><tr><td>관련사건</td><td class="">서울남부지방법원 2024차전169345 지급명령</td></tr></table></div>
 <div class="section"><h2>🏠 임차/권리정보</h2><table><tr><td>임차내역</td><td class="">매수인에게 대항할 수 있는 임차인이 배당에서 전액 변제 받지 아니한 경우에는 배당받지 못한 잔액을 매수인이 인수함</td></tr><tr><td>소멸되지않는권리</td><td class="">매수인에게 대항할 수 있는 을구 4번 임차권 등기(2023카임363) 있으므로 배당에서 보증금이 전액 변제되지 아니하면 잔액을 매수인이 인수함.</td></tr><tr><td>소멸되지않는지상권</td><td class="">해당사항없음</td></tr></table></div>
 
-<div class="section"><h2>📊 입찰이력</h2><table><tr style="background:#37474F;color:#fff;"><td>회차</td><td>날짜</td><td>최저가</td><td>결과</td></tr><tr><td></td><td>입찰기일</td><td>0</td><td>결과</td></tr><tr><td>1차</td><td>2026/01/26</td><td>256000000</td><td>유찰</td></tr><tr><td>2차</td><td>2026/03/06</td><td>179200000</td><td>유찰</td></tr><tr><td>3차</td><td>2026/04/07</td><td>125440000</td><td>유찰</td></tr><tr><td>4차</td><td>2026/05/12</td><td>87808000</td><td>진행</td></tr></table></div>
+<div class="section"><h2>📊 입찰이력</h2><table class="bid-table"><tr style="background:#37474F;color:#fff;"><td>회차</td><td>날짜</td><td>최저가</td><td>결과</td></tr><tr><td></td><td>입찰기일</td><td>0</td><td>결과</td></tr><tr><td>1차</td><td>2026/01/26</td><td>256000000</td><td>유찰</td></tr><tr><td>2차</td><td>2026/03/06</td><td>179200000</td><td>유찰</td></tr><tr><td>3차</td><td>2026/04/07</td><td>125440000</td><td>유찰</td></tr><tr><td>4차</td><td>2026/05/12</td><td>87808000</td><td>진행</td></tr></table></div>
 <div class="section"><h2>📊 경매 통계</h2><table><tr><td>3개월</td><td>건수: 24건 / 평균감정가: 201,333,333원 / 평균매각가: 111,741,806원 / 실패: 2.2회</td></tr><tr><td>6개월</td><td>건수: 49건 / 평균감정가: 197,244,898원 / 평균매각가: 118,749,004원 / 실패: 2.4회</td></tr><tr><td>12개월</td><td>건수: 98건 / 평균감정가: 212,102,041원 / 평균매각가: 144,071,736원 / 실패: 1.9회</td></tr></table></div>
 <div class="section"><h2>📷 이미지</h2><div style="text-align:center"><img src="https://photo.nuriauction.com/admin/data/2025/000250/1013/20250130054801/pic_courtauction_3.jpg" alt="2025타경54801 수원지방법원 다세대(빌라) 경매 - jauction" style="max-width:100%;border-radius:8px;margin:4px" loading="lazy">
 <img src="https://photo.nuriauction.com/admin/data/2025/000250/1013/20250130054801/pic_courtauction_1.jpg" alt="2025타경54801 수원지방법원 다세대(빌라) 경매 - jauction" style="max-width:100%;border-radius:8px;margin:4px" loading="lazy">

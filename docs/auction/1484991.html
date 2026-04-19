@@ -36,6 +36,10 @@ td { padding: 8px 12px; border-bottom: 1px solid #eee; font-size: 14px; }
 td:first-child { font-weight: bold; color: #555; width: 140px; background: #fafafa; }
 td:last-child { color: #222; }
 
+/* 입찰이력 테이블 - 모든 셀 동일 너비 */
+.bid-table td { width: auto; background: transparent; text-align: center; }
+.bid-table td:first-child { width: auto; background: transparent; }
+
 .price { color: #1B5E20; font-weight: bold; font-size: 16px; }
 .note { background: #FFF3E0; padding: 12px; border-radius: 6px; margin-top: 8px; font-size: 13px; line-height: 1.6; white-space: pre-wrap; }
 
@@ -95,6 +99,30 @@ a:hover { text-decoration: underline; }
 
 <h1>2025타경51070 <span class="badge badge-change">변경</span></h1>
 
+<!-- 전문가 분석 -->
+
+<div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:20px;margin:16px 0;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+        <span style="background:#16a34a;color:#fff;padding:3px 12px;border-radius:12px;font-size:12px;font-weight:700;">🔍 전문가 분석</span>
+        <span style="background:#16a34a22;color:#16a34a;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;">낮은위험</span>
+    </div>
+    <div style="font-size:15px;font-weight:600;color:#1f2937;margin-bottom:12px;line-height:1.6;">서울동부지방법원 경매 근린상가 물건. 최저가율 100%로 다소 높은 편.</div>
+    <div style="padding:4px 0;font-size:13px;color:#15803d;">✅ 임차인 이슈 없어 명도 용이</div>
+    <div style="padding:4px 0;font-size:13px;color:#b45309;">⚠️ 특이 리스크 요소 미발견 (기본 확인 권장)</div>
+    <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:6px;padding:10px 14px;margin-top:10px;font-size:13px;color:#0369a1;">
+📊 최근 3개월 동종 16건 낙찰 | 평균 감정가 559,187,500원 | 평균 낙찰가 399,752,312원 | 평균 유찰 3.1회
+</div>
+    <div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px 14px;margin-top:12px;">
+        <div style="font-size:12px;color:#6b7280;font-weight:600;margin-bottom:4px;">💡 추천 대상</div>
+        <div style="font-size:13px;color:#374151;">상업 부동산 운영 경험이 있는 투자자</div>
+        <div style="font-size:13px;color:#6b7280;margin-top:4px;">현재 임대차 관계와 수익률 분석이 중요합니다</div>
+    </div>
+    <div style="text-align:center;margin-top:14px;">
+        <a href="tel:010-6899-1601" style="display:inline-block;background:#ff6d00;color:#fff;padding:10px 28px;border-radius:20px;text-decoration:none;font-weight:700;font-size:14px;box-shadow:0 2px 8px rgba(255,109,0,0.3);">📊 시세 비교 및 권리 분석 상담 가능합니다</a>
+    </div>
+</div>
+
+
 <!-- 상단 CTA 바 -->
 <div style="background:#1a73e8;color:#fff;text-align:center;padding:10px 16px;border-radius:8px;margin-bottom:16px;font-size:15px;">
 <a href="tel:010-6899-1601" style="color:#fff;text-decoration:none;font-weight:700;">📞 이 물건 전문가 분석 문의 010-6899-1601</a>
@@ -138,7 +166,7 @@ a:hover { text-decoration: underline; }
 
 
 
-<div class="section"><h2>📊 입찰이력</h2><table><tr style="background:#37474F;color:#fff;"><td>회차</td><td>날짜</td><td>최저가</td><td>결과</td></tr><tr><td></td><td>입찰기일</td><td>0</td><td>결과</td></tr><tr><td>1차</td><td>2026/04/20</td><td>395250000</td><td>변경</td></tr></table></div>
+<div class="section"><h2>📊 입찰이력</h2><table class="bid-table"><tr style="background:#37474F;color:#fff;"><td>회차</td><td>날짜</td><td>최저가</td><td>결과</td></tr><tr><td></td><td>입찰기일</td><td>0</td><td>결과</td></tr><tr><td>1차</td><td>2026/04/20</td><td>395250000</td><td>변경</td></tr></table></div>
 <div class="section"><h2>📊 경매 통계</h2><table><tr><td>3개월</td><td>건수: 16건 / 평균감정가: 559,187,500원 / 평균매각가: 399,752,312원 / 실패: 3.1회</td></tr><tr><td>6개월</td><td>건수: 25건 / 평균감정가: 972,352,000원 / 평균매각가: 698,180,912원 / 실패: 2.8회</td></tr><tr><td>12개월</td><td>건수: 34건 / 평균감정가: 876,474,341원 / 평균매각가: 652,012,973원 / 실패: 2.3회</td></tr></table></div>
 <div class="section"><h2>📷 이미지</h2><div style="text-align:center"><img src="https://photo.nuriauction.com/auction/thumb_1.php?q_string=/admin/data/2025/000211/1001/20250130051070/pic_courtauction_7.jpg&q_width=150&q_height=120" alt="2025타경51070 서울동부지방법원 근린상가 경매 - jauction" style="max-width:100%;border-radius:8px" loading="lazy"></div></div>
 

@@ -36,6 +36,10 @@ td { padding: 8px 12px; border-bottom: 1px solid #eee; font-size: 14px; }
 td:first-child { font-weight: bold; color: #555; width: 140px; background: #fafafa; }
 td:last-child { color: #222; }
 
+/* 입찰이력 테이블 - 모든 셀 동일 너비 */
+.bid-table td { width: auto; background: transparent; text-align: center; }
+.bid-table td:first-child { width: auto; background: transparent; }
+
 .price { color: #1B5E20; font-weight: bold; font-size: 16px; }
 .note { background: #FFF3E0; padding: 12px; border-radius: 6px; margin-top: 8px; font-size: 13px; line-height: 1.6; white-space: pre-wrap; }
 
@@ -162,7 +166,7 @@ a:hover { text-decoration: underline; }
 
 
 
-<div class="section"><h2>📊 입찰이력</h2><table><tr style="background:#37474F;color:#fff;"><td>회차</td><td>날짜</td><td>최저가</td><td>결과</td></tr><tr><td></td><td>입찰기일</td><td>0</td><td>결과</td></tr><tr><td>1차</td><td>2026/03/06</td><td>640470800</td><td>유찰</td></tr><tr><td>2차</td><td>2026/04/17</td><td>448330000</td><td>유찰</td></tr><tr><td>3차</td><td>2026/05/29</td><td>358664000</td><td>진행</td></tr></table></div>
+<div class="section"><h2>📊 입찰이력</h2><table class="bid-table"><tr style="background:#37474F;color:#fff;"><td>회차</td><td>날짜</td><td>최저가</td><td>결과</td></tr><tr><td></td><td>입찰기일</td><td>0</td><td>결과</td></tr><tr><td>1차</td><td>2026/03/06</td><td>640470800</td><td>유찰</td></tr><tr><td>2차</td><td>2026/04/17</td><td>448330000</td><td>유찰</td></tr><tr><td>3차</td><td>2026/05/29</td><td>358664000</td><td>진행</td></tr></table></div>
 <div class="section"><h2>📊 경매 통계</h2><table><tr><td>3개월</td><td>건수: 1건 / 평균감정가: 3,384,413,200원 / 평균매각가: 2,160,000,000원 / 실패: 2회</td></tr><tr><td>6개월</td><td>건수: 2건 / 평균감정가: 3,058,521,300원 / 평균매각가: 1,980,000,000원 / 실패: 2회</td></tr><tr><td>12개월</td><td>건수: 9건 / 평균감정가: 2,484,610,040원 / 평균매각가: 1,189,245,112원 / 실패: 4.4회</td></tr></table></div>
 <div class="section"><h2>📷 이미지</h2><div style="text-align:center"><img src="https://photo.nuriauction.com/auction/thumb_1.php?q_string=/admin/data/2024/000510/1012/20240130004887/pic_courtauction_5.jpg&q_width=150&q_height=120" alt="2024타경4887 광주지방법원 창고 경매 - jauction" style="max-width:100%;border-radius:8px" loading="lazy"></div></div>
 
