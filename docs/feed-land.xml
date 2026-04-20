@@ -5,7 +5,7 @@
 <link>https://jiggyj744-ctrl.github.io/jauction</link>
 <description>토지 경매</description>
 <language>ko</language>
-<pubDate>Mon, 20 Apr 2026 06:26:46 +0900</pubDate>
+<pubDate>Tue, 21 Apr 2026 06:19:36 +0900</pubDate>
 <atom:link href="https://jiggyj744-ctrl.github.io/jauction/feed-land.xml" rel="self" type="application/rss+xml"/>
 
 <item>
@@ -20,6 +20,13 @@
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1114528.html</link>
 <description>광주지방법원 토지 경매 - 소재지: 전라남도 영광군 영광읍 계송리 186-4, 감정가: 791,200원, 최저가: 285,000원, 매각일: 2026.05.19</description>
 <pubDate>2026-05-19</pubDate>
+<category>토지</category>
+</item>
+<item>
+<title>[2019타경7289] 경상남도 사천시 동금동 84-1 - 감정가 6,974,067,000원</title>
+<link>https://jiggyj744-ctrl.github.io/jauction/auction/1145169.html</link>
+<description>진주지원 토지 경매 - 소재지: 경상남도 사천시 동금동 84-1, 감정가: 6,974,067,000원, 최저가: 6,974,067,000원, 매각일: 2026.05.04</description>
+<pubDate>2026-05-04</pubDate>
 <category>토지</category>
 </item>
 <item>
@@ -706,13 +713,6 @@
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1343954.html</link>
 <description>경주지원 토지 경매 - 소재지: 경상북도 경주시 강동면 모서리 산42-1, 감정가: 1,611,354,000원, 최저가: 789,564,000원, 매각일: 2026.04.28</description>
 <pubDate>2026-04-28</pubDate>
-<category>토지</category>
-</item>
-<item>
-<title>[2023타경6580] 경상남도 하동군 적량면 동리 993-2 - 감정가 3,792,395,220원</title>
-<link>https://jiggyj744-ctrl.github.io/jauction/auction/1344653.html</link>
-<description>진주지원 토지 경매 - 소재지: 경상남도 하동군 적량면 동리 993-2, 감정가: 3,792,395,220원, 최저가: 3,792,395,220원, 매각일: 2026.05.04</description>
-<pubDate>2026-05-04</pubDate>
 <category>토지</category>
 </item>
 <item>
@@ -2025,6 +2025,13 @@
 <category>토지</category>
 </item>
 <item>
+<title>[2024타경2419] 부산광역시 강서구 강동동 169 - 감정가 1,150,514,000원</title>
+<link>https://jiggyj744-ctrl.github.io/jauction/auction/1385934.html</link>
+<description>부산서부지원 토지 경매 - 소재지: 부산광역시 강서구 강동동 169, 감정가: 1,150,514,000원, 최저가: 563,752,000원, 매각일: 2026.05.19</description>
+<pubDate>2026-05-19</pubDate>
+<category>토지</category>
+</item>
+<item>
 <title>[2024타경21305 [1]] 충청남도 공주시 유구읍 유구리 61-1 - 감정가 331,818,000원</title>
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1386375.html</link>
 <description>공주지원 토지 경매 - 소재지: 충청남도 공주시 유구읍 유구리 61-1, 감정가: 331,818,000원, 최저가: 79,669,400원, 매각일: 2026.05.12</description>
@@ -2613,6 +2620,13 @@
 <category>토지</category>
 </item>
 <item>
+<title>[2024타경53199] 서울특별시 송파구 거여동 178-33 - 감정가 1,484,800,000원</title>
+<link>https://jiggyj744-ctrl.github.io/jauction/auction/1393049.html</link>
+<description>서울동부지방법원 토지 경매 - 소재지: 서울특별시 송파구 거여동 178-33, 감정가: 1,484,800,000원, 최저가: 760,218,000원, 매각일: 2026.05.11</description>
+<pubDate>2026-05-11</pubDate>
+<category>토지</category>
+</item>
+<item>
 <title>[2024타경3328] 경상남도 하동군 화개면 부춘리 142-4 - 감정가 146,712,000원</title>
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1393203.html</link>
 <description>진주지원 토지 경매 - 소재지: 경상남도 하동군 화개면 부춘리 142-4, 감정가: 146,712,000원, 최저가: 21,538,000원, 매각일: 2026.05.04</description>
@@ -2914,6 +2928,13 @@
 <category>토지</category>
 </item>
 <item>
+<title>[2024타경115390] 대전광역시 동구 용전동 20-1 - 감정가 13,362,660,000원</title>
+<link>https://jiggyj744-ctrl.github.io/jauction/auction/1396987.html</link>
+<description>대전지방법원 토지 경매 - 소재지: 대전광역시 동구 용전동 20-1, 감정가: 13,362,660,000원, 최저가: 9,353,862,000원, 매각일: 2026.05.07</description>
+<pubDate>2026-05-07</pubDate>
+<category>토지</category>
+</item>
+<item>
 <title>[2024타경2248 [2]] 경상북도 성주군 선남면 소학리 404 - 감정가 1,107,388,000원</title>
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1397007.html</link>
 <description>대구서부지원 토지 경매 - 소재지: 경상북도 성주군 선남면 소학리 404, 감정가: 1,107,388,000원, 최저가: 130,282,000원, 매각일: 2026.05.07</description>
@@ -2987,6 +3008,27 @@
 <title>[2024타경27624] 경상남도 거제시 연초면 연사리 450 - 감정가 507,720,000원</title>
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1397460.html</link>
 <description>통영지원 토지 경매 - 소재지: 경상남도 거제시 연초면 연사리 450, 감정가: 507,720,000원, 최저가: 93,167,000원, 매각일: 2026.05.04</description>
+<pubDate>2026-05-04</pubDate>
+<category>토지</category>
+</item>
+<item>
+<title>[2024타경1875 [4]] 경상남도 고성군 동해면 장좌리 산103 - 감정가 1,266,710,800원</title>
+<link>https://jiggyj744-ctrl.github.io/jauction/auction/1397476.html</link>
+<description>통영지원 토지 경매 - 소재지: 경상남도 고성군 동해면 장좌리 산103, 감정가: 1,266,710,800원, 최저가: 290,553,000원, 매각일: 2026.05.04</description>
+<pubDate>2026-05-04</pubDate>
+<category>토지</category>
+</item>
+<item>
+<title>[2024타경1875 [6]] 경상남도 고성군 고성읍 신월리 407-15 - 감정가 54,400,000원</title>
+<link>https://jiggyj744-ctrl.github.io/jauction/auction/1397478.html</link>
+<description>통영지원 토지 경매 - 소재지: 경상남도 고성군 고성읍 신월리 407-15, 감정가: 54,400,000원, 최저가: 12,478,000원, 매각일: 2026.05.04</description>
+<pubDate>2026-05-04</pubDate>
+<category>토지</category>
+</item>
+<item>
+<title>[2024타경1875 [8]] 경상남도 고성군 고성읍 신월리 산9 - 감정가 339,599,000원</title>
+<link>https://jiggyj744-ctrl.github.io/jauction/auction/1397480.html</link>
+<description>통영지원 토지 경매 - 소재지: 경상남도 고성군 고성읍 신월리 산9, 감정가: 339,599,000원, 최저가: 77,895,000원, 매각일: 2026.05.04</description>
 <pubDate>2026-05-04</pubDate>
 <category>토지</category>
 </item>
@@ -3464,48 +3506,6 @@
 <link>https://jiggyj744-ctrl.github.io/jauction/auction/1401454.html</link>
 <description>정읍지원 토지 경매 - 소재지: 전북특별자치도 부안군 변산면 도청리 산66-15, 감정가: 2,281,366,000원, 최저가: 782,508,000원, 매각일: 2026.05.04</description>
 <pubDate>2026-05-04</pubDate>
-<category>토지</category>
-</item>
-<item>
-<title>[2024타경4291] 경상남도 진주시 진성면 상촌리 548-3 - 감정가 92,520,000원</title>
-<link>https://jiggyj744-ctrl.github.io/jauction/auction/1401521.html</link>
-<description>진주지원 토지 경매 - 소재지: 경상남도 진주시 진성면 상촌리 548-3, 감정가: 92,520,000원, 최저가: 13,582,000원, 매각일: 2026.04.27</description>
-<pubDate>2026-04-27</pubDate>
-<category>토지</category>
-</item>
-<item>
-<title>[2024타경33930] 경상남도 사천시 정동면 예수리 648-1 - 감정가 872,178,250원</title>
-<link>https://jiggyj744-ctrl.github.io/jauction/auction/1401541.html</link>
-<description>진주지원 토지 경매 - 소재지: 경상남도 사천시 정동면 예수리 648-1, 감정가: 872,178,250원, 최저가: 228,636,000원, 매각일: 2026.04.27</description>
-<pubDate>2026-04-27</pubDate>
-<category>토지</category>
-</item>
-<item>
-<title>[2024타경34001] 경상남도 남해군 이동면 용소리 1322 - 감정가 89,496,000원</title>
-<link>https://jiggyj744-ctrl.github.io/jauction/auction/1401542.html</link>
-<description>진주지원 토지 경매 - 소재지: 경상남도 남해군 이동면 용소리 1322, 감정가: 89,496,000원, 최저가: 20,528,000원, 매각일: 2026.04.27</description>
-<pubDate>2026-04-27</pubDate>
-<category>토지</category>
-</item>
-<item>
-<title>[2024타경34407] 경상남도 하동군 옥종면 법대리 301-2 - 감정가 169,630,000원</title>
-<link>https://jiggyj744-ctrl.github.io/jauction/auction/1401544.html</link>
-<description>진주지원 토지 경매 - 소재지: 경상남도 하동군 옥종면 법대리 301-2, 감정가: 169,630,000원, 최저가: 86,850,000원, 매각일: 2026.04.27</description>
-<pubDate>2026-04-27</pubDate>
-<category>토지</category>
-</item>
-<item>
-<title>[2024타경35622] 경상남도 사천시 사남면 월성리 394-1 - 감정가 661,542,000원</title>
-<link>https://jiggyj744-ctrl.github.io/jauction/auction/1401565.html</link>
-<description>진주지원 토지 경매 - 소재지: 경상남도 사천시 사남면 월성리 394-1, 감정가: 661,542,000원, 최저가: 237,097,000원, 매각일: 2026.04.27</description>
-<pubDate>2026-04-27</pubDate>
-<category>토지</category>
-</item>
-<item>
-<title>[2024타경35820] 경상남도 사천시 향촌동 504-2 - 감정가 457,847,000원</title>
-<link>https://jiggyj744-ctrl.github.io/jauction/auction/1401567.html</link>
-<description>진주지원 토지 경매 - 소재지: 경상남도 사천시 향촌동 504-2, 감정가: 457,847,000원, 최저가: 187,534,400원, 매각일: 2026.04.27</description>
-<pubDate>2026-04-27</pubDate>
 <category>토지</category>
 </item>
 </channel>
