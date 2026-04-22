@@ -114,6 +114,32 @@ def init_db(drop=False):
             -- 사진
             thumbnail_url TEXT,
             photo_urls TEXT,
+            -- Phase 2: 리스크
+            risk_keywords TEXT,
+            risk_score INTEGER DEFAULT 0,
+            -- Phase 3: 좌표
+            lat REAL,
+            lon REAL,
+            geocoded INTEGER DEFAULT 0,
+            -- Phase 4: 건물 스펙
+            building_structure TEXT,
+            building_roof TEXT,
+            total_floors INTEGER,
+            target_floor INTEGER,
+            heating_type TEXT,
+            parking_available INTEGER,
+            elevator_available INTEGER,
+            land_use_plan TEXT,
+            appraisal_summary TEXT,
+            appraisal_report TEXT,
+            status_report TEXT,
+            -- Phase 5: 배당요구종기
+            claim_deadline TEXT,
+            -- Phase 6: 팝업 상세 데이터
+            pdf_urls TEXT,
+            sale_statement TEXT,
+            property_list TEXT,
+            delivery_records TEXT,
             -- 메타
             detail_scraped INTEGER DEFAULT 0,
             created_at TEXT DEFAULT (datetime('now', '+9 hours')),
@@ -165,6 +191,36 @@ def init_db(drop=False):
         )
     ''')
     
+    # 5. 임차인 테이블
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS auction_tenants (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            internal_id INTEGER,
+            tenant_name TEXT,
+            usage_occupancy TEXT,
+            move_in_date TEXT,
+            fixed_date TEXT,
+            dividend_request_date TEXT,
+            deposit INTEGER DEFAULT 0,
+            monthly_rent INTEGER DEFAULT 0,
+            has_opposing_power TEXT,
+            note TEXT,
+            FOREIGN KEY (internal_id) REFERENCES auction_items(internal_id)
+        )
+    ''')
+    
+    # 6. 문건접수내역 테이블
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS auction_documents (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            internal_id INTEGER,
+            doc_date TEXT,
+            doc_type TEXT,
+            doc_description TEXT,
+            FOREIGN KEY (internal_id) REFERENCES auction_items(internal_id)
+        )
+    ''')
+    
     # 5. 변경 이력 테이블 (어떤 물건이 어떻게 변경되었는지 추적)
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS item_changes (
@@ -192,6 +248,8 @@ def init_db(drop=False):
     cursor.execute('CREATE INDEX IF NOT EXISTS idx_changes_internal ON item_changes(internal_id)')
     cursor.execute('CREATE INDEX IF NOT EXISTS idx_changes_type ON item_changes(change_type)')
     cursor.execute('CREATE INDEX IF NOT EXISTS idx_changes_date ON item_changes(changed_at)')
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_tenant_internal ON auction_tenants(internal_id)')
+    cursor.execute('CREATE INDEX IF NOT EXISTS idx_doc_internal ON auction_documents(internal_id)')
     
     conn.commit()
     conn.close()

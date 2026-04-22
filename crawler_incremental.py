@@ -10,9 +10,6 @@ gfauction.co.kr 증분 크롤러 (Incremental Crawler)
   python crawler_incremental.py --pages 20   # 스캔 페이지 수 지정
   python crawler_incremental.py --full-detail # 상태변경 건도 전체 상세 재수집
 """
-import sys
-sys.path.insert(0, r"C:\Users\Work\AppData\Local\Programs\Python\Python312\Lib\site-packages")
-
 import requests
 from bs4 import BeautifulSoup
 import base64
@@ -24,26 +21,21 @@ import argparse
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-# 설정
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, 'data', 'auction.db')
-LOG_DIR = os.path.join(BASE_DIR, 'logs')
-IMAGE_BASE_DIR = os.path.join(BASE_DIR, 'images')
-
-BASE_URL = 'https://gfauction.co.kr'
-LOGIN_ID = '1111'
-LOGIN_PW = '1111'
-DELAY_LIST = 0.3
-DELAY_DETAIL = 0.3
-NUM_DETAIL_WORKERS = 10
-
-# 기존 crawler.py의 함수 재사용
-sys.path.insert(0, BASE_DIR)
+# 설정 (config.py에서 로드)
+from config import (
+    BASE_DIR, DB_PATH, LOG_DIR, IMAGE_BASE_DIR,
+    BASE_URL, LOGIN_ID, LOGIN_PW,
+    DELAY_LIST_INCREMENTAL, DELAY_DETAIL_INCREMENTAL, NUM_DETAIL_WORKERS,
+)
 from crawler import (
     login, parse_list_page, parse_detail_page,
     parse_price, clean_text, save_image_to_db
 )
 from db_setup import init_db, get_item_type_name, get_category, ITEM_TYPE_MAP
+
+# 증분 크롤러용 딜레이
+DELAY_LIST = DELAY_LIST_INCREMENTAL
+DELAY_DETAIL = DELAY_DETAIL_INCREMENTAL
 
 # ======================================
 # 변경 감지 유틸리티

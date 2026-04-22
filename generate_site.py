@@ -13,7 +13,6 @@ if hasattr(sys.stdout, 'reconfigure'):
         sys.stderr.reconfigure(encoding='utf-8')
     except Exception:
         pass
-sys.path.insert(0, r"C:\Users\Work\AppData\Local\Programs\Python\Python312\Lib\site-packages")
 
 import sqlite3
 import os
@@ -116,8 +115,7 @@ def get_head(title, description='', canonical='', additional_meta='', use_legacy
 <meta name="NaverBot" content="index,follow"/>
 <meta name="Yeti" content="All"/>
 <meta name="Yeti" content="index,follow"/>
-{extra_block}{legacy_google}<base href="/jauction/">
-</head>'''
+{extra_block}{legacy_google}</head>'''
 
 def get_header(current='', show_search=False):
     nav_items = [
@@ -156,6 +154,8 @@ def get_footer():
     return f'''<footer class="site-footer">
 <div class="container">
 <div class="footer-links">
+<a href="guide/">경매가이드</a>
+<a href="dictionary/">용어사전</a>
 <a href="about/">사이트 소개</a>
 <a href="privacy/">개인정보처리방침</a>
 <a href="terms/">이용약관</a>
@@ -163,6 +163,7 @@ def get_footer():
 <a href="feed.xml">RSS</a>
 </div>
 <p class="footer-copy">© {datetime.now().year} {SITE_NAME}. 본 사이트는 참고용이며, 실제 경매 정보는 해당 법원에서 확인하세요.</p>
+<p class="footer-copy" style="margin-top:6px;font-size:0.8em;">최종 업데이트: {datetime.now().strftime('%Y-%m-%d %H:%M')}</p>
 </div>
 </footer>'''
 
@@ -1228,6 +1229,47 @@ def generate_detail_html(item):
         if item.get('building_area'): area_rows += row('건물면적', item['building_area'])
         area_html = f'''<div class="section"><h2>📐 면적정보</h2><table>{area_rows}</table></div>'''
 
+    # 건물정보 섹션 (건물스펙, 난방, 주차, 승강기, 도로, 승인일, 세대수, 점유, 난이도)
+    building_html = ''
+    building_rows = ''
+    if item.get('building_structure'): building_rows += row('건물구조', item['building_structure'])
+    if item.get('building_roof'): building_rows += row('지붕구조', item['building_roof'])
+    if item.get('total_floors'):
+        floor_text = f'{item["total_floors"]}층'
+        if item.get('target_floor'): floor_text += f' (해당 {item["target_floor"]}층)'
+        building_rows += row('총층수', floor_text)
+    if item.get('heating_type'): building_rows += row('난방방식', item['heating_type'])
+    if item.get('parking_available'): building_rows += row('주차', '가능' if item['parking_available'] else '-')
+    if item.get('elevator_available'): building_rows += row('승강기', '있음' if item['elevator_available'] else '-')
+    if item.get('road_access'): building_rows += row('도로접면', item['road_access'])
+    if item.get('approval_date'): building_rows += row('사용승인일', item['approval_date'])
+    if item.get('total_households'): building_rows += row('세대수', f'{item["total_households"]}세대')
+    if item.get('occupancy_status'): building_rows += row('점유현황', item['occupancy_status'])
+    if item.get('land_use_plan'): building_rows += row('토지이용계획', item['land_use_plan'][:200])
+
+    # 난이도 등급
+    difficulty = item.get('difficulty_grade', '')
+    if difficulty:
+        diff_colors = {'A': '#16a34a', 'B': '#2563eb', 'C': '#f59e0b', 'D': '#dc2626'}
+        diff_labels = {'A': 'A 초보추천', 'B': 'B 보통', 'C': 'C 주의', 'D': 'D 고난도'}
+        dc = diff_colors.get(difficulty, '#6b7280')
+        dl = diff_labels.get(difficulty, difficulty)
+        building_rows += f'<tr><td>난이도</td><td><span style="background:{dc};color:#fff;padding:3px 10px;border-radius:10px;font-size:12px;font-weight:700;">{html.escape(dl)}</span></td></tr>'
+
+    # 리스크 키워드
+    risk_raw = item.get('risk_keywords', '')
+    if risk_raw:
+        try:
+            risk_kws = json.loads(risk_raw) if isinstance(risk_raw, str) else risk_raw
+            if risk_kws:
+                risk_tags = ' '.join(f'<span style="background:#fef2f2;color:#dc2626;padding:2px 8px;border-radius:8px;font-size:12px;margin:2px;display:inline-block;">{html.escape(kw)}</span>' for kw in risk_kws[:6])
+                building_rows += f'<tr><td>리스크</td><td>{risk_tags}</td></tr>'
+        except:
+            pass
+
+    if building_rows:
+        building_html = f'''<div class="section"><h2>🏗️ 건물/시설 정보</h2><table>{building_rows}</table></div>'''
+
     # 당사자정보 섹션
     party_html = ''
     if item.get('creditor') or item.get('debtor') or item.get('owner'):
@@ -1473,6 +1515,7 @@ a:hover {{ text-decoration: underline; }}
 </div>
 
 {area_html}
+{building_html}
 {party_html}
 {notes_html}
 {related_case_html}
@@ -1650,7 +1693,98 @@ def generate_region_index_html(sido_items):
 </body>'''
 
 # ======================================
-# 정적 페이지 (FAQ, About, Privacy, Terms)
+# 정적 페이지 전용 인라인 CSS 및 헬퍼
+# ======================================
+_STATIC_CSS = """
+:root{--primary:#2563eb;--primary-dark:#1d4ed8;--primary-light:#dbeafe;--gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;--gray-300:#d1d5db;--gray-400:#9ca3af;--gray-500:#6b7280;--gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;--gray-900:#111827;--cta-orange:#ff6d00;--cta-orange-dark:#e65100;--danger:#dc2626;--shadow:0 1px 3px rgba(0,0,0,.1);--shadow-lg:0 10px 15px -3px rgba(0,0,0,.1);--radius:8px;--radius-lg:12px;--radius-xl:16px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;color:var(--gray-800);background:var(--gray-50);line-height:1.7;font-size:16px}
+a{color:var(--primary);text-decoration:none}a:hover{text-decoration:underline}
+.container{max-width:1200px;margin:0 auto;padding:0 24px}
+.site-header{background:#fff;border-bottom:1px solid var(--gray-200);position:sticky;top:0;z-index:100;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.site-header .container{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.logo{font-size:1.4em;font-weight:800;color:var(--primary);text-decoration:none;white-space:nowrap}.logo:hover{text-decoration:none}
+.nav{display:flex;gap:4px;align-items:center}
+.nav-link{padding:8px 14px;border-radius:8px;text-decoration:none;color:var(--gray-600);font-size:.9em;font-weight:500;white-space:nowrap;transition:all .15s}
+.nav-link:hover{background:var(--gray-100);color:var(--gray-900);text-decoration:none}
+.header-phone{display:flex;align-items:center;gap:6px;text-decoration:none;color:var(--cta-orange);font-weight:700;font-size:1.1em}.header-phone:hover{color:var(--cta-orange-dark);text-decoration:none}
+.header-phone-icon{background:var(--cta-orange);color:#fff;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.detail-container{max-width:900px;margin:0 auto;padding:32px 24px}
+.detail-card{background:#fff;border-radius:var(--radius-xl);box-shadow:var(--shadow);padding:28px 32px;margin-bottom:20px;border:1px solid var(--gray-200)}
+.detail-card h2{font-size:1.4em;font-weight:700;margin-bottom:20px;padding-bottom:12px;border-bottom:2px solid var(--gray-100);color:var(--gray-800)}
+.detail-card ul,.detail-card ol{padding-left:24px;line-height:2}
+.detail-card p{margin-bottom:8px}
+.site-footer{background:var(--gray-900);color:#fff;padding:48px 0;margin-top:48px}
+.footer-links{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:20px}
+.footer-links a{color:var(--gray-400);text-decoration:none;font-size:.9em}.footer-links a:hover{color:#fff}
+.footer-copy{color:var(--gray-500);font-size:.85em}
+.dict-table{width:100%;border-collapse:collapse}
+.dict-table td{padding:14px 16px;border-bottom:1px solid var(--gray-100);vertical-align:top}
+.dict-table td:first-child{font-weight:700;width:130px;color:var(--gray-700);background:var(--gray-50);border-radius:6px}
+.dict-table tr:last-child td{border-bottom:none}
+.dict-table tr:hover{background:var(--gray-50)}
+.tip-box{margin-top:16px;padding:16px 20px;border-radius:var(--radius-lg)}
+.tip-blue{background:#e8f0fe;border-left:4px solid var(--primary)}
+.tip-red{background:#fef2f2;border-left:4px solid var(--danger)}
+.tip-orange{background:linear-gradient(135deg,#fff3e0,#ffe0b2);border:2px solid var(--cta-orange);text-align:center;border-radius:12px;padding:24px}
+.cta-btn{display:inline-block;background:var(--cta-orange);color:#fff;padding:14px 36px;border-radius:24px;text-decoration:none!important;font-weight:700;font-size:18px;margin-top:12px;box-shadow:0 4px 15px rgba(255,109,0,.4)}.cta-btn:hover{background:var(--cta-orange-dark);color:#fff!important;text-decoration:none!important}
+@media(max-width:768px){.nav{gap:2px}.nav-link{font-size:.78em;padding:6px 10px}.detail-container{padding:16px}.detail-card{padding:20px}.container{padding:0 16px}}
+"""
+
+def _static_head(title, desc, canonical):
+    return f'''<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{html.escape(title)}</title>
+<meta name="description" content="{html.escape(desc)}">
+<meta name="keywords" content="법원경매,부동산경매,경매물건,jauction,{html.escape(title)}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{html.escape(title)}">
+<meta property="og:description" content="{html.escape(desc)}">
+<meta property="og:site_name" content="{SITE_NAME}">
+<meta property="og:image" content="{SITE_URL}/images/kakao_img.png">
+<link rel="canonical" href="{canonical}">
+<meta name="NaverBot" content="All"/>
+<meta name="NaverBot" content="index,follow"/>
+<meta name="Yeti" content="All"/>
+<meta name="Yeti" content="index,follow"/>
+<meta name="google-site-verification" content="VNMGQ8RFZK8mPlJU1cM00-lW4PwxPrA9ZAYGv_cEm_M" />
+<style>{_STATIC_CSS}</style>
+</head>'''
+
+def _static_header():
+    nav = '<a href="../" class="nav-link">홈</a>\n<a href="../apartment/" class="nav-link">아파트/주거</a>\n<a href="../land/" class="nav-link">토지</a>\n<a href="../commercial/" class="nav-link">상업용</a>\n<a href="../region/" class="nav-link">지역별</a>\n<a href="../faq/" class="nav-link">FAQ</a>'
+    return f'''<header class="site-header">
+<div class="container">
+<a href="../" class="logo">🏷️ {SITE_NAME}</a>
+<a href="tel:{PHONE_NUMBER}" class="header-phone">
+<span class="header-phone-icon">📞</span>{PHONE_NUMBER}
+</a>
+<nav class="nav">{nav}</nav>
+</div>
+</header>'''
+
+def _static_footer():
+    return f'''<footer class="site-footer">
+<div class="container">
+<div class="footer-links">
+<a href="../guide/">경매가이드</a>
+<a href="../dictionary/">용어사전</a>
+<a href="../about/">사이트 소개</a>
+<a href="../privacy/">개인정보처리방침</a>
+<a href="../terms/">이용약관</a>
+<a href="../faq/">자주묻는질문</a>
+<a href="../feed.xml">RSS</a>
+</div>
+<p class="footer-copy">© {datetime.now().year} {SITE_NAME}. 본 사이트는 참고용이며, 실제 경매 정보는 해당 법원에서 확인하세요.</p>
+<p class="footer-copy" style="margin-top:6px;font-size:0.8em;">최종 업데이트: {datetime.now().strftime('%Y-%m-%d %H:%M')}</p>
+</div>
+</footer>'''
+
+# ======================================
+# 정적 페이지 (FAQ, About, Privacy, Terms, Guide, Dictionary)
 # ======================================
 def generate_static_pages():
     pages = {
@@ -1744,6 +1878,149 @@ def generate_static_pages():
 </div>
 '''
         },
+        'guide/index.html': {
+            'title': f'법원 경매 가이드 - {SITE_NAME}',
+            'desc': '법원 경매 입찰 방법, 절차, 주의사항 등 초보자를 위한 종합 가이드',
+            'content': f'''
+<h1>📚 법원 경매 완벽 가이드</h1>
+
+<div class="detail-card">
+<h2>1. 법원 경매란?</h2>
+<p>법원 경매는 채무자가 빚을 갚지 못할 경우, 법원이 채무자의 부동산을 강제로 매각하는 절차입니다. 일반인도 입찰에 참여할 수 있으며, 시세보다 저렴하게 부동산을 취득할 수 있는 기회입니다.</p>
+<ul style="padding-left:20px;line-height:2;margin-top:8px">
+<li><strong>강제경매</strong>: 채권자의 신청으로 진행</li>
+<li><strong>임의경매</strong>: 담보권 실행으로 진행 (대부분)</li>
+</ul>
+</div>
+
+<div class="detail-card">
+<h2>2. 경매 진행 절차</h2>
+<ol style="padding-left:20px;line-height:2.2">
+<li><strong>경매개시결정</strong> → 법원이 경매 절차 시작</li>
+<li><strong>현황조사</strong> → 법원이 부동산 현황 확인</li>
+<li><strong>감정평가</strong> → 감정평가사가 시장가치 평가 (감정가)</li>
+<li><strong>매각공고</strong> → 법원이 매각일, 최저가 공고</li>
+<li><strong>입찰</strong> → 입찰자들이 가격 제출</li>
+<li><strong>개찰 및 낙찰</strong> → 최고가 입찰자가 낙찰</li>
+<li><strong>대금납부</strong> → 낙찰자가 잔금 납부</li>
+<li><strong>소유권이전</strong> → 등기부등본에 소유자 변경</li>
+</ol>
+</div>
+
+<div class="detail-card">
+<h2>3. 입찰 참여 방법</h2>
+<p>경매 입찰에 참여하려면 다음이 필요합니다:</p>
+<ul style="padding-left:20px;line-height:2">
+<li><strong>입찰보증금</strong>: 최저매각가격의 10~20%</li>
+<li><strong>신분증</strong>: 주민등록증 또는 운전면허증</li>
+<li><strong>도장</strong>: 본인 도장 (서명 가능)</li>
+<li><strong>입찰표</strong>: 법원 비치</li>
+</ul>
+<p style="margin-top:12px;padding:12px;background:#e8f0fe;border-radius:8px;">💡 <strong>팁</strong>: 온라인 입찰도 가능합니다. 대법원 경매정보 사이트에서 인터넷 입찰을 이용할 수 있습니다.</p>
+</div>
+
+<div class="detail-card">
+<h2>4. 유찰과 최저가</h2>
+<p>입찰자가 없거나 최저가 미만으로 입찰된 경우 <strong>유찰</strong>됩니다. 유찰 시 최저가가 낮아집니다:</p>
+<ul style="padding-left:20px;line-height:2">
+<li>1차 매각: 감정가의 <strong>80%</strong></li>
+<li>1차 유찰 후: 이전 최저가의 <strong>80%</strong></li>
+<li>반복 유찰 시 최저가가 계속 하락</li>
+</ul>
+<p style="margin-top:12px">예: 감정가 10억 → 1차 최저가 8억 → 2차 최저가 6.4억 → 3차 최저가 5.12억</p>
+</div>
+
+<div class="detail-card">
+<h2>5. 반드시 확인해야 할 것</h2>
+<ul style="padding-left:20px;line-height:2">
+<li>✅ <strong>등기부등본</strong>: 권리관계, 선순위 채권 확인</li>
+<li>✅ <strong>현장 방문</strong>: 실제 점유자, 시설 상태 확인</li>
+<li>✅ <strong>임대차 현황</strong>: 선순위 임차인, 대항력 여부</li>
+<li>✅ <strong>주변 시세</strong>: 감정가 대비 실제 시세 비교</li>
+<li>✅ <strong>납부 일정</strong>: 잔금 납부 기한 확인</li>
+</ul>
+<p style="margin-top:12px;padding:12px;background:#fef2f2;border-radius:8px;">⚠️ <strong>주의</strong>: 소멸되지 않는 권리(선순위 임차인, 유치권 등)가 있으면 낙찰 후에도 부담해야 합니다.</p>
+</div>
+
+<div class="detail-card">
+<h2>6. 낙찰 후 절차</h2>
+<ol style="padding-left:20px;line-height:2">
+<li><strong>대금납부</strong>: 낙찰일로부터 보통 30~60일 이내</li>
+<li><strong>소유권이전등기</strong>: 법원이 촉탁 (직권)</li>
+<li><strong>명도</strong>: 점유자가 자진 퇴거하면 OK, 아니면 강제집행</li>
+<li><strong>부담금 처리</strong>: 관리비, 세금 등 정산</li>
+</ol>
+</div>
+
+<div style="text-align:center;margin:24px 0;padding:20px;background:linear-gradient(135deg,#fff3e0,#ffe0b2);border-radius:12px;border:2px solid #ff6d00;">
+<h3 style="color:#e65100;margin-bottom:12px;">🎯 경매 전문가 상담</h3>
+<p style="margin-bottom:16px">초보자도 안전하게 경매에 참여할 수 있습니다.<br>전문가가 권리관계 분석, 시세 비교, 입찰 전략을 도와드립니다.</p>
+<a href="tel:{PHONE_NUMBER}" style="display:inline-block;background:#ff6d00;color:#fff;padding:14px 36px;border-radius:24px;text-decoration:none;font-weight:700;font-size:18px;">📞 무료 상담 {PHONE_NUMBER}</a>
+</div>
+'''
+        },
+        'dictionary/index.html': {
+            'title': f'경매 용어사전 - {SITE_NAME}',
+            'desc': '법원 경매 용어 정리 - 감정가, 유찰, 낙찰, 대항력 등 경매 관련 용어 모음',
+            'content': f'''
+<h1>📖 경매 용어사전</h1>
+
+<div class="detail-card">
+<h2>가~나</h2>
+<table style="width:100%;border-collapse:collapse">
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;width:120px;background:#f8f9fa">감정가</td><td style="padding:10px">감정평가사가 평가한 부동산의 시장 가치. 경매 최저가의 기준이 됩니다.</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;background:#f8f9fa">경매개시</td><td style="padding:10px">법원이 경매 절차를 시작한다는 결정. 채권자의 신청으로 이루어집니다.</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;background:#f8f9fa">권리분석</td><td style="padding:10px">등기부등본과 현황조사보고서를 통해 부동산의 권리관계를 분석하는 것.</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;background:#f8f9fa">낙찰</td><td style="padding:10px">경매에서 최고가로 입찰하여 부동산을 취득하는 것.</td></tr>
+</table>
+</div>
+
+<div class="detail-card">
+<h2>다~마</h2>
+<table style="width:100%;border-collapse:collapse">
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;width:120px;background:#f8f9fa">대항력</td><td style="padding:10px">임차인이 주택임대차보호법에 따라 임대인 외의 제3자에게도 임대차를 주장할 수 있는 권리. 전입신고 + 확정일자 필요.</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;background:#f8f9fa">명도</td><td style="padding:10px">낙찰 후 점유자가 부동산을 비워주는 것. 자진 명도가 안 되면 강제집행.</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;background:#f8f9fa">매각</td><td style="padding:10px">경매에서 부동산을 판매하는 것. 낙찰과 같은 의미로 사용되기도 함.</td></tr>
+</table>
+</div>
+
+<div class="detail-card">
+<h2>바~사</h2>
+<table style="width:100%;border-collapse:collapse">
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;width:120px;background:#f8f9fa">선순위임차인</td><td style="padding:10px">낙찰자보다 먼저 권리를 가진 임차인. 소멸되지 않으며 낙찰자가 보증금을 승계.</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;background:#f8f9fa">소멸주의</td><td style="padding:10px">경매 낙찰 시 후순위 권리가 소멸되는 원칙. 선순위는 소멸되지 않을 수 있음.</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;background:#f8f9fa">소유권이전</td><td style="padding:10px">낙찰 후 부동산의 소유권이 낙찰자에게 넘어가는 등기.</td></tr>
+</table>
+</div>
+
+<div class="detail-card">
+<h2>아~자</h2>
+<table style="width:100%;border-collapse:collapse">
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;width:120px;background:#f8f9fa">유찰</td><td style="padding:10px">경매에서 입찰자가 없거나 유효한 입찰이 없어 매각이 실패하는 것. 최저가가 하락합니다.</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;background:#f8f9fa">유치권</td><td style="padding:10px">타인의 물건에 관해 비용을 지출한 자가 그 비용의 변제를 받을 때까지 물건을 유치할 수 있는 권리. 경매에서 소멸되지 않음.</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;background:#f8f9fa">입찰보증금</td><td style="padding:10px">입찰 시 납부하는 보증금. 최저매각가격의 10~20%. 낙찰 후 잔금에 포함.</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;background:#f8f9fa">임의경매</td><td style="padding:10px">담보권(근저당 등)을 실행하는 경매. 대부분의 경매가 여기에 해당.</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;background:#f8f9fa">지분경매</td><td style="padding:10px">부동산 전체가 아닌 공유지분 일부에 대한 경매. 주의 필요.</td></tr>
+</table>
+</div>
+
+<div class="detail-card">
+<h2>차~타</h2>
+<table style="width:100%;border-collapse:collapse">
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;width:120px;background:#f8f9fa">청구금액</td><td style="padding:10px">채권자가 경매를 신청한 근거가 되는 채권 금액.</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;background:#f8f9fa">최저가</td><td style="padding:10px">경매에서 입찰할 수 있는 최소 가격. 감정가의 80%에서 시작, 유찰 시마다 하락.</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;background:#f8f9fa">최저가율</td><td style="padding:10px">최저가를 감정가로 나눈 비율. 낮을수록 싼 가격에 입찰 가능.</td></tr>
+<tr style="border-bottom:1px solid #eee"><td style="padding:10px;font-weight:bold;background:#f8f9fa">확정일자</td><td style="padding:10px">임대차계약서에 주택임대차보호법상 대항력을 갖추기 위해 확정일자를 받는 것.</td></tr>
+</table>
+</div>
+
+<div style="text-align:center;margin:24px 0;padding:20px;background:linear-gradient(135deg,#e8f0fe,#dbeafe);border-radius:12px;">
+<h3 style="color:#1a73e8;margin-bottom:12px;">💡 더 궁금한 점이 있으신가요?</h3>
+<p style="margin-bottom:16px">경매 용어가 어려우시면 전문가에게 무료로 상담하세요.</p>
+<a href="tel:{PHONE_NUMBER}" style="display:inline-block;background:#ff6d00;color:#fff;padding:14px 36px;border-radius:24px;text-decoration:none;font-weight:700;font-size:18px;">📞 무료 상담 {PHONE_NUMBER}</a>
+</div>
+'''
+        },
         'terms/index.html': {
             'title': f'이용약관 - {SITE_NAME}',
             'desc': f'{SITE_NAME} 이용약관',
@@ -1768,14 +2045,14 @@ def generate_static_pages():
     result = {}
     for path, data in pages.items():
         canonical = f'{SITE_URL}/{path.replace("index.html","")}'
-        head = get_head(data['title'], data['desc'], canonical)
+        head = _static_head(data['title'], data['desc'], canonical)
         full_html = f'''{head}
 <body>
-{get_header()}
+{_static_header()}
 <main class="detail-container">
 {data['content']}
 </main>
-{get_footer()}
+{_static_footer()}
 </body>'''
         result[path] = full_html
     return result
@@ -1839,7 +2116,7 @@ def generate_sitemap(all_items):
         urls.append(f'<url><loc>{SITE_URL}/region/{slug}/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>')
 
     # 정적
-    for p in ['faq/', 'about/', 'privacy/', 'terms/']:
+    for p in ['faq/', 'about/', 'privacy/', 'terms/', 'guide/', 'dictionary/']:
         urls.append(f'<url><loc>{SITE_URL}/{p}</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>')
 
     # 개별 상세
@@ -1891,7 +2168,7 @@ def main():
     os.makedirs(os.path.join(DOCS_DIR, 'region'), exist_ok=True)
     for cat_key in ['apartment', 'land', 'commercial', 'other']:
         os.makedirs(os.path.join(DOCS_DIR, cat_key), exist_ok=True)
-    for page in ['faq', 'about', 'privacy', 'terms']:
+    for page in ['faq', 'about', 'privacy', 'terms', 'guide', 'dictionary']:
         os.makedirs(os.path.join(DOCS_DIR, page), exist_ok=True)
 
     # DB 로드
@@ -1952,6 +2229,12 @@ def main():
             'sd': item.get('sale_date', ''),
             'st': item.get('status', ''),
             'sido': item.get('address_sido', ''),
+            'sigungu': item.get('address_sigungu', ''),
+            'dg': item.get('difficulty_grade', ''),
+            'rs': item.get('risk_score', 0),
+            'rk': item.get('risk_keywords', ''),
+            'mr': item.get('min_rate', ''),
+            'it': item.get('item_type', ''),
         })
     with open(os.path.join(DOCS_DIR, 'data.json'), 'w', encoding='utf-8') as f:
         json.dump(json_items, f, ensure_ascii=False)
@@ -2231,6 +2514,12 @@ def generate_incremental(changed_ids=None):
             'sd': item.get('sale_date', ''),
             'st': item.get('status', ''),
             'sido': item.get('address_sido', ''),
+            'sigungu': item.get('address_sigungu', ''),
+            'dg': item.get('difficulty_grade', ''),
+            'rs': item.get('risk_score', 0),
+            'rk': item.get('risk_keywords', ''),
+            'mr': item.get('min_rate', ''),
+            'it': item.get('item_type', ''),
         })
     with open(os.path.join(DOCS_DIR, 'data.json'), 'w', encoding='utf-8') as f:
         json.dump(json_items, f, ensure_ascii=False)

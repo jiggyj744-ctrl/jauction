@@ -16,7 +16,7 @@ if ($existing) {
 
 $Action = New-ScheduledTaskAction -Execute $ScriptPath -WorkingDirectory "D:\jauction"
 $Trigger = New-ScheduledTaskTrigger -Daily -At "06:00AM"
-$Settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -ExecutionTimeLimit (New-TimeSpan -Hours 2)
+$Settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -ExecutionTimeLimit (New-TimeSpan -Hours 3)
 
 Register-ScheduledTask -TaskName $TaskName -Action $Action -Trigger $Trigger -Settings $Settings -Description "jauction daily update"
 
