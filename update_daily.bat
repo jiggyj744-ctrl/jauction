@@ -29,7 +29,7 @@ REM 2단계: 증분 데이터 보완
 REM ============================================
 echo.
 echo [2/6] 증분 데이터 보완 (fix_all_incremental) 시작...
-python fix_all_incremental.py
+python scripts\fix_all_incremental.py
 if %errorlevel% neq 0 (
     echo ❌ fix_all_incremental 실패! 오류 코드: %errorlevel%
     exit /b 1

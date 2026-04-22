@@ -19,7 +19,7 @@ def parse_stats(stats_str):
     try:
         import json
         return json.loads(stats_str) if isinstance(stats_str, str) else stats_str
-    except:
+    except Exception:
         return None
 
 def analyze_risk(item):
@@ -230,7 +230,7 @@ def generate_expert_comment(item):
             d = int(re.search(r'(\d+)', str(dday)).group(1))
             if d <= 3:
                 summary_parts.append(f'매각 {d}일 전으로 시간 촉박')
-        except:
+        except Exception:
             pass
     
     summary = '. '.join(summary_parts[:3]) + '.'

@@ -92,12 +92,8 @@ def html_escape_formatted_long_text(text):
 # ======================================
 # 설정
 # ======================================
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(BASE_DIR, 'data', 'auction.db')
+from config import BASE_DIR, DB_PATH, SITE_NAME, SITE_URL, PHONE_NUMBER
 DOCS_DIR = os.path.join(BASE_DIR, 'docs')
-SITE_NAME = 'jauction'
-SITE_URL = 'https://jiggyj744-ctrl.github.io/jauction'
-PHONE_NUMBER = '010-6899-1601'
 DESCRIPTION = '전국 법원 경매 부동산 정보 - 아파트, 토지, 상업용 부동산 경매 물건 검색'
 
 # 지역 매핑
@@ -1302,7 +1298,7 @@ def generate_detail_html(item):
             if risk_kws:
                 risk_tags = ' '.join(f'<span style="background:#fef2f2;color:#dc2626;padding:2px 8px;border-radius:8px;font-size:12px;margin:2px;display:inline-block;">{html.escape(kw)}</span>' for kw in risk_kws[:6])
                 building_rows += f'<tr><td>리스크</td><td>{risk_tags}</td></tr>'
-        except:
+        except Exception:
             pass
 
     if building_rows:
@@ -1365,7 +1361,7 @@ def generate_detail_html(item):
                         continue  # 0인 행 건너뛰기
                     bid_rows += f'<tr><td>{html.escape(str(b.get("bid_round","")))}</td><td>{html.escape(str(b.get("bid_date","")))}</td><td style="font-weight:700;text-align:right;">{html.escape(formatted_price)}</td><td>{html.escape(str(b.get("result","")))}</td></tr>'
                 bid_html = f'''<div class="section"><h2>📊 입찰이력</h2><table class="bid-table">{bid_rows}</table></div>'''
-        except:
+        except Exception:
             pass
 
     # 통계 섹션
@@ -1376,7 +1372,7 @@ def generate_detail_html(item):
             try:
                 s = json.loads(raw) if isinstance(raw, str) else raw
                 stats_html += f'<tr><td>{period}</td><td>건수: {s.get("count","-")} / 평균감정가: {s.get("avg_appraisal","-")} / 평균매각가: {s.get("avg_sale","-")} / 실패: {s.get("fail_count","-")}</td></tr>'
-            except:
+            except Exception:
                 pass
     stats_section = ''
     if stats_html:
@@ -1390,7 +1386,7 @@ def generate_detail_html(item):
     if photo_urls_raw:
         try:
             photo_urls = json.loads(photo_urls_raw) if isinstance(photo_urls_raw, str) else photo_urls_raw
-        except:
+        except Exception:
             photo_urls = []
 
     if photo_urls:

@@ -561,7 +561,7 @@ def download_images(session, internal_id, item_data, force=False):
     if isinstance(photo_urls, str):
         try:
             photo_urls = json.loads(photo_urls)
-        except:
+        except Exception:
             photo_urls = []
     urls.extend(photo_urls)
     

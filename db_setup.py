@@ -7,7 +7,7 @@
 import sqlite3
 import os
 
-DB_PATH = os.path.join(os.path.dirname(__file__), 'data', 'auction.db')
+from config import DB_PATH
 
 # 물건종류 코드 매핑
 ITEM_TYPE_MAP = {
@@ -221,7 +221,7 @@ def init_db(drop=False):
         )
     ''')
     
-    # 5. 변경 이력 테이블 (어떤 물건이 어떻게 변경되었는지 추적)
+    # 7. 변경 이력 테이블 (어떤 물건이 어떻게 변경되었는지 추적)
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS item_changes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,

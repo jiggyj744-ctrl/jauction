@@ -272,9 +272,8 @@ def crawl_details_for_ids(session, id_list, label="상세"):
     print(f"[2단계] {label}: {len(id_list)}건 상세 크롤링")
     print(f"{'='*60}")
     
-    conn = sqlite3.connect(DB_PATH)
     success = 0
-    
+
     for idx, internal_id in enumerate(id_list):
         try:
             detail = parse_detail_page(session, internal_id)
@@ -283,22 +282,21 @@ def crawl_details_for_ids(session, id_list, label="상세"):
                 bid_history = detail.get('bid_history', [])
                 fail_count = sum(1 for bid in bid_history if '유찰' in bid.get('result', ''))
                 detail['fail_count'] = fail_count
-                
+
                 # DB에 상세 업데이트
                 from crawler import save_detail_to_db
                 save_detail_to_db(detail)
                 success += 1
-                
+
                 if (idx + 1) % 10 == 0:
                     print(f"  {idx+1}/{len(id_list)} 진행중 (성공:{success})")
             else:
                 print(f"  ID:{internal_id} - 상세 페이지 없음")
-            
+
             time.sleep(DELAY_DETAIL)
         except Exception as e:
             print(f"  ID:{internal_id} 오류: {e}")
-    
-    conn.close()
+
     print(f"  ✅ 상세 크롤링 완료: {success}/{len(id_list)}건 성공")
     return success
 
