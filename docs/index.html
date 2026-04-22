@@ -35,11 +35,11 @@
 010-6899-1601
 </a>
 <nav class="nav"><a href="./" class="nav-link">홈</a>
-<a href="apartment/" class="nav-link">아파트/주거</a>
-<a href="land/" class="nav-link">토지</a>
-<a href="commercial/" class="nav-link">상업용</a>
-<a href="region/" class="nav-link">지역별</a>
-<a href="faq/" class="nav-link">FAQ</a></nav>
+<a href="./apartment/" class="nav-link">아파트/주거</a>
+<a href="./land/" class="nav-link">토지</a>
+<a href="./commercial/" class="nav-link">상업용</a>
+<a href="./region/" class="nav-link">지역별</a>
+<a href="./faq/" class="nav-link">FAQ</a></nav>
 </div>
 </header>
 
@@ -87,16 +87,16 @@
 <footer class="site-footer">
 <div class="container">
 <div class="footer-links">
-<a href="guide/">경매가이드</a>
-<a href="dictionary/">용어사전</a>
-<a href="about/">사이트 소개</a>
-<a href="privacy/">개인정보처리방침</a>
-<a href="terms/">이용약관</a>
-<a href="faq/">자주묻는질문</a>
-<a href="feed.xml">RSS</a>
+<a href="./guide/">경매가이드</a>
+<a href="./dictionary/">용어사전</a>
+<a href="./about/">사이트 소개</a>
+<a href="./privacy/">개인정보처리방침</a>
+<a href="./terms/">이용약관</a>
+<a href="./faq/">자주묻는질문</a>
+<a href="./feed.xml">RSS</a>
 </div>
 <p class="footer-copy">© 2026 jauction. 본 사이트는 참고용이며, 실제 경매 정보는 해당 법원에서 확인하세요.</p>
-<p class="footer-copy" style="margin-top:6px;font-size:0.8em;">최종 업데이트: 2026-04-22 12:35</p>
+<p class="footer-copy" style="margin-top:6px;font-size:0.8em;">최종 업데이트: 2026-04-22 13:25</p>
 </div>
 </footer>
 
@@ -207,7 +207,7 @@ function renderPage(page) {
                 <div class="price-row">
                     <div class="price-item"><div class="price-label">감정가</div><div class="price-value">${formatPrice(i.ap)}</div></div>
                     <div class="price-item"><div class="price-label">최저가</div><div class="price-value accent">${formatPrice(i.mp)}</div></div>
-                    ${rate ? `<div class="price-item"><div class="price-label">최저가율</div><div class="price-value" style="color:${rateColor};font-weight:800">${rate}</div></div>` : ''}
+                    <div class="price-item"><div class="price-label">최저가율</div><div class="price-value" style="color:${rateColor};font-weight:800">${rate || '-'}</div></div>
                 </div>
             </div>
             <div class="card-footer">

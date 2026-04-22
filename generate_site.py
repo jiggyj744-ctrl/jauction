@@ -46,7 +46,8 @@ def format_long_text_readability(text):
     # '. 2. ' '. 3. ' 형태의 번호 조항
     t = re.sub(r'(?<=[\.。．])\s+(?=(?:[1-9]|[1-9]\d)\.\s)', '\n', t)
     # 법원명 앞 줄바꿈 (예: "청주지방법원", "서울중앙지법" 등)
-    t = re.sub(r'(?<=[^\n])([가-힣]+(?:지방법원|지법|고등법원|고법|법원))', r'\n\1', t)
+    # 단, 법원명 뒤에 바로 사건번호가 오는 경우는 줄바꿈하지 않음
+    t = re.sub(r'(?<=[^\n])([가-힣]+(?:지방법원|지법|고등법원|고법|법원))(?!\s*\d{4}[가-힣])', r'\n\1', t)
     t = re.sub(r'\n{3,}', '\n\n', t)
     return t.strip()
 
@@ -127,7 +128,7 @@ CATEGORY_MAP = {
 # ======================================
 # 공통 HTML 템플릿
 # ======================================
-def get_head(title, description='', canonical='', additional_meta='', use_legacy_google_verification=True):
+def get_head(title, description='', canonical='', additional_meta='', use_legacy_google_verification=True, css_path='style.css'):
     legacy_google = ''
     if use_legacy_google_verification:
         legacy_google = '<meta name="google-site-verification" content="VNMGQ8RFZK8mPlJU1cM00-lW4PwxPrA9ZAYGv_cEm_M" />\n'
@@ -147,21 +148,21 @@ def get_head(title, description='', canonical='', additional_meta='', use_legacy
 <meta property="og:site_name" content="{SITE_NAME}">
 <meta property="og:image" content="{SITE_URL}/images/kakao_img.png">
 <link rel="canonical" href="{canonical}">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="{css_path}">
 <meta name="NaverBot" content="All"/>
 <meta name="NaverBot" content="index,follow"/>
 <meta name="Yeti" content="All"/>
 <meta name="Yeti" content="index,follow"/>
 {extra_block}{legacy_google}</head>'''
 
-def get_header(current='', show_search=False):
+def get_header(current='', show_search=False, base_path='./'):
     nav_items = [
-        ('./', '홈'),
-        ('apartment/', '아파트/주거'),
-        ('land/', '토지'),
-        ('commercial/', '상업용'),
-        ('region/', '지역별'),
-        ('faq/', 'FAQ'),
+        (base_path, '홈'),
+        (f'{base_path}apartment/', '아파트/주거'),
+        (f'{base_path}land/', '토지'),
+        (f'{base_path}commercial/', '상업용'),
+        (f'{base_path}region/', '지역별'),
+        (f'{base_path}faq/', 'FAQ'),
     ]
     nav_html = '\n'.join(
         f'<a href="{url}" class="nav-link{" active" if current == url else ""}">{label}</a>'
@@ -177,7 +178,7 @@ def get_header(current='', show_search=False):
 </div>'''
     return f'''<header class="site-header">
 <div class="container">
-<a href="./" class="logo">🏷️ {SITE_NAME}</a>
+<a href="{base_path}" class="logo">🏷️ {SITE_NAME}</a>
 {search_html}
 <a href="tel:{PHONE_NUMBER}" class="header-phone">
 <span class="header-phone-icon">📞</span>
@@ -187,17 +188,17 @@ def get_header(current='', show_search=False):
 </div>
 </header>'''
 
-def get_footer():
+def get_footer(base_path='./'):
     return f'''<footer class="site-footer">
 <div class="container">
 <div class="footer-links">
-<a href="guide/">경매가이드</a>
-<a href="dictionary/">용어사전</a>
-<a href="about/">사이트 소개</a>
-<a href="privacy/">개인정보처리방침</a>
-<a href="terms/">이용약관</a>
-<a href="faq/">자주묻는질문</a>
-<a href="feed.xml">RSS</a>
+<a href="{base_path}guide/">경매가이드</a>
+<a href="{base_path}dictionary/">용어사전</a>
+<a href="{base_path}about/">사이트 소개</a>
+<a href="{base_path}privacy/">개인정보처리방침</a>
+<a href="{base_path}terms/">이용약관</a>
+<a href="{base_path}faq/">자주묻는질문</a>
+<a href="{base_path}feed.xml">RSS</a>
 </div>
 <p class="footer-copy">© {datetime.now().year} {SITE_NAME}. 본 사이트는 참고용이며, 실제 경매 정보는 해당 법원에서 확인하세요.</p>
 <p class="footer-copy" style="margin-top:6px;font-size:0.8em;">최종 업데이트: {datetime.now().strftime('%Y-%m-%d %H:%M')}</p>
@@ -1082,7 +1083,7 @@ function renderPage(page) {{
                 <div class="price-row">
                     <div class="price-item"><div class="price-label">감정가</div><div class="price-value">${{formatPrice(i.ap)}}</div></div>
                     <div class="price-item"><div class="price-label">최저가</div><div class="price-value accent">${{formatPrice(i.mp)}}</div></div>
-                    ${{rate ? `<div class="price-item"><div class="price-label">최저가율</div><div class="price-value" style="color:${{rateColor}};font-weight:800">${{rate}}</div></div>` : ''}}
+                    <div class="price-item"><div class="price-label">최저가율</div><div class="price-value" style="color:${{rateColor}};font-weight:800">${{rate || '-'}}</div></div>
                 </div>
             </div>
             <div class="card-footer">
@@ -1592,7 +1593,7 @@ def generate_category_landing(cat_key, cat_name, cat_korean, items_data):
     desc = f'전국 {cat_name} 경매 물건 {len(items_data):,}건 - 최저가, 감정가, 매각일정 실시간 제공'
     canonical = f'{SITE_URL}/{cat_key}/'
 
-    head = get_head(title, desc, canonical)
+    head = get_head(title, desc, canonical, css_path='../style.css')
 
     items_html = ''
     for i in items_data[:60]:
@@ -1602,7 +1603,7 @@ def generate_category_landing(cat_key, cat_name, cat_korean, items_data):
             return f'{p/10000:.0f}만'
 
         items_html += f'''
-        <a href="auction/{i["id"]}.html" class="item-card">
+        <a href="../auction/{i["id"]}.html" class="item-card">
             <div class="card-header">
                 <span class="case-num">{i.get("cn","-")}</span>
                 <span class="status-badge status-proceeding">{i.get("st","-")}</span>
@@ -1620,7 +1621,7 @@ def generate_category_landing(cat_key, cat_name, cat_korean, items_data):
 
     return f'''{head}
 <body>
-{get_header(f'/{cat_key}/')}
+{get_header(f'/{cat_key}/', base_path='../')}
 <section class="hero">
 <div class="container">
 <h1>{cat_name} 경매 물건</h1>
@@ -1630,7 +1631,7 @@ def generate_category_landing(cat_key, cat_name, cat_korean, items_data):
 <main class="container">
 <div class="item-grid">{items_html}</div>
 </main>
-{get_footer()}
+{get_footer(base_path='../')}
 <div class="mobile-bottom-nav">
 <a href="tel:{PHONE_NUMBER}"><span class="pulse"></span> 📞 무료 경매 상담 {PHONE_NUMBER}</a>
 </div>
@@ -1645,7 +1646,7 @@ def generate_region_landing(region_key, region_name, items_data):
     desc = f'{region_name} 경매 부동산 {len(items_data):,}건 - 아파트, 토지, 상업용 경매 정보'
     canonical = f'{SITE_URL}/region/{region_key}/'
 
-    head = get_head(title, desc, canonical)
+    head = get_head(title, desc, canonical, css_path='../../style.css')
 
     items_html = ''
     for i in items_data[:60]:
@@ -1655,7 +1656,7 @@ def generate_region_landing(region_key, region_name, items_data):
             return f'{p/10000:.0f}만'
 
         items_html += f'''
-        <a href="auction/{i["id"]}.html" class="item-card">
+        <a href="../../auction/{i["id"]}.html" class="item-card">
             <div class="card-header">
                 <span class="case-num">{i.get("cn","-")}</span>
                 <span class="category-badge badge-residential">{i.get("cat","")}</span>
@@ -1671,7 +1672,7 @@ def generate_region_landing(region_key, region_name, items_data):
 
     return f'''{head}
 <body>
-{get_header('/region/')}
+{get_header('/region/', base_path='../../')}
 <section class="hero">
 <div class="container">
 <h1>{region_name} 경매 부동산</h1>
@@ -1681,7 +1682,7 @@ def generate_region_landing(region_key, region_name, items_data):
 <main class="container">
 <div class="item-grid">{items_html}</div>
 </main>
-{get_footer()}
+{get_footer(base_path='../../')}
 <div class="mobile-bottom-nav">
 <a href="tel:{PHONE_NUMBER}"><span class="pulse"></span> 📞 무료 경매 상담 {PHONE_NUMBER}</a>
 </div>
@@ -1696,21 +1697,21 @@ def generate_region_index_html(sido_items):
     desc = '전국 시도별 법원 경매 부동산 정보 - 서울, 경기, 부산, 인천 등 지역별 경매 물건 검색'
     canonical = f'{SITE_URL}/region/'
 
-    head = get_head(title, desc, canonical)
+    head = get_head(title, desc, canonical, css_path='../style.css')
 
     region_cards = ''
     for sido, slug in REGION_MAP.items():
         count = len(sido_items.get(sido, []))
         region_name = REGION_TITLE.get(slug, sido)
         region_cards += f'''
-        <a href="region/{slug}/" class="region-card">
+        <a href="{slug}/" class="region-card">
             <div class="region-name">{region_name}</div>
             <div class="region-count">{count:,}건</div>
         </a>'''
 
     return f'''{head}
 <body>
-{get_header('region/')}
+{get_header('region/', base_path='../')}
 
 <section class="hero" style="padding:40px 0">
 <div class="container">
@@ -1723,7 +1724,7 @@ def generate_region_index_html(sido_items):
 <div class="region-grid">{region_cards}</div>
 </main>
 
-{get_footer()}
+{get_footer(base_path='../')}
 
 <div class="mobile-bottom-nav">
 <a href="tel:{PHONE_NUMBER}"><span class="pulse"></span> 📞 무료 경매 상담 {PHONE_NUMBER}</a>
