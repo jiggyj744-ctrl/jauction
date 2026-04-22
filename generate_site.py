@@ -89,6 +89,22 @@ def html_escape_formatted_long_text(text):
     return html.escape(format_long_text_readability(text))
 
 
+def format_address_html(addr):
+    """주소 표시 개선: 구) 앞 줄바꿈, 도로명+번호 띄어쓰기, 괄호 안 쉼표 띄어쓰기"""
+    if not addr:
+        return '-'
+    a = addr
+    # 도로명+번호 띄어쓰기 (예: 가야대로747번길 → 가야대로 747번길)
+    a = re.sub(r'([가-힣])(\d+번길)', r'\1 \2', a)
+    # 괄호 안 쉼표 뒤 띄어쓰기 (예: (부전동,라자오피스텔) → (부전동, 라자오피스텔))
+    a = re.sub(r',([가-힣])', r', \1', a)
+    # 구) 앞 줄바꿈: 신주소와 구주소 분리
+    if ')구)' in a:
+        parts = a.split(')구)', 1)
+        return html.escape(parts[0] + ')') + '<br>' + html.escape('구)' + parts[1])
+    return html.escape(a)
+
+
 # ======================================
 # 설정
 # ======================================
@@ -1232,8 +1248,16 @@ def generate_detail_html(item):
         return f'<tr><td>{html.escape(label)}</td><td class="text-long-wrap">{v}</td></tr>'
 
     # 기본정보 섹션
+    # gfauction 원본 링크
+    gf_link_row = ''
+    if cn and '-' in cn:
+        sno, tno = cn.split('-', 1)
+        gf_url = f'https://gfauction.co.kr/search/search_list.php?aresult=all&sno={sno}&tno={tno}'
+        gf_link_row = f'<tr><td>원본</td><td><a href="{gf_url}" target="_blank" rel="noopener" style="color:#1a73e8;font-weight:600;text-decoration:none;">법원경매 무료 정보검색 바로가기 🔗</a></td></tr>'
+
     basic_rows = ''
     basic_rows += row('사건번호', cn_display)
+    basic_rows += gf_link_row
     basic_rows += row('법원', court)
     basic_rows += row('물건종류', item_type)
     basic_rows += row('카테고리', cat)
@@ -1243,7 +1267,7 @@ def generate_detail_html(item):
 
     # 소재지 섹션
     addr_rows = ''
-    addr_rows += f'<tr><td>주소</td><td style="font-size:15px;">{html.escape(addr or "-")}</td></tr>'
+    addr_rows += f'<tr><td>주소</td><td style="font-size:15px;line-height:1.7;">{format_address_html(addr)}</td></tr>'
     addr_rows += row('시도', item.get('address_sido'))
 
     # 가격정보 섹션
