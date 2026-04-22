@@ -27,13 +27,15 @@ from expert_comment import generate_expert_comment
 
 def format_long_text_readability(text):
     """
-    스크래핑된 긴 법무 텍스트 가독성 개선: 날짜 괄호, 번호 목록, 탭 구분 필드 등에 줄바꿈 삽입.
+    스크래핑된 긴 법무 텍스트 가독성 개선: 날짜 정규화, 날짜 괄호, 번호 목록, 탭 구분 필드 등에 줄바꿈 삽입.
     """
     if text is None:
         return ''
     t = str(text).replace('\r\n', '\n').replace('\r', '\n').strip()
     if not t:
         return ''
+    # 날짜 정규화: 끊어진 날짜 합치기 (예: "2003.\n11.\n22." → "2003.11.22.")
+    t = re.sub(r'(\d{4})\.\s*\n\s*(\d{1,2})\.\s*\n\s*(\d{1,2})\.', r'\1.\2.\3.', t)
     # 탭으로 이어 붙인 항목(라벨\t내용) 분리
     if '\t' in t:
         t = re.sub(r'\t+', '\n', t)
@@ -43,8 +45,43 @@ def format_long_text_readability(text):
     t = re.sub(r'(제출)(?=\d+\.\s)', r'\1\n', t)
     # '. 2. ' '. 3. ' 형태의 번호 조항
     t = re.sub(r'(?<=[\.。．])\s+(?=(?:[1-9]|[1-9]\d)\.\s)', '\n', t)
+    # 법원명 앞 줄바꿈 (예: "청주지방법원", "서울중앙지법" 등)
+    t = re.sub(r'(?<=[^\n])([가-힣]+(?:지방법원|지법|고등법원|고법|법원))', r'\n\1', t)
     t = re.sub(r'\n{3,}', '\n\n', t)
     return t.strip()
+
+
+def format_bid_price(price):
+    """입찰가를 읽기 쉬운 형식으로 포맷 (예: 6525184000 → '6,525,184,000원')"""
+    try:
+        p = int(float(str(price).replace(',', '').strip()))
+        if p == 0:
+            return None  # 0이면 None 반환하여 건너뛰기
+        return f'{p:,}원'
+    except (ValueError, TypeError):
+        return None
+
+
+def format_related_cases_with_links(text):
+    """관련사건 텍스트를 파싱하여 gfauction 바로가기 링크와 줄바꿈 적용"""
+    if not text:
+        return ''
+    t = html.escape(format_long_text_readability(text))
+    # 패턴: "법원명 사건번호" (예: "청주지방법원 2021타기203")
+    # 사건번호에서 연도와 번호 추출하여 gfauction 링크 생성
+    def make_link(m):
+        court = m.group(1)
+        case_num = m.group(2)
+        # 사건번호에서 연도(숫자)와 타경/타기/가합 등 뒤의 번호 추출
+        cn_match = re.match(r'(\d{4})(?:타경|타기|가합|가단|나단|다단|라단|마단|바단|사단|아단|자단|차단|카단|타단|파단|하단|기소|고소|형사|민사|소액|가소|나소|다소|라소|마소|바소|사소|아소|자소|차소|카소|타소|파소|하소|재심|항소|상고|파기환송|파기)(\d+)', case_num)
+        if cn_match:
+            sno = cn_match.group(1)
+            tno = cn_match.group(2)
+            url = f'https://gfauction.co.kr/search/search_list.php?aresult=all&sno={sno}&tno={tno}'
+            return f'{court} <a href="{url}" target="_blank" rel="noopener" style="color:var(--primary);font-weight:600;">{case_num} 🔗</a>'
+        return f'{court} {case_num}'
+    t = re.sub(r'([가-힣]+(?:지방법원|지법|고등법원|고법|법원))\s+(\d{4}[가-힣]+\d+)', make_link, t)
+    return t
 
 
 def html_escape_formatted_long_text(text):
@@ -1287,7 +1324,8 @@ def generate_detail_html(item):
     # 관련사건
     related_case_html = ''
     if item.get('related_case'):
-        related_case_html = f'''<div class="section"><h2>🔗 관련사건</h2><table>{row_long('관련사건', item['related_case'])}</table></div>'''
+        related_formatted = format_related_cases_with_links(item['related_case'])
+        related_case_html = f'''<div class="section"><h2>🔗 관련사건</h2><table><tr><td>관련사건</td><td class="text-long-wrap">{related_formatted}</td></tr></table></div>'''
 
     # 임차/권리정보 섹션
     rights_html = ''
@@ -1320,7 +1358,11 @@ def generate_detail_html(item):
             if bids:
                 bid_rows = '<tr style="background:#37474F;color:#fff;"><td>회차</td><td>날짜</td><td>최저가</td><td>결과</td></tr>'
                 for b in bids:
-                    bid_rows += f'<tr><td>{html.escape(str(b.get("bid_round","")))}</td><td>{html.escape(str(b.get("bid_date","")))}</td><td>{html.escape(str(b.get("min_bid_price","")))}</td><td>{html.escape(str(b.get("result","")))}</td></tr>'
+                    raw_price = b.get('min_bid_price', 0)
+                    formatted_price = format_bid_price(raw_price)
+                    if formatted_price is None:
+                        continue  # 0인 행 건너뛰기
+                    bid_rows += f'<tr><td>{html.escape(str(b.get("bid_round","")))}</td><td>{html.escape(str(b.get("bid_date","")))}</td><td style="font-weight:700;text-align:right;">{html.escape(formatted_price)}</td><td>{html.escape(str(b.get("result","")))}</td></tr>'
                 bid_html = f'''<div class="section"><h2>📊 입찰이력</h2><table class="bid-table">{bid_rows}</table></div>'''
         except:
             pass
