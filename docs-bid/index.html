@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>무료경매정보 - 법원경매 전문 정보 - 감정평가서, 현황조사서 포함</title>
+<meta name="referrer" content="no-referrer"/>
+<meta name="description" content="법원경매 전문 정보 포털. 감정평가서, 현황조사서, PDF 문서 포함 35,000+ 경매 물건."/>
+<meta name="google-site-verification" content="mLApLDPZXL1tlL86Cg7H3OqfIX7jAiBtKBN0t7F84pA"/>
+<meta name="naver-site-verification" content="cbbbf686998a5621737a6eb1a4083ee989616cca" />
+<meta property="og:title" content="무료경매정보"/>
+<meta property="og:description" content="법원경매 전문 정보 - 감정평가서, 현황조사서 포함"/>
+<meta property="og:site_name" content="무료경매정보"/>
+<link rel="canonical" href="https://bid.recoverylab.co.kr/"/>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"무료경매정보","url":"https://bid.recoverylab.co.kr"}</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans KR',sans-serif;background:#0f1923;color:#e0e0e0;line-height:1.7}
+.hero{background:linear-gradient(135deg,#1a237e,#0d47a1,#01579b);padding:80px 24px;text-align:center}
+.hero h1{font-size:36px;color:#fff;margin-bottom:16px}
+.hero h1 span{color:#64b5f6}
+.hero p{color:#90caf9;font-size:16px;max-width:600px;margin:0 auto}
+.search-box{max-width:600px;margin:30px auto 0;display:flex;gap:8px}
+.search-box input{flex:1;padding:14px 20px;border-radius:10px;border:2px solid #3949ab;background:#0d1b2a;color:#fff;font-size:16px;outline:none}
+.search-box button{padding:14px 28px;background:#3949ab;color:#fff;border:none;border-radius:10px;font-size:16px;cursor:pointer;font-weight:700}
+.search-box button:hover{background:#5c6bc0}
+.wrap{max-width:1200px;margin:0 auto;padding:30px 16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:40px}
+.stat-card{background:#1a2332;border-radius:12px;padding:24px;text-align:center;border:1px solid #2a3a4a}
+.stat-value{font-size:32px;font-weight:800;color:#64b5f6}
+.stat-label{color:#78909c;font-size:13px;margin-top:4px}
+.categories{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:40px}
+.cat-card{background:#1a2332;border-radius:10px;padding:18px;text-align:center;border:1px solid #2a3a4a;cursor:pointer;text-decoration:none;transition:transform .2s;display:flex;align-items:center;justify-content:space-between}
+.cat-card:hover{transform:translateY(-3px);border-color:#3949ab}
+.cat-name{font-weight:700;color:#e0e0e0}
+.cat-count{color:#64b5f6;font-size:20px;font-weight:800}
+.cat-arrow{color:#64b5f6;font-size:18px;display:none}
+.cat-card:hover .cat-arrow{display:inline}
+.section-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:16px;padding-left:4px;border-left:4px solid #3949ab;display:flex;justify-content:space-between;align-items:center}
+.section-title a{font-size:14px;color:#64b5f6;text-decoration:none;font-weight:500}
+.item-list{display:flex;flex-direction:column;gap:12px;margin-bottom:40px}
+.item-card{display:flex;gap:16px;background:#1a2332;border-radius:12px;padding:16px;border:1px solid #2a3a4a;text-decoration:none;color:inherit;transition:transform .2s,border-color .2s}
+.item-card:hover{transform:translateX(4px);border-color:#3949ab}
+.item-thumb{width:120px;height:90px;object-fit:cover;border-radius:8px;flex-shrink:0}
+.item-thumb-placeholder{width:120px;height:90px;background:#0d1b2a;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0}
+.item-info{flex:1;min-width:0}
+.item-title{font-size:15px;font-weight:700;color:#e0e0e0;margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-meta{display:flex;gap:8px;font-size:12px;margin-bottom:6px;flex-wrap:wrap}
+.item-cat{background:#0d1b2a;padding:2px 8px;border-radius:4px;color:#78909c}
+.item-status{font-weight:700}
+.item-discount{background:#1b5e20;padding:2px 8px;border-radius:4px;color:#69f0ae;font-weight:700}
+.item-prices{font-size:13px;color:#78909c;display:flex;gap:16px;flex-wrap:wrap}
+.item-prices strong{color:#ffa726;font-size:15px}
+.item-date{font-size:12px;color:#546e7a;margin-top:4px}
+.cta-section{background:linear-gradient(135deg,#1a237e,#0d47a1,#01579b);border-radius:16px;padding:50px 30px;text-align:center;margin:40px 0;border:1px solid #3949ab}
+.cta-section h2{color:#fff;font-size:26px;margin-bottom:12px}
+.cta-section p{color:#90caf9;margin-bottom:24px;font-size:16px;max-width:500px;margin-left:auto;margin-right:auto}
+.cta-btn{display:inline-block;padding:16px 40px;border-radius:12px;font-size:18px;font-weight:800;text-decoration:none;margin:6px;transition:transform .2s}
+.cta-btn:hover{transform:translateY(-2px)}
+.cta-primary{background:#ffa726;color:#1a237e}
+.cta-secondary{background:rgba(255,255,255,.15);color:#fff;border:2px solid #64b5f6}
+.footer{text-align:center;padding:40px 20px;color:#546e7a;font-size:13px;border-top:1px solid #1e2d3d;margin-top:40px}
+    .consulting-banner{margin:20px 0;border-radius:16px;overflow:hidden;border:2px solid #ffa726;background:linear-gradient(135deg,#1a237e,#0d47a1)}
+    .consulting-link{display:flex;align-items:center;padding:28px 30px;text-decoration:none;color:#fff;gap:20px;transition:background .2s}
+    .consulting-link:hover{background:rgba(255,255,255,.05)}
+    .consulting-icon{font-size:48px;flex-shrink:0}
+    .consulting-content{flex:1}
+    .consulting-title{font-size:18px;font-weight:700;color:#90caf9;margin-bottom:4px}
+    .consulting-phone{font-size:28px;font-weight:900;color:#ffa726;letter-spacing:1px}
+    .consulting-desc{font-size:13px;color:#78909c;margin-top:4px}
+    .consulting-cta{background:#ffa726;color:#1a237e;padding:14px 28px;border-radius:12px;font-weight:800;font-size:15px;white-space:nowrap;flex-shrink:0}
+</style>
+</head>
+<body>
+<div class="hero">
+    <h1>BID<span>경매</span></h1>
+    <p>법원경매 전문 정보 — 감정평가서, 현황조사서, PDF 문서까지</p>
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="주소, 사건번호 검색..." onkeypress="if(event.key==='Enter')doSearch()"/>
+        <button onclick="doSearch()">🔍 검색</button>
+    </div>
+</div>
+<div class="wrap">
+    <div class="stats">
+        <div class="stat-card"><div class="stat-value">35,099</div><div class="stat-label">전체 물건</div></div>
+        <div class="stat-card"><div class="stat-value">35,088</div><div class="stat-label">감정평가서</div></div>
+        <div class="stat-card"><div class="stat-value">33,374</div><div class="stat-label">PDF 문서</div></div>
+        <div class="stat-card"><div class="stat-value">0</div><div class="stat-label">지도 위치</div></div>
+    </div>
+    <h2 class="section-title">📂 카테고리별 물건</h2>
+    <div class="categories"><a href="/auction/?category=주거용 부동산" class="cat-card"><div class="cat-name">주거용 부동산</div><div class="cat-count">17,878건</div><div class="cat-arrow">→</div></a>
+<a href="/auction/?category=토지" class="cat-card"><div class="cat-name">토지</div><div class="cat-count">9,348건</div><div class="cat-arrow">→</div></a>
+<a href="/auction/?category=상업용 부동산" class="cat-card"><div class="cat-name">상업용 부동산</div><div class="cat-count">6,738건</div><div class="cat-arrow">→</div></a>
+<a href="/auction/?category=기타" class="cat-card"><div class="cat-name">기타</div><div class="cat-count">1,135건</div><div class="cat-arrow">→</div></a>
+</div>
+    <h2 class="section-title">🕐 최근 등록된 물건 <a href="/auction/">전체 보기 →</a></h2>
+    <div class="item-list">
+        <a href="/auction/2025-510765.html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1012/20250130510765/pic_courtauction_0.jpg' class='item-thumb' alt='인천광역시 중구 신흥동3가 7-235 신흥아이파크 102동 6층602호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 중구 신흥동3가 7-235 신흥아이파크 102동 6층602호</div>
+                <div class="item-meta">
+                    <span class="item-cat">주거용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 3.3억원</span>
+                    <span class="item-min">최저가 <strong>3.3억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-510587.html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1012/20250130510587/pic_courtauction_7.jpg' class='item-thumb' alt='인천광역시 서구 가좌동 174-109' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 서구 가좌동 174-109</div>
+                <div class="item-meta">
+                    <span class="item-cat">주거용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 2.5억원</span>
+                    <span class="item-min">최저가 <strong>2.5억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-510530.html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1012/20250130510530/pic_courtauction_0.jpg' class='item-thumb' alt='인천광역시 미추홀구 용현동 624-88 동경테라스빌 4층402호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 미추홀구 용현동 624-88 동경테라스빌 4층402호</div>
+                <div class="item-meta">
+                    <span class="item-cat">주거용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 1.2억원</span>
+                    <span class="item-min">최저가 <strong>1.2억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-510512.html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1012/20250130510512/pic_courtauction_0.jpg' class='item-thumb' alt='인천광역시 중구 신흥동3가 13-9' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 중구 신흥동3가 13-9</div>
+                <div class="item-meta">
+                    <span class="item-cat">주거용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 126.7억원</span>
+                    <span class="item-min">최저가 <strong>126.7억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-510464.html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1012/20250130510464/pic_courtauction_3.jpg' class='item-thumb' alt='인천광역시 미추홀구 주안동 31-1 에이동 4층403호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 미추홀구 주안동 31-1 에이동 4층403호</div>
+                <div class="item-meta">
+                    <span class="item-cat">주거용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 1.3억원</span>
+                    <span class="item-min">최저가 <strong>1.3억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-510436.html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1012/20250130510436/pic_courtauction_1.jpg' class='item-thumb' alt='인천광역시 미추홀구 숭의동 66-40 온누리휴그린 6층602호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 미추홀구 숭의동 66-40 온누리휴그린 6층602호</div>
+                <div class="item-meta">
+                    <span class="item-cat">주거용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 6500만원</span>
+                    <span class="item-min">최저가 <strong>6500만원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-510395.html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1012/20250130510395/pic_courtauction_0.jpg' class='item-thumb' alt='인천광역시 계양구 효성동 21-11 현대아파트 101동 13층1301호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 계양구 효성동 21-11 현대아파트 101동 13층1301호</div>
+                <div class="item-meta">
+                    <span class="item-cat">주거용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 3.3억원</span>
+                    <span class="item-min">최저가 <strong>3.3억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-510145.html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1012/20250130510145/pic_courtauction_3.jpg' class='item-thumb' alt='인천광역시 옹진군 영흥면 외리 산62-1' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 옹진군 영흥면 외리 산62-1</div>
+                <div class="item-meta">
+                    <span class="item-cat">토지</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 4.5억원</span>
+                    <span class="item-min">최저가 <strong>4.5억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-510060 [3].html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1012/20250130510060/pic_courtauction_4.jpg' class='item-thumb' alt='인천광역시 중구 중산동 1885-4 디에스지타워 3층301호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 중구 중산동 1885-4 디에스지타워 3층301호</div>
+                <div class="item-meta">
+                    <span class="item-cat">상업용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 4.2억원</span>
+                    <span class="item-min">최저가 <strong>4.2억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-510060 [2].html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1012/20250130510060/pic_courtauction_4.jpg' class='item-thumb' alt='인천광역시 중구 중산동 1885-4 디에스지타워 3층303호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 중구 중산동 1885-4 디에스지타워 3층303호</div>
+                <div class="item-meta">
+                    <span class="item-cat">상업용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 2.2억원</span>
+                    <span class="item-min">최저가 <strong>2.2억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-510060 [1].html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1012/20250130510060/pic_courtauction_4.jpg' class='item-thumb' alt='인천광역시 중구 중산동 1885-4 디에스지타워 3층302호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 중구 중산동 1885-4 디에스지타워 3층302호</div>
+                <div class="item-meta">
+                    <span class="item-cat">상업용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 3.2억원</span>
+                    <span class="item-min">최저가 <strong>3.2억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-509869.html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1012/20250130509869/pic_courtauction_0.jpg' class='item-thumb' alt='인천광역시 부평구 부평동 10-382 정도빌라 4층 403호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 부평구 부평동 10-382 정도빌라 4층 403호</div>
+                <div class="item-meta">
+                    <span class="item-cat">주거용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 1.1억원</span>
+                    <span class="item-min">최저가 <strong>1.1억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-509726 [2].html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1012/20250130509726/pic_courtauction_0.jpg' class='item-thumb' alt='인천광역시 서구 가좌동 530-3 주안비티센터2차 5층507호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 서구 가좌동 530-3 주안비티센터2차 5층507호</div>
+                <div class="item-meta">
+                    <span class="item-cat">상업용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 2.9억원</span>
+                    <span class="item-min">최저가 <strong>2.9억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-509726 [1].html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1012/20250130509726/pic_courtauction_0.jpg' class='item-thumb' alt='인천광역시 서구 가좌동 530-3 주안비티센터2차 5층502호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 서구 가좌동 530-3 주안비티센터2차 5층502호</div>
+                <div class="item-meta">
+                    <span class="item-cat">상업용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 2.9억원</span>
+                    <span class="item-min">최저가 <strong>2.9억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-509590.html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1012/20250130509590/pic_courtauction_1.jpg' class='item-thumb' alt='인천광역시 부평구 부평동 377-7 두름파크 13층1307호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 부평구 부평동 377-7 두름파크 13층1307호</div>
+                <div class="item-meta">
+                    <span class="item-cat">주거용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 8700만원</span>
+                    <span class="item-min">최저가 <strong>8700만원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-511181.html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1003/20250130511181/pic_courtauction_0.jpg' class='item-thumb' alt='인천광역시 부평구 부평동 568-1 대준블루온 9층901호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 부평구 부평동 568-1 대준블루온 9층901호</div>
+                <div class="item-meta">
+                    <span class="item-cat">주거용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 9700만원</span>
+                    <span class="item-min">최저가 <strong>9700만원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-511058.html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1003/20250130511058/pic_courtauction_1.jpg' class='item-thumb' alt='인천광역시 서구 검암동 617-8 베틴하우스 5층501호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 서구 검암동 617-8 베틴하우스 5층501호</div>
+                <div class="item-meta">
+                    <span class="item-cat">주거용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 2.1억원</span>
+                    <span class="item-min">최저가 <strong>2.1억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-511047.html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1003/20250130511047/pic_courtauction_0.jpg' class='item-thumb' alt='인천광역시 남동구 간석동 156-8 비동 5층503호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 남동구 간석동 156-8 비동 5층503호</div>
+                <div class="item-meta">
+                    <span class="item-cat">주거용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 1.2억원</span>
+                    <span class="item-min">최저가 <strong>1.2억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-510937.html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1003/20250130510937/pic_courtauction_3.jpg' class='item-thumb' alt='인천광역시 서구 석남동 223-539 에이동 2층202호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 서구 석남동 223-539 에이동 2층202호</div>
+                <div class="item-meta">
+                    <span class="item-cat">상업용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 3.7억원</span>
+                    <span class="item-min">최저가 <strong>3.7억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a>
+        <a href="/auction/2025-510881.html" class="item-card">
+            <img src='https://photo.nuriauction.com/admin/data/2025/000240/1003/20250130510881/pic_courtauction_5.jpg' class='item-thumb' alt='인천광역시 서구 청라동 96-13 광영스너그시티청라 3층310호' loading='lazy'/>
+            <div class="item-info">
+                <div class="item-title">인천광역시 서구 청라동 96-13 광영스너그시티청라 3층310호</div>
+                <div class="item-meta">
+                    <span class="item-cat">상업용 부동산</span>
+                    <span class="item-status" style="color:#666">기타</span>
+                    <span class='item-discount'>0% ↓</span>
+                </div>
+                <div class="item-prices">
+                    <span class="item-appraisal">감정가 2.3억원</span>
+                    <span class="item-min">최저가 <strong>2.3억원</strong></span>
+                </div>
+                <div class="item-date">경매일: 2026.05.08 | 유찰: 0회</div>
+            </div>
+        </a></div>
+    <div class="cta-section">
+        <h2>지금 바로 경매 물건을 찾아보세요!</h2>
+        <p>감정가 대비 최대 80% 할인된 경매 물건을 만나보세요</p>
+        <a href="/auction/" class="cta-btn cta-primary">📋 전체 물건 조회하기</a>
+        <a href="/auction/?category=주거용 부동산" class="cta-btn cta-secondary">🏠 주거용 부동산</a>
+    </div>
+    <div class="consulting-banner">
+        <a href="tel:010-6899-1601" class="consulting-link">
+            <div class="consulting-icon">📞</div>
+            <div class="consulting-content">
+                <div class="consulting-title">경매컨설팅 상담문의</div>
+                <div class="consulting-phone">010-6899-1601</div>
+                <div class="consulting-desc">전문가 상담으로 안전한 경매 투자</div>
+            </div>
+            <div class="consulting-cta">전화 상담하기 →</div>
+        </a>
+    </div>
+</div>
+<footer class="footer">© 2026 무료경매정보</footer>
+<script>function doSearch(){var q=document.getElementById('searchInput').value.trim();if(q)location.href='/auction/?q='+encodeURIComponent(q)}</script>
+</body>
+</html>
