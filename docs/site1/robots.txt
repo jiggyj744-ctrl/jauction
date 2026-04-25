@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://a.recoverylab.co.kr/sitemap-index.xml
