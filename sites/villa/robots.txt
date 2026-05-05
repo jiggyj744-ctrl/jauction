@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /logs/
+Disallow: /data/
+
+Sitemap: https://villa.recoverylab.co.kr/sitemap-index.xml
+Sitemap: https://villa.recoverylab.co.kr/sitemap.xml

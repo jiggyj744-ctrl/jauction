@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /logs/
+Disallow: /data/
+
+Sitemap: https://apt.recoverylab.co.kr/sitemap-index.xml
+Sitemap: https://apt.recoverylab.co.kr/sitemap.xml

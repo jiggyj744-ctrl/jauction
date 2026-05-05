@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>경매 통계 리포트 | 제이옥션</title>
+  <meta name="description" content="전국 경매 시장 통계와 데이터 분석 리포트입니다. 지역별·물건유형별 경매 동향을 한눈에 확인하세요.">
+  <link rel="canonical" href="https://report.recoverylab.co.kr/">
+  <meta property="og:title" content="경매 통계 리포트 | 제이옥션">
+  <meta property="og:description" content="전국 경매 시장 데이터 분석·통계">
+  <meta property="og:type" content="website">
+  <script type="application/ld+json">{
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    "name": "전국 경매 시장 통계",
+    "description": "지역별·물건유형별 경매 통계 데이터",
+    "url": "https://report.recoverylab.co.kr/",
+    "creator": {"@type": "Organization", "name": "제이옥션"}
+  }</script>
+  <style>
+.cta-sticky-bar a:hover{text-decoration:underline!important;}
+.cta-h1-box a:hover{opacity:.9;}
+.cta-float-btn:hover{transform:scale(1.1);}
+@media(max-width:600px){
+  .cta-h1-box{flex-direction:column;text-align:center;}
+  .cta-h1-box a{width:100%;text-align:center;}
+}
+</style>
+  <style>
+    body{font-family:'Noto Sans KR',sans-serif;max-width:900px;margin:0 auto;padding:0 16px;color:#333;line-height:1.8;}
+    h1{color:#004D40;border-bottom:3px solid #004D40;padding-bottom:8px;}
+    h2{color:#004D40;margin-top:32px;border-left:4px solid #004D40;padding-left:12px;}
+  </style>
+</head>
+<body>
+  <div class="cta-sticky-bar" style="position:sticky;top:0;z-index:1000;background:#004D40;color:#fff;text-align:center;padding:10px 16px;font-size:14px;font-weight:700;">
+📞 경매 통계 리포트 전문 상담 <a href="tel:01068991601" style="color:#fff;text-decoration:none;font-size:16px;">010-6899-1601</a> &nbsp;|&nbsp; 제이옥션
+</div>
+  <article>
+    <header>
+      <h1>📊 경매 통계 리포트</h1>
+      <p style="font-size:14px;color:#888;">업데이트: 2026년 05월 05일 | 데이터 출처: 법원 경매정보</p>
+      <div class="cta-h1-box" style="background:#f0f7ff;border-left:4px solid #004D40;border-radius:8px;padding:14px 18px;margin:16px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+  <span style="font-size:14px;color:#333;">이 물건 권리분석 · 시세 상담이 필요하신가요?</span>
+  <a href="tel:01068991601" style="background:#004D40;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:700;font-size:15px;white-space:nowrap;">
+    📞 010-6899-1601 바로 전화
+  </a>
+</div>
+    </header>
+    
+<div class="stats-summary" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:20px 0;">
+  <div style="background:#e0f2f1;padding:20px;border-radius:8px;text-align:center;">
+    <div style="font-size:32px;font-weight:700;color:#004D40;">37,160</div>
+    <div style="color:#666;">전체 경매물건</div>
+  </div>
+  <div style="background:#e8f5e9;padding:20px;border-radius:8px;text-align:center;">
+    <div style="font-size:32px;font-weight:700;color:#2E7D32;">36738</div>
+    <div style="color:#666;">조회 지역</div>
+  </div>
+  <div style="background:#f3e5f5;padding:20px;border-radius:8px;text-align:center;">
+    <div style="font-size:32px;font-weight:700;color:#6A1B9A;">10</div>
+    <div style="color:#666;">물건유형</div>
+  </div>
+</div>
+
+<h2>📊 지역별 경매물건 분포</h2>
+
+<div style="margin:20px 0;">
+  <canvas id="sido_chart" style="max-height:350px;"></canvas>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script>
+    new Chart(document.getElementById('sido_chart'), {
+      type: 'bar',
+      data: {
+        labels: ["경기 광주시 쌍령동 135", "인천 중구 백운로387번길 53 오토마트", "인천 남동구 남촌동 625-58 대명자동차 보관소 (032-817-9400)", "천안시 동남구 수신면 우각골길 21", "경기도 양주시 백석읍 방성리 492-3 정석주차장", "창원시 성산구 남면로 319", "포항시 구룡포읍", "인천 미추홀구 학익동 497-1 석암주차장 (032-875-4018)", "경기 광주시 도척면 진우리 844-14 강남물류", "천안시 동남구 성남면 도장로 350"],
+        datasets: [{ label: '지역별 경매물건 수', data: [23, 14, 13, 11, 11, 10, 9, 9, 9, 8], backgroundColor: '#004D40', borderRadius: 4 }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    });
+  </script>
+</div>
+
+<h2>📦 물건유형별 분포</h2>
+
+<div style="margin:20px 0;">
+  <canvas id="type_chart" style="max-height:350px;"></canvas>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script>
+    new Chart(document.getElementById('type_chart'), {
+      type: 'bar',
+      data: {
+        labels: ["다세대(빌라)", "아파트", "오피스텔", "근린상가", "전", "임야", "답", "주택"],
+        datasets: [{ label: '물건유형별 수', data: [7244, 4325, 4292, 4268, 2915, 2717, 2412, 1593], backgroundColor: '#2E7D32', borderRadius: 4 }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    });
+  </script>
+</div>
+
+<h2>📈 진행 상태 분포</h2>
+
+<div style="margin:20px 0;max-width:400px;margin:20px auto;">
+  <canvas id="status_chart"></canvas>
+  <script>
+    new Chart(document.getElementById('status_chart'), {
+      type: 'doughnut',
+      data: {
+        labels: ["유찰", "신건", "재진행", "변경", "매각", "취하", "기각", "정지"],
+        datasets: [{ data: [27890, 4698, 2500, 956, 545, 437, 113, 21], backgroundColor: ["#1565C0", "#2E7D32", "#E65100", "#4527A0", "#6A1B9A", "#AD1457", "#C62828", "#00695C"] }]
+      },
+      options: { responsive: true, plugins: { title: { display: true, text: '진행 상태 분포' } } }
+    });
+  </script>
+</div>
+
+<h2>💰 감정가 분포</h2>
+
+<div style="margin:20px 0;">
+  <canvas id="price_chart" style="max-height:350px;"></canvas>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script>
+    new Chart(document.getElementById('price_chart'), {
+      type: 'bar',
+      data: {
+        labels: ["5천만 미만", "5천만~1억", "1억~3억", "3억~5억", "5억~10억", "10억 이상"],
+        datasets: [{ label: '감정가 분포', data: [4103, 3794, 15166, 5395, 4368, 4334], backgroundColor: '#4527A0', borderRadius: 4 }]
+      },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    });
+  </script>
+</div>
+
+    <div style="background:#e8f5e9;border-radius:8px;padding:12px 16px;margin:16px 0;text-align:center;">
+  <a href="https://gfauction.co.kr" target="_blank" rel="noopener" style="color:#2E7D32;font-weight:700;text-decoration:none;font-size:15px;">🔍 실시간무료경매정보 gfauction.co.kr →</a>
+</div>
+    <div class="region-links" style="margin:16px 0;"><h3>📍 지역별 경매</h3><p><a href="https://seoul.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 서울특별시</a><a href="https://gyeonggi.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 경기도</a><a href="https://incheon.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 인천광역시</a><a href="https://busan.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 부산광역시</a><a href="https://daegu.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 대구광역시</a><a href="https://daejeon.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 대전광역시</a><a href="https://gwangju.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 광주광역시</a><a href="https://ulsan.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 울산광역시</a><a href="https://sejong.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 세종특별자치시</a><a href="https://gangwon.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 강원도</a><a href="https://chungbuk.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 충청북도</a><a href="https://chungnam.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 충청남도</a><a href="https://jeonbuk.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 전라북도</a><a href="https://jeonnam.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 전라남도</a><a href="https://gyeongbuk.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 경상북도</a><a href="https://gyeongnam.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 경상남도</a><a href="https://jeju.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#1565C0;text-decoration:none;font-weight:500;">📍 제주특별자치도</a></p></div><div class="category-links" style="margin:16px 0;"><h3>📦 물건별 경매</h3><p><a href="https://apt.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#2E7D32;text-decoration:none;font-weight:500;">🏢 아파트/오피스텔 경매</a><a href="https://villa.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#2E7D32;text-decoration:none;font-weight:500;">🏠 주택/빌라 경매</a><a href="https://shop.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#2E7D32;text-decoration:none;font-weight:500;">🏪 상가/근린상가 경매</a><a href="https://factory.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#2E7D32;text-decoration:none;font-weight:500;">🏭 공장/공장용지 경매</a><a href="https://land.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#2E7D32;text-decoration:none;font-weight:500;">🌳 토지 경매</a><a href="https://building.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#2E7D32;text-decoration:none;font-weight:500;">🏗️ 건물/시설 경매</a><a href="https://office.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#2E7D32;text-decoration:none;font-weight:500;">🏦 오피스텔/사무실 경매</a><a href="https://etc.recoverylab.co.kr/" style="margin:4px 8px;display:inline-block;color:#2E7D32;text-decoration:none;font-weight:500;">📦 기타 물건 경매</a></p></div>
+    <div class="cta-inline" style="background:#fff8e1;border-radius:8px;padding:12px 16px;margin:16px 0;text-align:center;font-size:14px;">
+  전문가 권리 분석이 필요하면 ☎ <a href="tel:01068991601" style="color:#004D40;font-weight:700;text-decoration:none;">010-6899-1601</a> (제이옥션)
+</div>
+  </article>
+  <div class="cta-footer" style="text-align:center;padding:20px;background:#f8f9fa;border-top:2px solid #004D40;">
+  <p style="margin:0 0 8px;font-weight:700;font-size:16px;color:#333;">제이옥션 경매 전문 상담</p>
+  <a href="tel:01068991601" style="display:inline-block;background:#004D40;color:#fff;padding:12px 30px;border-radius:8px;font-size:18px;font-weight:700;text-decoration:none;margin-bottom:8px;">
+    📞 010-6899-1601
+  </a>
+  <p style="margin:4px 0 0;font-size:12px;color:#888;">권리분석·시세·입찰 전략 상담 | 24시간 접수 가능</p>
+</div>
+  <a href="tel:01068991601" class="cta-float-btn" style="position:fixed;bottom:20px;right:20px;z-index:9999;background:#004D40;color:#fff;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;text-decoration:none;box-shadow:0 4px 12px rgba(0,0,0,.3);" aria-label="경매상담 전화">
+  📞
+</a>
+</body>
+</html>

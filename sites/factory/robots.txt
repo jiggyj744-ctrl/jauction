@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /logs/
+Disallow: /data/
+
+Sitemap: https://factory.recoverylab.co.kr/sitemap-index.xml
+Sitemap: https://factory.recoverylab.co.kr/sitemap.xml

@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /logs/
+Disallow: /data/
+
+Sitemap: https://gyeonggi.recoverylab.co.kr/sitemap-index.xml
+Sitemap: https://gyeonggi.recoverylab.co.kr/sitemap.xml
