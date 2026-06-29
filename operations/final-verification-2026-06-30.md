@@ -25,7 +25,7 @@ GitHub Pages API 기준으로 공개 Pages는 비활성 상태다. 검색엔진 
 
 ## 충돌 제거
 
-기존 FactoryPro/Astra 랜딩을 되살리거나 공장경매 문구를 주입하던 공개 제어 플러그인은 비활성화했다.
+기존 FactoryPro/Astra 랜딩을 되살리거나 공장경매 문구를 주입하던 공개 제어 플러그인은 비활성화했다. 반복적으로 Astra 렌더링을 되살리던 `FactoryPro Public Controls`는 비활성화 후 삭제했다.
 
 - `FactoryPro Astra Elementor Controls`
 - `FactoryPro Site Controls`
@@ -34,7 +34,7 @@ GitHub Pages API 기준으로 공개 Pages는 비활성 상태다. 검색엔진 
 - `FactoryPro Public Text Cleaner`
 - `FactoryPro Content Guard`
 - `FactoryPro Header Polish`
-- `FactoryPro Public Controls`
+- `FactoryPro Public Controls` 삭제 완료
 - `FactoryPro Platform`
 - `FactoryPro Update Guard`
 - `FactoryPro Auto Publisher`
