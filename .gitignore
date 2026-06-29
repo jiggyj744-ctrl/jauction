@@ -1,0 +1,38 @@
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+
+# Runtime/build artifacts
+node_modules/
+vendor/
+dist/
+build/
+.cache/
+
+# Large generated assets
+*.sqlite
+*.sqlite3
+*.db
+*.zip
+*.7z
+*.tar
+*.gz
+
+# Legacy generated auction-site outputs
+docs/auction/
+docs/sitemaps/
+docs-bid/sitemaps/
+sites/
+feed*.xml
+sitemap*.xml
+data.json
