@@ -11,9 +11,9 @@ function sal_setup(): void {
 add_action('after_setup_theme', 'sal_setup');
 
 function sal_assets(): void {
-    wp_enqueue_style('sal-style', get_stylesheet_uri(), [], '1.0.4');
-    wp_enqueue_script('sal-lucide', 'https://unpkg.com/lucide@latest/dist/umd/lucide.min.js', [], null, true);
-    wp_enqueue_script('sal-main', get_template_directory_uri() . '/main.js', ['sal-lucide'], '1.0.4', true);
+    wp_enqueue_style('sal-style', get_stylesheet_uri(), [], '1.0.5');
+    wp_enqueue_script('sal-lucide', 'https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js', [], '0.468.0', true);
+    wp_enqueue_script('sal-main', get_template_directory_uri() . '/main.js', ['sal-lucide'], '1.0.5', true);
 }
 add_action('wp_enqueue_scripts', 'sal_assets');
 
@@ -117,11 +117,41 @@ function sal_clean_front_html(string $html): string {
     return $html;
 }
 
+function sal_consultation_invalid(): void {
+    wp_safe_redirect(home_url('/?consult=invalid#consult'));
+    exit;
+}
+
+function sal_consultation_rate_key(): string {
+    $ip = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : 'unknown';
+    return 'sal_rate_' . md5($ip);
+}
+
 function sal_consultation_form(): void {
     if (!isset($_POST['sal_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['sal_nonce'])), 'sal_consultation')) {
-        wp_safe_redirect(home_url('/?consult=invalid#consult'));
-        exit;
+        sal_consultation_invalid();
     }
+
+    $honeypot = isset($_POST['company_website']) ? trim((string) wp_unslash($_POST['company_website'])) : '';
+    if ($honeypot !== '') {
+        sal_consultation_invalid();
+    }
+
+    $submitted_at = isset($_POST['sal_submitted_at']) ? absint($_POST['sal_submitted_at']) : 0;
+    $elapsed = time() - $submitted_at;
+    if ($submitted_at <= 0 || $elapsed < 3) {
+        sal_consultation_invalid();
+    }
+
+    if (empty($_POST['privacy_agree'])) {
+        sal_consultation_invalid();
+    }
+
+    $rate_key = sal_consultation_rate_key();
+    if (get_transient($rate_key)) {
+        sal_consultation_invalid();
+    }
+    set_transient($rate_key, '1', 60);
 
     $fields = [
         'name' => '이름',
@@ -139,6 +169,7 @@ function sal_consultation_form(): void {
         $value = isset($_POST[$key]) ? sanitize_textarea_field(wp_unslash($_POST[$key])) : '';
         $lines[] = $label . ': ' . $value;
     }
+    $lines[] = '개인정보 동의: 동의';
 
     $to = get_option('admin_email');
     $subject = '[지분경매 상담 접수] ' . (isset($_POST['name']) ? sanitize_text_field(wp_unslash($_POST['name'])) : '신규 문의');

@@ -74,6 +74,8 @@ $phone = '010-6899-1601';
       <form class="lead-form" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post">
         <input type="hidden" name="action" value="sal_consultation">
         <?php wp_nonce_field('sal_consultation', 'sal_nonce'); ?>
+        <input type="hidden" name="sal_submitted_at" value="<?php echo esc_attr((string) time()); ?>">
+        <label class="screen-reader-field" aria-hidden="true">회사 웹사이트<input name="company_website" tabindex="-1" autocomplete="off"></label>
         <?php if (isset($_GET['consult']) && $_GET['consult'] === 'sent') : ?>
           <p class="form-success">상담 접수가 완료되었습니다. 확인 후 연락드리겠습니다.</p>
         <?php elseif (isset($_GET['consult']) && $_GET['consult'] === 'invalid') : ?>
@@ -86,6 +88,7 @@ $phone = '010-6899-1601';
         <div class="form-row"><label>지분율<input name="share" placeholder="예: 1/2, 1/8, 모름"></label><label>공유자 수<input name="owners" placeholder="예: 3명, 모름"></label></div>
         <label>현재 상태<select name="status"><option>협의 가능</option><option>분쟁 중</option><option>경매 진행</option><option>낙찰 완료</option><option>소송·조정 중</option><option>모름</option></select></label>
         <label>상담 내용<textarea name="message" rows="4" placeholder="공유자 상황, 점유자, 매도 희망 여부 등을 적어주세요."></textarea></label>
+        <label class="privacy-check"><input type="checkbox" name="privacy_agree" value="1" required><span>개인정보 수집·이용에 동의합니다. 제출 자료는 매입 가능성 검토와 상담 회신 목적으로만 사용됩니다.</span></label>
         <button class="btn btn-primary" type="submit"><i data-lucide="send"></i><span>검토 요청 보내기</span></button>
         <p class="form-note">제출 자료는 매입 가능성 검토와 상담 회신 목적으로만 사용됩니다. 법률·세무 판단이 필요한 사안은 별도 전문가 확인이 필요할 수 있습니다.</p>
       </form>

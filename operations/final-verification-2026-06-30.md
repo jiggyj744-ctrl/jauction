@@ -1,93 +1,81 @@
-# 최종 검증 기록
+# 최종 검증 기록 - 2026-06-30
 
-작성일: 2026-06-30 KST
+대상: `https://factorypro.co.kr/`
 
-## GitHub 정리 결과
+## 결론
 
-| 저장소 | 브랜치 | 상태 |
-|---|---|---|
-| `jiggyj744-ctrl/jauction` | `master` | 지분경매·공유물 지분 매입 전문 랜딩 저장소로 정리 |
-| `keyzard` | `main` | 사용 중지 안내 저장소로 정리 |
-| `jiggyj744-ctrl.github.io` | `main` | 루트 프로필/Pages 잔여 파일 정리 |
+라이브 사이트는 `share-auction-landing` 테마 `1.0.5`로 활성화되어 있고, 공개 루트와 검증 URL 모두 지분경매·공유물 지분 매입 전문 랜딩을 반환합니다.
 
-GitHub Pages API 기준으로 공개 Pages는 비활성 상태다. 검색엔진 색인 삭제 후 새 WordPress 랜딩을 중심으로 운영한다.
+## 현재 상태
 
-## WordPress 라이브 설치
-
-| 항목 | 값 |
-|---|---|
-| 공개 URL | `https://factorypro.co.kr/` |
+| 항목 | 결과 |
+| --- | --- |
 | 활성 테마 | `share-auction-landing` |
-| 테마 버전 | `1.0.4` |
-| 목적 | 지분경매, 공유물 지분 매입, 상속지분, 토지지분 상담 랜딩 |
-
-설치 ZIP: `outputs/share-auction-landing-theme-2026-06-30.zip`
-
-## 충돌 제거
-
-기존 FactoryPro/Astra 랜딩을 되살리거나 공장경매 문구를 주입하던 공개 제어 플러그인은 비활성화했다. 반복적으로 Astra 렌더링을 되살리던 `FactoryPro Public Controls`는 비활성화 후 삭제했다. 또한 `N:\factorypro\deploy\wordpress\plugins`의 레거시 Astra 강제 플러그인 원본에는 `init()` 즉시 반환 방어 패치를 적용해 재활성화되어도 `switch_theme('astra')`가 호출되지 않도록 했다.
-
-- `FactoryPro Astra Elementor Controls`
-- `FactoryPro Site Controls`
-- `FactoryPro Factory-Only Controls`
-- `FactoryPro Final Header Cleaner`
-- `FactoryPro Public Text Cleaner`
-- `FactoryPro Content Guard`
-- `FactoryPro Header Polish`
-- `FactoryPro Public Controls` 삭제 완료
-- `FactoryPro Platform`
-- `FactoryPro Update Guard`
-- `FactoryPro Auto Publisher`
-
-`WP Super Cache`는 남아 있으나 루트와 캐시버스터 URL 모두 새 테마 HTML을 반환하는 상태로 확인했다.
+| 테마 버전 | `1.0.5` |
+| Astra 테마 | inactive |
+| FactoryPro 레거시 플러그인 | inactive |
+| 런타임 가드 플러그인 | `share-auction-runtime-guard` active |
+| Lucide CDN | `lucide@0.468.0` 고정 |
+| 문의 폼 방어 | honeypot, 제출시각 검증, 1분 rate limit, 개인정보 동의 |
+| 24시간 회귀 모니터링 | `factorypro-24` 활성 |
 
 ## 공개 검증
 
-`https://factorypro.co.kr/` 기준 검증 결과:
+검증 명령:
 
-- `<title>`: `지분경매·공유물 지분 매입 상담 | 상속지분·토지지분 정리 - 지분경매 매입센터`
+```powershell
+python .\tools\check_public_variants.py
+python .\tools\check_public_page.py
+```
+
+통과 기준:
+
+- `/`와 `/?verify=stable_105` 모두 `theme=true`
+- 모든 User-Agent에서 `astra=false`
+- 모든 User-Agent에서 `v105=true`
+- 모든 User-Agent에서 `factorypro=false`
+- `has_theme=true`
+- `has_new_hero=true`
+- `has_share_buy=true`
+- `has_auction=true`
+- `has_old_factory_auction=false`
+- `has_astra_theme=false`
+- `has_style_105=true`
+
+30초 지연 검증도 같은 기준으로 통과했습니다.
+
+## 폼/자산 검증
+
+`/?verify=stable_105` HTML 직접 검사 결과:
+
 - `share-auction-landing`: 있음
+- `ver=1.0.5`: 있음
+- `lucide@0.468.0`: 있음
+- 버전 없는 Lucide CDN: 없음
+- `company_website`: 있음
+- `sal_submitted_at`: 있음
+- `privacy_agree`: 있음
 - `wp-content/themes/astra`: 없음
 - `FactoryPro`: 없음
-- `공장경매`: 없음
-- `ver=1.0.4`: 있음
 
-User-Agent 변종 검증:
+## 처리한 미비점
 
-| URL | User-Agent | 새 테마 | Astra | FactoryPro |
-|---|---|---:|---:|---:|
-| `/` | plain | true | false | false |
-| `/` | Chrome desktop | true | false | false |
-| `/` | iPhone | true | false | false |
-| `/` | bot | true | false | false |
-| `/?verify=stable_104` | plain | true | false | false |
-| `/?verify=stable_104` | Chrome desktop | true | false | false |
-| `/?verify=stable_104` | iPhone | true | false | false |
-| `/?verify=stable_104` | bot | true | false | false |
+- 레거시 Astra 강제 플러그인 비활성화 및 source 방어
+- `factorypro-public-controls`, `factorypro-astra-elementor-controls` 실행 차단
+- `factorypro-platform`, `factorypro-public-controls-runtime`, `factorypro-header-polish` 비활성화
+- `share-auction-runtime-guard` 설치 및 활성화
+- 로컬 `.git` garbage 정리
+- 운영 도구를 `operations/tools`로 정리
+- 워드프레스 ZIP 패키징 방식을 플랫 구조로 보정
+- 문의 폼 honeypot/rate limit/개인정보 동의 추가
+- Lucide 버전 고정
+- 24시간 회귀 모니터링 등록
 
-## 브라우저 렌더링 검증
+## 남은 보완 계획
 
-데스크톱 `1440x1000`:
-
-- H1: `지분경매와 공유물 지분 매입, 복잡한 지분을 현실적으로 정리합니다`
-- 새 테마 CSS: true
-- Astra CSS: false
-- FactoryPro 문자열: false
-- 공장경매 문자열: false
-- 가로 오버플로: false
-
-모바일 `390x844`:
-
-- H1: `지분경매와 공유물 지분 매입, 복잡한 지분을 현실적으로 정리합니다`
-- 새 테마 CSS: true
-- Astra CSS: false
-- FactoryPro 문자열: false
-- 공장경매 문자열: false
-- 가로 오버플로: false
-
-## 로컬 검증 산출물
-
-- `outputs/factorypro-live-verification-2026-06-30.txt`
-- `outputs/factorypro-live-variant-verification-2026-06-30.txt`
-- `outputs/factorypro-admin-theme-verification-2026-06-30.txt`
-- `outputs/share-auction-landing-theme-2026-06-30.zip`
+1. Search Console과 Naver Search Advisor 재등록 및 sitemap 제출
+2. 상담 리드 저장 구조 추가
+3. FAQPage, ProfessionalService, BreadcrumbList schema 정리
+4. 분야별 랜딩 5-8개 확장
+5. Elementor/Astra Starter/폼 플러그인 필요성 확인 후 단계적 비활성화
+6. 배포/롤백 runbook을 실제 운영 반복 후 보강

@@ -3,7 +3,7 @@ Theme Name: Share Auction Landing
 Theme URI: https://github.com/jiggyj744-ctrl/jauction
 Author: jauction
 Description: 지분경매·공유지분 매입 전문 랜딩페이지용 단일 페이지 워드프레스 테마.
-Version: 1.0.4
+Version: 1.0.5
 Requires at least: 6.0
 Tested up to: 6.6
 Requires PHP: 7.4
@@ -95,6 +95,9 @@ h1 { max-width: 760px; margin: 0; font-size: 52px; line-height: 1.16; letter-spa
 .lead-form label { display: grid; gap: 7px; font-size: 14px; font-weight: 800; }
 .lead-form input, .lead-form select, .lead-form textarea { width: 100%; border: 1px solid var(--line); border-radius: 7px; padding: 12px 13px; font: inherit; color: var(--ink); background: white; }
 .lead-form textarea { resize: vertical; }
+.screen-reader-field { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.privacy-check { display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: start; font-size: 13px; line-height: 1.55; color: var(--muted); }
+.privacy-check input { width: 18px; height: 18px; margin: 2px 0 0; padding: 0; accent-color: var(--deep); }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .form-note { font-size: 13px; }
 .form-success { margin: 0; padding: 12px 14px; color: var(--deep); background: var(--soft); border: 1px solid var(--line); border-radius: 8px; font-weight: 800; }
