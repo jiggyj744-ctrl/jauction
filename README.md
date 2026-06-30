@@ -18,6 +18,7 @@
 - `planning/`: 화면 기획과 확장 방향
 - `operations/`: 배포, 점검, 검색 재등록 자료
 - `tools/verify_live.mjs`: 공개 주소 전체 점검
+- `operations/search-registration-cloudflare.md`: Google/Naver 검색 등록 기준
 
 ## 공개 주소
 
@@ -41,6 +42,12 @@ node workers/lead-api/scripts/leads.mjs export --limit 100
 ## 상담 알림
 
 새 상담이 저장되면 이메일 또는 외부 알림 주소로 보낼 수 있는 준비가 되어 있습니다. 아직 발송용 계정과 받을 주소가 연결되지 않았으므로, 현재는 상담이 정상 저장되고 알림 상태가 `not_configured`로 남습니다.
+
+## 검색 등록
+
+현재 `github.io` 무료 주소는 Cloudflare DNS 방식으로 Google 소유 확인을 할 수 없습니다. 지금은 Google Search Console의 URL 확인 방식으로 등록하고, 별도 도메인을 Cloudflare에 연결한 뒤에는 DNS 방식으로 진행합니다.
+
+Naver 메타태그를 받으면 `tools/apply_search_verification.mjs`로 반영하고 공개 주소에서 확인합니다.
 
 ## 점검 기준
 
