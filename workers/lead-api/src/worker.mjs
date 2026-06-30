@@ -20,6 +20,10 @@ export default {
       return json({ ok: true, service: "jauction-lead-api" }, 200, corsHeaders);
     }
 
+    if (url.pathname === "/admin" && request.method === "GET") {
+      return html(adminPageHtml(), 200);
+    }
+
     if (url.pathname === "/lead" && request.method === "POST") {
       return handleLead(request, env, corsHeaders);
     }
@@ -337,4 +341,420 @@ function isAllowedOrigin(origin, env) {
 
 function json(body, status, headers) {
   return new Response(JSON.stringify(body), { status, headers });
+}
+
+function html(body, status) {
+  return new Response(body, {
+    status,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-store",
+      "Content-Security-Policy": "default-src 'self'; img-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'",
+      "X-Frame-Options": "DENY",
+      "X-Content-Type-Options": "nosniff",
+      "Referrer-Policy": "no-referrer",
+    },
+  });
+}
+
+function adminPageHtml() {
+  return `<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jauction 리드 관리자</title>
+  <style>
+    :root {
+      --ink: #17201c;
+      --muted: #5e6862;
+      --line: #dfe5df;
+      --paper: #ffffff;
+      --soft: #f4f7f2;
+      --deep: #173b35;
+      --accent: #b88746;
+      --danger: #9f2f22;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
+      background: var(--soft);
+      letter-spacing: 0;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 18px 24px;
+      background: rgba(255,255,255,.96);
+      border-bottom: 1px solid var(--line);
+    }
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.25;
+    }
+    main {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .toolbar, .detail, .table-wrap {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) 160px 120px 120px;
+      gap: 10px;
+      padding: 14px;
+      margin-bottom: 16px;
+    }
+    input, select, textarea, button {
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 10px 12px;
+      font: inherit;
+      background: white;
+    }
+    textarea { min-height: 90px; resize: vertical; }
+    button {
+      cursor: pointer;
+      color: white;
+      background: var(--deep);
+      border-color: var(--deep);
+      font-weight: 800;
+    }
+    button.secondary {
+      color: var(--deep);
+      background: white;
+    }
+    button.danger {
+      background: var(--danger);
+      border-color: var(--danger);
+    }
+    .token-row {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) auto auto;
+      gap: 10px;
+      align-items: center;
+      width: min(760px, 100%);
+    }
+    .status {
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 360px;
+      gap: 16px;
+      align-items: start;
+    }
+    .table-wrap { overflow: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 860px;
+    }
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+      font-size: 14px;
+    }
+    th {
+      position: sticky;
+      top: 0;
+      background: #f8faf7;
+      color: var(--muted);
+      font-weight: 800;
+    }
+    tr:hover td { background: #fbfcfa; }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #e9f0f4;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .detail {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+    }
+    .detail h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .kv {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+    }
+    .kv div {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 10px;
+      font-size: 14px;
+    }
+    .kv dt {
+      color: var(--muted);
+      font-weight: 800;
+    }
+    .kv dd {
+      margin: 0;
+      word-break: break-word;
+    }
+    .empty {
+      padding: 40px 18px;
+      text-align: center;
+      color: var(--muted);
+    }
+    .message {
+      white-space: pre-wrap;
+      line-height: 1.7;
+    }
+    @media (max-width: 860px) {
+      header { display: grid; }
+      .token-row, .toolbar, .layout { grid-template-columns: 1fr; }
+      main { padding: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Jauction 리드 관리자</h1>
+    <div class="token-row">
+      <input id="token" type="password" placeholder="관리자 토큰" autocomplete="off">
+      <button id="saveToken" type="button">토큰 저장</button>
+      <button id="clearToken" class="secondary" type="button">지우기</button>
+    </div>
+  </header>
+  <main>
+    <section class="toolbar">
+      <input id="q" placeholder="이름, 연락처, 주소 검색">
+      <select id="statusFilter">
+        <option value="">전체 상태</option>
+        <option value="new">new</option>
+        <option value="reviewing">reviewing</option>
+        <option value="contacted">contacted</option>
+        <option value="offer">offer</option>
+        <option value="hold">hold</option>
+        <option value="closed">closed</option>
+        <option value="spam">spam</option>
+      </select>
+      <button id="load" type="button">조회</button>
+      <button id="exportCsv" class="secondary" type="button">CSV</button>
+    </section>
+    <p id="status" class="status">토큰 입력 후 조회하세요.</p>
+    <section class="layout">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>접수일</th>
+              <th>상태</th>
+              <th>이름</th>
+              <th>연락처</th>
+              <th>유형</th>
+              <th>주소/사건</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="rows">
+            <tr><td class="empty" colspan="8">조회 결과가 없습니다.</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <aside class="detail" id="detail">
+        <h2>상세</h2>
+        <p class="status">리드를 선택하세요.</p>
+      </aside>
+    </section>
+  </main>
+  <script>
+    const state = {
+      token: sessionStorage.getItem("jauction_admin_token") || "",
+      leads: [],
+      selected: null,
+    };
+    const statuses = ["new", "reviewing", "contacted", "offer", "hold", "closed", "spam"];
+    const tokenInput = document.getElementById("token");
+    const rows = document.getElementById("rows");
+    const detail = document.getElementById("detail");
+    const statusText = document.getElementById("status");
+    tokenInput.value = state.token;
+
+    document.getElementById("saveToken").addEventListener("click", () => {
+      state.token = tokenInput.value.trim();
+      sessionStorage.setItem("jauction_admin_token", state.token);
+      setStatus("토큰을 세션에 저장했습니다.");
+    });
+    document.getElementById("clearToken").addEventListener("click", () => {
+      state.token = "";
+      tokenInput.value = "";
+      sessionStorage.removeItem("jauction_admin_token");
+      setStatus("토큰을 지웠습니다.");
+    });
+    document.getElementById("load").addEventListener("click", loadLeads);
+    document.getElementById("exportCsv").addEventListener("click", exportCsv);
+
+    async function loadLeads() {
+      const params = new URLSearchParams();
+      params.set("limit", "100");
+      const q = document.getElementById("q").value.trim();
+      const status = document.getElementById("statusFilter").value;
+      if (q) params.set("q", q);
+      if (status) params.set("status", status);
+      const data = await api("/admin/leads?" + params.toString());
+      state.leads = data.leads || [];
+      renderRows();
+      setStatus(state.leads.length + "건 조회됨");
+    }
+
+    async function showLead(id) {
+      const data = await api("/admin/leads/" + encodeURIComponent(id));
+      state.selected = data.lead;
+      renderDetail(data.lead);
+    }
+
+    async function updateLead(id) {
+      const reviewStatus = document.getElementById("reviewStatus").value;
+      const adminNote = document.getElementById("adminNote").value;
+      await api("/admin/leads/" + encodeURIComponent(id), {
+        method: "PATCH",
+        body: JSON.stringify({ review_status: reviewStatus, admin_note: adminNote }),
+      });
+      setStatus("저장했습니다.");
+      await showLead(id);
+      await loadLeads();
+    }
+
+    async function api(path, init = {}) {
+      const token = tokenInput.value.trim() || state.token;
+      if (!token) throw setStatus("관리자 토큰이 필요합니다.", true);
+      state.token = token;
+      sessionStorage.setItem("jauction_admin_token", token);
+      const response = await fetch(path, {
+        ...init,
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + token,
+          ...(init.headers || {}),
+        },
+      });
+      const data = await response.json();
+      if (!response.ok || data.ok === false) {
+        setStatus("오류: " + (data.error || response.status), true);
+        throw new Error(data.error || String(response.status));
+      }
+      return data;
+    }
+
+    function renderRows() {
+      rows.innerHTML = "";
+      if (!state.leads.length) {
+        rows.innerHTML = '<tr><td class="empty" colspan="8">조회 결과가 없습니다.</td></tr>';
+        return;
+      }
+      for (const lead of state.leads) {
+        const tr = document.createElement("tr");
+        tr.innerHTML =
+          "<td>" + esc(lead.id) + "</td>" +
+          "<td>" + esc(formatDate(lead.created_at)) + "</td>" +
+          "<td><span class='pill'>" + esc(lead.review_status) + "</span></td>" +
+          "<td>" + esc(lead.name) + "</td>" +
+          "<td>" + esc(lead.phone) + "</td>" +
+          "<td>" + esc(lead.lead_type) + "</td>" +
+          "<td>" + esc(lead.case_or_address || "") + "</td>" +
+          "<td><button class='secondary' type='button' data-id='" + esc(lead.id) + "'>상세</button></td>";
+        tr.querySelector("button").addEventListener("click", () => showLead(lead.id));
+        rows.appendChild(tr);
+      }
+    }
+
+    function renderDetail(lead) {
+      const statusOptions = statuses.map((item) => "<option value='" + item + "'" + (item === lead.review_status ? " selected" : "") + ">" + item + "</option>").join("");
+      detail.innerHTML =
+        "<h2>#" + esc(lead.id) + " " + esc(lead.name) + "</h2>" +
+        "<dl class='kv'>" +
+        row("접수일", formatDate(lead.created_at)) +
+        row("수정일", lead.updated_at ? formatDate(lead.updated_at) : "-") +
+        row("연락처", lead.phone) +
+        row("유형", lead.lead_type) +
+        row("주소/사건", lead.case_or_address || "-") +
+        row("지분율", lead.share_ratio || "-") +
+        row("공유자", lead.owners || "-") +
+        row("상태", lead.property_status || "-") +
+        row("출처", lead.source_url || "-") +
+        "</dl>" +
+        "<div><strong>상담 내용</strong><p class='message'>" + esc(lead.message || "-") + "</p></div>" +
+        "<label>처리 상태<select id='reviewStatus'>" + statusOptions + "</select></label>" +
+        "<label>관리 메모<textarea id='adminNote'>" + esc(lead.admin_note || "") + "</textarea></label>" +
+        "<button type='button' id='saveLead'>저장</button>";
+      document.getElementById("saveLead").addEventListener("click", () => updateLead(lead.id));
+    }
+
+    function exportCsv() {
+      const headers = ["id", "created_at", "review_status", "name", "phone", "lead_type", "case_or_address", "source_url"];
+      const lines = [headers.join(",")];
+      for (const lead of state.leads) {
+        lines.push(headers.map((key) => csv(lead[key] || "")).join(","));
+      }
+      const blob = new Blob([lines.join("\\n")], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "jauction-leads.csv";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function row(key, value) {
+      return "<div><dt>" + esc(key) + "</dt><dd>" + esc(value) + "</dd></div>";
+    }
+
+    function setStatus(message, isError = false) {
+      statusText.textContent = message;
+      statusText.style.color = isError ? "var(--danger)" : "var(--muted)";
+      return new Error(message);
+    }
+
+    function formatDate(value) {
+      if (!value) return "-";
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return value;
+      return date.toLocaleString("ko-KR", { timeZone: "Asia/Seoul" });
+    }
+
+    function esc(value) {
+      return String(value ?? "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;",
+      }[char]));
+    }
+
+    function csv(value) {
+      const text = String(value).replaceAll('"', '""');
+      return /[",\\n]/.test(text) ? '"' + text + '"' : text;
+    }
+  </script>
+</body>
+</html>`;
 }

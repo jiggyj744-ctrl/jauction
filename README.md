@@ -36,12 +36,16 @@ GitHub Pages는 정적 호스팅이므로 상담 리드 저장은 Cloudflare Wor
 
 - API: `https://jauction-lead-api.jiggyj.workers.dev/lead`
 - Health: `https://jauction-lead-api.jiggyj.workers.dev/health`
+- 관리자 화면: `https://jauction-lead-api.jiggyj.workers.dev/admin`
 - DB: `jauction_leads`
 - 관리자 API: Cloudflare Secret `ADMIN_TOKEN` Bearer 토큰 필요
 
 ## 리드 운영
 
 관리자 토큰은 저장소에 커밋하지 않습니다. 배포 저장소의 `workers/lead-api/.admin-token.local` 또는 `JAUCTION_ADMIN_TOKEN` 환경 변수로 운영 CLI를 사용합니다.
+
+- 웹 관리자는 `https://jauction-lead-api.jiggyj.workers.dev/admin`에서 열고 관리자 토큰을 입력합니다.
+- 토큰은 브라우저 세션 저장소에만 저장되며 화면 코드에 내장하지 않습니다.
 
 ```powershell
 node workers/lead-api/scripts/leads.mjs list
