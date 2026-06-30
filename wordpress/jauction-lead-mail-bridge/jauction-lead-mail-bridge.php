@@ -192,7 +192,10 @@ function jauction_lead_mail_send(array $lead): array
 
     $subject = sprintf('[Jauction 상담] %s / %s', $lead['type'] ?: '상담', $lead['name']);
     $body = jauction_lead_mail_body($lead);
-    $headers = ['Content-Type: text/plain; charset=UTF-8'];
+    $headers = [
+        'Content-Type: text/plain; charset=UTF-8',
+        'X-Jauction-Mail: lead-notification',
+    ];
 
     $GLOBALS['jauction_lead_mail_last_wp_error'] = '';
     add_action('wp_mail_failed', 'jauction_lead_mail_capture_wp_error');

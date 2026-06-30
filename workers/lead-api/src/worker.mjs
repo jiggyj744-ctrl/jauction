@@ -282,13 +282,17 @@ async function notifyLead(env, lead) {
   const cloudflareReady = isCloudflareEmailReady(env);
   const resendReady = isResendEmailReady(env);
 
-  if ((provider === "wordpress" || provider === "all" || (provider === "auto" && wordpressReady)) && wordpressReady) {
+  if (provider === "auto") {
+    return notifyLeadAuto(env, lead, { wordpressReady, cloudflareReady, resendReady });
+  }
+
+  if ((provider === "wordpress" || provider === "all") && wordpressReady) {
     attempts.push(sendWordPressMailNotification(env, lead));
   }
-  if ((provider === "cloudflare" || provider === "all" || (provider === "auto" && !wordpressReady && cloudflareReady)) && cloudflareReady) {
+  if ((provider === "cloudflare" || provider === "all") && cloudflareReady) {
     attempts.push(sendCloudflareEmailNotification(env, lead));
   }
-  if ((provider === "resend" || provider === "all" || (provider === "auto" && !wordpressReady && !cloudflareReady && resendReady)) && resendReady) {
+  if ((provider === "resend" || provider === "all") && resendReady) {
     attempts.push(sendResendEmailNotification(env, lead));
   }
   if (env.NOTIFY_WEBHOOK_URL) {
@@ -304,17 +308,53 @@ async function notifyLead(env, lead) {
     };
   }
 
-  const results = await Promise.all(attempts.map(async (attempt) => {
-    try {
-      return await attempt;
-    } catch (error) {
-      return { ok: false, channel: "unknown", error: clean(error?.message || "notification_failed") };
-    }
-  }));
+  const results = await Promise.all(attempts.map(runNotificationAttempt));
 
+  return notificationSummary(results);
+}
+
+async function notifyLeadAuto(env, lead, readiness) {
+  const attempts = [];
+  const ordered = [];
+  if (readiness.wordpressReady) ordered.push(() => sendWordPressMailNotification(env, lead));
+  if (readiness.cloudflareReady) ordered.push(() => sendCloudflareEmailNotification(env, lead));
+  if (readiness.resendReady) ordered.push(() => sendResendEmailNotification(env, lead));
+
+  for (const attempt of ordered) {
+    const result = await runNotificationAttempt(attempt());
+    attempts.push(result);
+    if (result.ok) break;
+  }
+
+  if (env.NOTIFY_WEBHOOK_URL) {
+    attempts.push(await runNotificationAttempt(sendWebhookNotification(env, lead)));
+  }
+
+  if (!attempts.length) {
+    return {
+      status: "not_configured",
+      channel: "",
+      notified_at: "",
+      error: notificationConfig(env).missing.join(","),
+    };
+  }
+
+  return notificationSummary(attempts, { autoFallback: true });
+}
+
+async function runNotificationAttempt(attempt) {
+  try {
+    return await attempt;
+  } catch (error) {
+    return { ok: false, channel: "unknown", error: clean(error?.message || "notification_failed") };
+  }
+}
+
+function notificationSummary(results, options = {}) {
   const failed = results.filter((item) => !item.ok);
+  const succeeded = results.filter((item) => item.ok);
   return {
-    status: failed.length ? (failed.length === results.length ? "failed" : "partial_failed") : "sent",
+    status: options.autoFallback && succeeded.length ? "sent" : (failed.length ? (failed.length === results.length ? "failed" : "partial_failed") : "sent"),
     channel: results.map((item) => item.channel).filter(Boolean).join(","),
     notified_at: new Date().toISOString(),
     error: failed.map((item) => `${item.channel}:${item.error}`).join(" | "),
@@ -322,20 +362,77 @@ async function notifyLead(env, lead) {
 }
 
 async function sendWordPressMailNotification(env, lead) {
-  const headers = {
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${env.WORDPRESS_WEBHOOK_TOKEN}`,
-    "X-Jauction-Token": env.WORDPRESS_WEBHOOK_TOKEN,
-  };
-  const response = await fetchWithTimeout(env.WORDPRESS_WEBHOOK_URL, {
-    method: "POST",
-    headers,
-    body: JSON.stringify(leadNotificationPayload(lead)),
-  });
-  if (!response.ok) {
-    return { ok: false, channel: "wordpress_wp_mail", error: clean(await response.text()) || String(response.status) };
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${env.WORDPRESS_WEBHOOK_TOKEN}`,
+      "X-Jauction-Token": env.WORDPRESS_WEBHOOK_TOKEN,
+    };
+    const { response, text } = await fetchWordPressWithChallenge(env.WORDPRESS_WEBHOOK_URL, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(leadNotificationPayload(lead)),
+    });
+    const data = parseJson(text);
+    if (!response.ok) {
+      return { ok: false, channel: "wordpress_wp_mail", error: wordpressResponseError(response, data, text) };
+    }
+    if (!data || data.ok !== true || data.mail_sent !== true) {
+      return { ok: false, channel: "wordpress_wp_mail", error: wordpressResponseError(response, data, text) || "wordpress_unexpected_response" };
+    }
+  } catch (error) {
+    return { ok: false, channel: "wordpress_wp_mail", error: clean(error?.message || "wordpress_notification_failed") };
   }
   return { ok: true, channel: "wordpress_wp_mail", error: "" };
+}
+
+async function fetchWordPressWithChallenge(url, init) {
+  let currentUrl = url;
+  const headers = new Headers(init.headers || {});
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    const response = await fetchWithTimeout(currentUrl, { ...init, headers });
+    const text = await response.text();
+    const challenge = parseCupidChallenge(text);
+    if (!challenge) return { response, text };
+    let cookie = "";
+    try {
+      cookie = await decryptCupidCookie(challenge);
+    } catch (error) {
+      throw new Error(`wordpress_cupid_challenge_failed:${clean(error?.message || "decrypt_failed")}`);
+    }
+    headers.set("Cookie", withCookie(headers.get("Cookie"), `CUPID=${cookie}`));
+    currentUrl = challenge.location || currentUrl;
+  }
+  throw new Error("wordpress_challenge_loop");
+}
+
+function parseCupidChallenge(text) {
+  if (!text || !text.includes("slowAES.decrypt") || !text.includes("document.cookie=\"CUPID=\"")) return null;
+  const key = text.match(/var a=toNumbers\("([a-f0-9]+)"\)/i)?.[1];
+  const iv = text.match(/b=toNumbers\("([a-f0-9]+)"\)/i)?.[1];
+  const cipher = text.match(/c=toNumbers\("([a-f0-9]+)"\)/i)?.[1];
+  const location = text.match(/location\.href="([^"]+)"/i)?.[1] || "";
+  if (!key || !iv || !cipher) return null;
+  return { key, iv, cipher, location };
+}
+
+async function decryptCupidCookie(challenge) {
+  throw new Error("wordpress_cupid_challenge_requires_browser_or_server_bypass");
+}
+
+function wordpressResponseError(response, data, text) {
+  if (data?.code || data?.message || data?.error) {
+    return clean([response.status, data.code, data.message, data.error].filter(Boolean).join(":")) || String(response.status);
+  }
+  const content = clean(text || "");
+  if (content.startsWith("<html") || content.includes("<script")) return `wordpress_non_json_response:${response.status}`;
+  return clean([response.status, content.slice(0, 300)].filter(Boolean).join(":")) || String(response.status);
+}
+
+function withCookie(existing, next) {
+  const keep = String(existing || "").split(";").map((item) => item.trim()).filter((item) => item && !item.startsWith("CUPID="));
+  keep.push(next);
+  return keep.join("; ");
 }
 
 async function sendCloudflareEmailNotification(env, lead) {
@@ -531,13 +628,29 @@ function notificationConfig(env) {
   return {
     provider,
     configured,
-    effective_email_channel: wordpress.ready ? "wordpress_wp_mail" : (cloudflare.ready ? "cloudflare_email" : (resend.ready ? "resend_email" : "")),
+    effective_email_channel: effectiveEmailChannel(provider, wordpress, cloudflare, resend, webhook),
     wordpress_mail: wordpress,
     cloudflare_email: cloudflare,
     resend_email: resend,
     webhook,
     missing: [...new Set(missing)],
   };
+}
+
+function effectiveEmailChannel(provider, wordpress, cloudflare, resend, webhook) {
+  if (provider === "auto" || provider === "all") {
+    const channels = [];
+    if (wordpress.ready) channels.push("wordpress_wp_mail");
+    if (cloudflare.ready) channels.push("cloudflare_email");
+    if (resend.ready) channels.push("resend_email");
+    if (webhook.ready) channels.push("webhook");
+    return channels.join(",");
+  }
+  if (provider === "wordpress" && wordpress.ready) return "wordpress_wp_mail";
+  if (provider === "cloudflare" && cloudflare.ready) return "cloudflare_email";
+  if (provider === "resend" && resend.ready) return "resend_email";
+  if (provider === "webhook" && webhook.ready) return "webhook";
+  return "";
 }
 
 function emailAddress(email, name) {
