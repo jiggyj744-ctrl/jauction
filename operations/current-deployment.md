@@ -22,6 +22,7 @@
 ## 검증 결과
 
 - `https://jiggyj744-ctrl.github.io/`: HTTP 200
+- `https://jauction-lead-api.jiggyj.workers.dev/health`: HTTP 200
 - `/services/share-purchase/`: HTTP 200
 - `/services/share-auction/`: HTTP 200
 - `/faq/`: HTTP 200
@@ -36,12 +37,13 @@
 - 데스크톱: 히어로, 서비스 카드 6개, 문의 폼, 히어로 이미지, 전화 링크 정상
 - 모바일: 하단 CTA 표시, 가로 스크롤 없음, 텍스트 줄바꿈 정상
 - 폼: 더미 입력 후 문자 링크와 전화 링크 생성 확인
+- API 폼: 라이브 더미 입력 후 D1 저장 확인, 검증용 행 삭제 완료
 - 콘솔 오류: 없음
 
 ## 다음 개선 우선순위
 
-1. Cloudflare Workers 또는 Google Apps Script로 실제 리드 저장 엔드포인트 연결
-2. Search Console과 Naver Search Advisor에 새 `github.io` 속성 등록
-3. sitemap 제출
-4. 상담 리드 관리 시트 또는 CRM 생성
-5. 커스텀 도메인 연결 시 canonical, sitemap, robots 재생성
+1. Search Console과 Naver Search Advisor에 새 `github.io` 속성 등록
+2. sitemap 제출
+3. 리드 조회/상태 변경용 운영 스크립트 또는 간단한 관리자 화면 추가
+4. 이메일/문자 알림 연결
+5. 커스텀 도메인 연결 시 Worker CORS, canonical, sitemap, robots 재생성

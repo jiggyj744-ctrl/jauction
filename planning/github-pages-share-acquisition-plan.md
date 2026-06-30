@@ -58,10 +58,10 @@
 
 ## 리드 저장 확장안
 
-1. 즉시 운영: 전화·문자 fallback
-2. 단기 개선: Google Apps Script로 Google Sheets 저장
-3. 권장 운영: Cloudflare Workers로 접수 API 구성
-4. 장기 운영: 관리자 CRM 또는 WordPress/API 백엔드와 연결
+1. 현재 운영: Cloudflare Workers + D1 저장
+2. 보조 fallback: 전화·문자 전달
+3. 단기 개선: 리드 조회/상태 변경 운영 스크립트 추가
+4. 장기 운영: 관리자 CRM 또는 알림 시스템 연결
 
 ## SEO 기준
 

@@ -72,7 +72,7 @@
           <h2>상가·건물 지분 검토 자료를 남겨주세요</h2>
           <p>주소, 사건번호, 지분율, 공유자 수, 현재 상태를 남기면 검토 순서를 잡을 수 있습니다.</p>
         </div>
-        <form class="lead-form" data-lead-form data-endpoint="">
+        <form class="lead-form" data-lead-form data-endpoint="https://jauction-lead-api.jiggyj.workers.dev/lead">
           <input type="text" name="company_website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true">
           <input type="hidden" name="submitted_at" value="">
           <label>이름<input name="name" autocomplete="name" required></label>
@@ -107,7 +107,7 @@
           <label class="privacy-check"><input type="checkbox" name="privacy_agree" required><span>상담 접수와 회신을 위한 개인정보 수집·이용에 동의합니다.</span></label>
           <button class="btn btn-primary" type="submit"><i data-lucide="send"></i><span>검토 요청 정리하기</span></button>
           <div class="form-result" hidden></div>
-          <p class="form-note">입력한 내용은 지분 매입 가능성 검토와 상담 회신 목적으로만 사용합니다.</p>
+          <p class="form-note">입력한 내용은 지분 매입 가능성 검토와 상담 회신 목적으로만 저장됩니다.</p>
         </form>
       </div>
     </section></main>

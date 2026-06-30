@@ -18,6 +18,7 @@ vendor/
 dist/
 build/
 .cache/
+.wrangler/
 
 # Large generated assets
 *.sqlite
