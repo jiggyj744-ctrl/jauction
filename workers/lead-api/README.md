@@ -24,6 +24,7 @@ GitHub Pages 상담 화면에서 들어온 내용을 저장하고 관리하는 C
 - 숨겨진 광고 입력칸이 채워지면 저장하지 않습니다.
 - 같은 접속자 기준으로 1시간 5건까지만 받습니다.
 - 관리자 화면과 상담 목록은 `ADMIN_TOKEN`으로 보호합니다.
+- 상담 접수는 `https://jiggyj744-ctrl.github.io`와 `https://jauction-share-acquisition.pages.dev`에서 허용합니다.
 
 ## 상담 알림
 

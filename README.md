@@ -2,7 +2,7 @@
 
 지분경매·공유물 지분 매입 상담 사이트의 원본 저장소입니다.
 
-실제 공개 주소는 `https://jiggyj744-ctrl.github.io/`입니다. 이 저장소의 `public/` 폴더는 공개 사이트와 같은 화면을 보관합니다.
+실제 공개 기본 주소는 `https://jiggyj744-ctrl.github.io/`입니다. Cloudflare Pages 보조 주소는 `https://jauction-share-acquisition.pages.dev/`입니다. 이 저장소의 `public/` 폴더는 공개 사이트와 같은 화면을 보관합니다.
 
 ## 현재 목적
 
@@ -23,6 +23,7 @@
 ## 공개 주소
 
 - 메인: `https://jiggyj744-ctrl.github.io/`
+- Cloudflare Pages: `https://jauction-share-acquisition.pages.dev/`
 - 관리자: `https://jauction-lead-api.jiggyj.workers.dev/admin`
 - 상담 저장: `https://jauction-lead-api.jiggyj.workers.dev/lead`
 - sitemap: `https://jiggyj744-ctrl.github.io/sitemap.xml`

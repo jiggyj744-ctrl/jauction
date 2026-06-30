@@ -5,6 +5,7 @@
 ## 공개 주소
 
 - 메인: `https://jiggyj744-ctrl.github.io/`
+- Cloudflare Pages 보조 주소: `https://jauction-share-acquisition.pages.dev/`
 - 관리자: `https://jauction-lead-api.jiggyj.workers.dev/admin`
 - 상담 저장: `https://jauction-lead-api.jiggyj.workers.dev/lead`
 - sitemap: `https://jiggyj744-ctrl.github.io/sitemap.xml`
@@ -20,6 +21,8 @@
 - 상담 알림 상태 저장 칸 추가
 - 이메일 또는 외부 알림 주소 연결 준비
 - 공개 주소 전체 점검 도구 추가
+- Cloudflare Pages 보조 배포 생성
+- Cloudflare Pages 주소에서 상담 접수 허용
 - 예전 업체명, 예전 인증 파일 흔적 제거 확인
 
 ## 2026-06-30 최종 점검 결과
@@ -32,6 +35,8 @@
 - 시험 상담 접수: 정상
 - 시험 상담 삭제 후 현재 상담 기록: 0건
 - 예전 업체명, 예전 인증 흔적: 없음
+- Cloudflare Pages 주소 접속: 정상
+- Cloudflare Pages 출처 상담 접수: 정상
 
 ## 아직 남은 외부 연결
 

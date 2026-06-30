@@ -4,7 +4,9 @@
 
 ## 현재 결론
 
-현재 공개 주소는 `https://jiggyj744-ctrl.github.io/`입니다. 이 주소는 GitHub 무료 주소라 Cloudflare DNS에서 직접 소유 확인을 할 수 없습니다.
+현재 공개 기본 주소는 `https://jiggyj744-ctrl.github.io/`입니다. 이 주소는 GitHub 무료 주소라 Cloudflare DNS에서 직접 소유 확인을 할 수 없습니다.
+
+Cloudflare Pages 보조 주소는 `https://jauction-share-acquisition.pages.dev/`입니다. 이 주소도 열리지만 현재 대표 주소, sitemap, canonical은 GitHub 주소 기준입니다.
 
 따라서 지금 Google Search Console은 `URL 접두어` 방식으로 등록해야 합니다. 나중에 별도 도메인을 Cloudflare에 연결하면 그때는 Cloudflare DNS에 Google 확인값을 넣는 방식으로 등록할 수 있습니다.
 
@@ -15,6 +17,8 @@
 3. Google이 주는 메타태그 또는 HTML 확인 파일 값을 받습니다.
 4. 받은 값을 사이트에 반영합니다.
 5. `https://jiggyj744-ctrl.github.io/sitemap.xml`을 제출합니다.
+
+Cloudflare Pages 주소를 대표 주소로 쓰려면 먼저 sitemap, robots, canonical을 `https://jauction-share-acquisition.pages.dev/` 기준으로 다시 만들어야 합니다.
 
 ## Cloudflare 방식이 가능한 경우
 
