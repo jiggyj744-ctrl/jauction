@@ -46,11 +46,11 @@ const requiredText = {
     "ProfessionalService",
   ],
   "assets/main.js": ["localStorage", "jauction_last_submit", "sms:01068991601"],
-  "robots.txt": ["Sitemap: https://jiggyj744-ctrl.github.io/sitemap.xml"],
+  "robots.txt": ["Sitemap: https://jauction-share-acquisition.pages.dev/sitemap.xml"],
   "sitemap.xml": [
-    "https://jiggyj744-ctrl.github.io/",
-    "https://jiggyj744-ctrl.github.io/services/share-purchase/",
-    "https://jiggyj744-ctrl.github.io/services/share-auction/",
+    "https://jauction-share-acquisition.pages.dev/",
+    "https://jauction-share-acquisition.pages.dev/services/share-purchase/",
+    "https://jauction-share-acquisition.pages.dev/services/share-auction/",
     "2026-06-30",
   ],
 };
