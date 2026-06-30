@@ -18,6 +18,7 @@
 - `planning/`: 랜딩 구조, 전환 문구, 확장 계획
 - `public/`: GitHub Pages 공개 산출물 미러
 - `workers/lead-api/`: 상담 리드 저장 API
+- `workers/lead-api/scripts/leads.mjs`: 보호된 리드 조회/상태 변경 CLI
 - `operations/`: 배포·검증·색인 재등록 기준
 
 ## 공개 산출물
@@ -36,6 +37,18 @@ GitHub Pages는 정적 호스팅이므로 상담 리드 저장은 Cloudflare Wor
 - API: `https://jauction-lead-api.jiggyj.workers.dev/lead`
 - Health: `https://jauction-lead-api.jiggyj.workers.dev/health`
 - DB: `jauction_leads`
+- 관리자 API: Cloudflare Secret `ADMIN_TOKEN` Bearer 토큰 필요
+
+## 리드 운영
+
+관리자 토큰은 저장소에 커밋하지 않습니다. 배포 저장소의 `workers/lead-api/.admin-token.local` 또는 `JAUCTION_ADMIN_TOKEN` 환경 변수로 운영 CLI를 사용합니다.
+
+```powershell
+node workers/lead-api/scripts/leads.mjs list
+node workers/lead-api/scripts/leads.mjs show 1
+node workers/lead-api/scripts/leads.mjs update 1 contacted "전화 상담 완료"
+node workers/lead-api/scripts/leads.mjs export --limit 100
+```
 
 ## 제외 대상
 

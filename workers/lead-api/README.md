@@ -21,6 +21,23 @@ GitHub Pages 랜딩의 상담 폼을 저장하기 위한 Cloudflare Workers + D1
 - 전화번호 형식 기본 검증
 - IP 해시 기준 1시간 5건 제한
 - 원본 IP는 저장하지 않고 일 단위 해시만 저장
+- 관리자 API는 `ADMIN_TOKEN` Bearer 토큰 필수
+
+## 관리자 API
+
+- `GET /admin/leads?limit=25&status=new&q=검색어`: 리드 목록
+- `GET /admin/leads/:id`: 리드 상세
+- `PATCH /admin/leads/:id`: 상태와 관리자 메모 변경
+
+상태값:
+
+- `new`
+- `reviewing`
+- `contacted`
+- `offer`
+- `hold`
+- `closed`
+- `spam`
 
 ## 배포
 
@@ -29,8 +46,13 @@ cmd /c npx --yes wrangler d1 migrations apply jauction_leads --remote
 cmd /c npx --yes wrangler deploy
 ```
 
-## 리드 조회
+## 로컬 운영 CLI
+
+관리자 토큰은 저장소에 커밋하지 않습니다. 로컬에서는 `workers/lead-api/.admin-token.local` 또는 `JAUCTION_ADMIN_TOKEN` 환경 변수를 사용합니다.
 
 ```powershell
-cmd /c npx --yes wrangler d1 execute jauction_leads --remote --command "SELECT id, created_at, name, phone, lead_type, review_status FROM leads ORDER BY id DESC LIMIT 20"
+node workers/lead-api/scripts/leads.mjs list
+node workers/lead-api/scripts/leads.mjs show 1
+node workers/lead-api/scripts/leads.mjs update 1 contacted "전화 상담 완료"
+node workers/lead-api/scripts/leads.mjs export --limit 100
 ```
