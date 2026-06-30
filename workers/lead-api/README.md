@@ -1,54 +1,47 @@
-# Jauction 리드 접수 API
+# Jauction 상담 접수함
 
-GitHub Pages 랜딩의 상담 폼을 저장하기 위한 Cloudflare Workers + D1 API입니다.
+GitHub Pages 상담 화면에서 들어온 내용을 저장하고 관리하는 Cloudflare Worker입니다.
 
-## 엔드포인트
+## 주소
 
-- Base URL: `https://jauction-lead-api.jiggyj.workers.dev`
-- `GET /health`: 상태 확인
-- `POST /lead`: 상담 리드 저장
+- 기본 주소: `https://jauction-lead-api.jiggyj.workers.dev`
+- 상태 확인: `GET /health`
+- 상담 접수: `POST /lead`
+- 관리자 화면: `GET /admin`
+- 상담 목록: `GET /admin/leads`
+- 상담 상세: `GET /admin/leads/:id`
+- 상담 상태 변경: `PATCH /admin/leads/:id`
 
-## 저장 DB
+## 저장 공간
 
-- D1 database: `jauction_leads`
-- D1 database id: `0e497c26-dc39-4781-ac4a-90f33b195158`
+- D1 이름: `jauction_leads`
+- D1 id: `0e497c26-dc39-4781-ac4a-90f33b195158`
 
-## 보안/품질 기준
+## 보호 기준
 
-- 허용 origin만 CORS 응답
-- honeypot 필드(`company_website`)가 있으면 저장하지 않고 accepted 처리
-- 이름, 연락처, 상담 유형, 개인정보 동의 필수
-- 전화번호 형식 기본 검증
-- IP 해시 기준 1시간 5건 제한
-- 원본 IP는 저장하지 않고 일 단위 해시만 저장
-- 관리자 API는 `ADMIN_TOKEN` Bearer 토큰 필수
+- 허용된 공개 주소에서 온 접수만 받습니다.
+- 이름, 연락처, 상담 유형, 개인정보 동의는 필수입니다.
+- 숨겨진 광고 입력칸이 채워지면 저장하지 않습니다.
+- 같은 접속자 기준으로 1시간 5건까지만 받습니다.
+- 관리자 화면과 상담 목록은 `ADMIN_TOKEN`으로 보호합니다.
 
-## 관리자 API
+## 상담 알림
 
-- `GET /admin/leads?limit=25&status=new&q=검색어`: 리드 목록
-- `GET /admin/leads/:id`: 리드 상세
-- `PATCH /admin/leads/:id`: 상태와 관리자 메모 변경
+새 상담이 저장된 뒤 아래 설정이 있으면 알림을 보냅니다. 설정이 없으면 상담은 정상 저장되고 알림 상태만 `not_configured`로 남습니다.
 
-상태값:
+- 이메일 알림: `RESEND_API_KEY`, `NOTIFY_EMAIL_FROM`, `NOTIFY_EMAIL_TO`
+- 외부 알림 주소: `NOTIFY_WEBHOOK_URL`, 필요 시 `NOTIFY_WEBHOOK_TOKEN`
 
-- `new`
-- `reviewing`
-- `contacted`
-- `offer`
-- `hold`
-- `closed`
-- `spam`
-
-## 배포
+## 반영
 
 ```powershell
 cmd /c npx --yes wrangler d1 migrations apply jauction_leads --remote
 cmd /c npx --yes wrangler deploy
 ```
 
-## 로컬 운영 CLI
+## 로컬 관리
 
-관리자 토큰은 저장소에 커밋하지 않습니다. 로컬에서는 `workers/lead-api/.admin-token.local` 또는 `JAUCTION_ADMIN_TOKEN` 환경 변수를 사용합니다.
+관리자 열쇠는 GitHub에 올리지 않습니다. 로컬에서는 `workers/lead-api/.admin-token.local` 또는 `JAUCTION_ADMIN_TOKEN`을 사용합니다.
 
 ```powershell
 node workers/lead-api/scripts/leads.mjs list

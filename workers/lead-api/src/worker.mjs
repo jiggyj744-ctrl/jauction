@@ -113,7 +113,13 @@ async function handleLead(request, env, corsHeaders) {
       ipHash,
     ).run();
 
-    return json({ ok: true, id: result.meta?.last_row_id || null, status: "received" }, 201, corsHeaders);
+    const leadId = result.meta?.last_row_id || null;
+    if (leadId) {
+      const notification = await notifyLead(env, { ...lead, id: leadId, created_at: createdAt });
+      await markNotification(env, leadId, notification);
+    }
+
+    return json({ ok: true, id: leadId, status: "received" }, 201, corsHeaders);
   } catch (error) {
     return json({ ok: false, error: "server_error" }, 500, corsHeaders);
   }
@@ -156,6 +162,9 @@ async function handleAdminList(request, env, corsHeaders) {
       property_status,
       review_status,
       admin_note,
+      notification_status,
+      notification_channel,
+      notified_at,
       source_url
     FROM leads
     ${whereSql}
@@ -186,7 +195,11 @@ async function handleAdminShow(request, env, corsHeaders, id) {
       message,
       privacy_agree,
       review_status,
-      admin_note
+      admin_note,
+      notification_status,
+      notification_channel,
+      notified_at,
+      notification_error
     FROM leads
     WHERE id = ?
   `).bind(id).first();
@@ -222,6 +235,134 @@ async function handleAdminUpdate(request, env, corsHeaders, id) {
 
   if (!result.meta?.changes) return json({ ok: false, error: "lead_not_found" }, 404, corsHeaders);
   return json({ ok: true, id, review_status: reviewStatus, updated_at: updatedAt }, 200, corsHeaders);
+}
+
+async function notifyLead(env, lead) {
+  const attempts = [];
+  if (env.RESEND_API_KEY && env.NOTIFY_EMAIL_TO && env.NOTIFY_EMAIL_FROM) {
+    attempts.push(sendEmailNotification(env, lead));
+  }
+  if (env.NOTIFY_WEBHOOK_URL) {
+    attempts.push(sendWebhookNotification(env, lead));
+  }
+
+  if (!attempts.length) {
+    return { status: "not_configured", channel: "", notified_at: "", error: "" };
+  }
+
+  const results = await Promise.all(attempts.map(async (attempt) => {
+    try {
+      return await attempt;
+    } catch (error) {
+      return { ok: false, channel: "unknown", error: clean(error?.message || "notification_failed") };
+    }
+  }));
+
+  const failed = results.filter((item) => !item.ok);
+  return {
+    status: failed.length ? (failed.length === results.length ? "failed" : "partial_failed") : "sent",
+    channel: results.map((item) => item.channel).filter(Boolean).join(","),
+    notified_at: new Date().toISOString(),
+    error: failed.map((item) => `${item.channel}:${item.error}`).join(" | "),
+  };
+}
+
+async function sendEmailNotification(env, lead) {
+  const response = await fetchWithTimeout("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${env.RESEND_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from: env.NOTIFY_EMAIL_FROM,
+      to: splitList(env.NOTIFY_EMAIL_TO),
+      subject: `[Jauction 상담] ${lead.type} / ${lead.name}`,
+      text: notificationText(lead),
+    }),
+  });
+  if (!response.ok) {
+    return { ok: false, channel: "email", error: clean(await response.text()) || String(response.status) };
+  }
+  return { ok: true, channel: "email", error: "" };
+}
+
+async function sendWebhookNotification(env, lead) {
+  const headers = { "Content-Type": "application/json" };
+  if (env.NOTIFY_WEBHOOK_TOKEN) headers.Authorization = `Bearer ${env.NOTIFY_WEBHOOK_TOKEN}`;
+  const response = await fetchWithTimeout(env.NOTIFY_WEBHOOK_URL, {
+    method: "POST",
+    headers,
+    body: JSON.stringify({
+      event: "lead.created",
+      id: lead.id,
+      created_at: lead.created_at,
+      name: lead.name,
+      phone: lead.phone,
+      type: lead.type,
+      case_or_address: lead.case_or_address,
+      share: lead.share,
+      owners: lead.owners,
+      status: lead.status,
+      message: lead.message,
+      source: lead.source,
+    }),
+  });
+  if (!response.ok) {
+    return { ok: false, channel: "webhook", error: clean(await response.text()) || String(response.status) };
+  }
+  return { ok: true, channel: "webhook", error: "" };
+}
+
+async function markNotification(env, id, notification) {
+  try {
+    await env.DB.prepare(`
+      UPDATE leads
+      SET notification_status = ?, notification_channel = ?, notified_at = ?, notification_error = ?
+      WHERE id = ?
+    `).bind(
+      notification.status || "unknown",
+      notification.channel || "",
+      notification.notified_at || "",
+      notification.error || "",
+      id,
+    ).run();
+  } catch {
+    // Older databases can still receive leads before the notification fields are added.
+  }
+}
+
+async function fetchWithTimeout(url, init) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 2500);
+  try {
+    return await fetch(url, { ...init, signal: controller.signal });
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+function notificationText(lead) {
+  return [
+    "Jauction 새 상담이 접수되었습니다.",
+    "",
+    `접수번호: ${lead.id}`,
+    `접수시각: ${lead.created_at}`,
+    `이름: ${lead.name}`,
+    `연락처: ${lead.phone}`,
+    `상담유형: ${lead.type}`,
+    `주소/사건번호: ${lead.case_or_address || "-"}`,
+    `지분율: ${lead.share || "-"}`,
+    `공유자 수: ${lead.owners || "-"}`,
+    `현재 상태: ${lead.status || "-"}`,
+    `출처: ${lead.source || "-"}`,
+    "",
+    lead.message || "-",
+  ].join("\n");
+}
+
+function splitList(value) {
+  return String(value || "").split(",").map((item) => item.trim()).filter(Boolean);
 }
 
 function parseJson(text) {
@@ -699,6 +840,7 @@ function adminPageHtml() {
         row("지분율", lead.share_ratio || "-") +
         row("공유자", lead.owners || "-") +
         row("상태", lead.property_status || "-") +
+        row("알림", notificationLabel(lead)) +
         row("출처", lead.source_url || "-") +
         "</dl>" +
         "<div><strong>상담 내용</strong><p class='message'>" + esc(lead.message || "-") + "</p></div>" +
@@ -709,7 +851,7 @@ function adminPageHtml() {
     }
 
     function exportCsv() {
-      const headers = ["id", "created_at", "review_status", "name", "phone", "lead_type", "case_or_address", "source_url"];
+      const headers = ["id", "created_at", "review_status", "notification_status", "notification_channel", "notified_at", "name", "phone", "lead_type", "case_or_address", "source_url"];
       const lines = [headers.join(",")];
       for (const lead of state.leads) {
         lines.push(headers.map((key) => csv(lead[key] || "")).join(","));
@@ -725,6 +867,12 @@ function adminPageHtml() {
 
     function row(key, value) {
       return "<div><dt>" + esc(key) + "</dt><dd>" + esc(value) + "</dd></div>";
+    }
+
+    function notificationLabel(lead) {
+      const parts = [lead.notification_status || "-", lead.notification_channel || "", lead.notified_at ? formatDate(lead.notified_at) : ""].filter(Boolean);
+      if (lead.notification_error) parts.push(lead.notification_error);
+      return parts.join(" / ");
     }
 
     function setStatus(message, isError = false) {
