@@ -35,4 +35,5 @@ docs-bid/sitemaps/
 sites/
 feed*.xml
 sitemap*.xml
+!public/sitemap.xml
 data.json
