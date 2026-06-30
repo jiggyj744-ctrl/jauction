@@ -32,9 +32,12 @@ GitHub Pages 상담 화면에서 들어온 내용을 저장하고 관리하는 C
 
 새 상담이 저장된 뒤 아래 설정이 있으면 알림을 보냅니다. 설정이 없으면 상담은 정상 저장되고 알림 상태만 `not_configured`로 남습니다.
 
+- WordPress 메일 브리지: `WORDPRESS_WEBHOOK_URL`, `WORDPRESS_WEBHOOK_TOKEN`
 - Cloudflare 메일 알림: `send_email` 바인딩, `NOTIFY_EMAIL_FROM`, `NOTIFY_EMAIL_TO`
 - Resend 메일 알림: `RESEND_API_KEY`, `NOTIFY_EMAIL_FROM`, `NOTIFY_EMAIL_TO`
 - 외부 알림 주소: `NOTIFY_WEBHOOK_URL`, 필요 시 `NOTIFY_WEBHOOK_TOKEN`
+
+`NOTIFY_PROVIDER=auto` 기준 우선순위는 WordPress `wp_mail()` 브리지, Cloudflare Email, Resend 순서입니다. WP Mail SMTP가 WordPress에 설정되어 있으면 WordPress 브리지 경로가 가장 단순합니다.
 
 Cloudflare 메일 알림은 Cloudflare Email Service에 등록된 발신 도메인 주소에서만 성공합니다. 무료 `github.io` 또는 `pages.dev` 주소만으로는 발신자 도메인 인증을 완료할 수 없습니다.
 

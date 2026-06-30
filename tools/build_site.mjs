@@ -1178,7 +1178,9 @@ function docs() {
   write("README.md", `
 # Jauction 지분매입 공개 사이트
 
-공개 주소는 \`${siteUrl}/\`입니다. 공유물 지분, 지분경매, 상속 지분, 토지 지분, 상가·건물 지분을 가진 사람이 상담을 남기도록 만든 정적 랜딩 사이트입니다.
+대표 주소는 \`${siteUrl}/\`입니다. GitHub 주소 \`https://jiggyj744-ctrl.github.io/\`는 백업 공개 주소로 유지합니다.
+
+공유물 지분, 지분경매, 상속 지분, 토지 지분, 상가·건물 지분을 가진 사람이 상담을 남기도록 만든 정적 랜딩 사이트입니다.
 
 ## 운영 범위
 
@@ -1197,6 +1199,7 @@ function docs() {
 - \`assets/styles.css\`: 화면 스타일
 - \`assets/main.js\`: 상담 접수 화면 동작
 - \`workers/lead-api/\`: 상담 저장과 관리자 화면
+- \`wordpress/jauction-lead-mail-bridge/\`: WP Mail SMTP 연동용 WordPress 플러그인
 - \`tools/verify_site.mjs\`: 로컬 파일 점검
 - \`tools/verify_live.mjs\`: 공개 주소 점검
 
@@ -1217,11 +1220,31 @@ node workers/lead-api/scripts/leads.mjs notify-test
 
 상담 저장과 메일 발송은 별도입니다. 상담은 D1에 먼저 저장되고, 메일 발송 설정이 준비된 경우에만 알림 상태가 \`sent\`로 바뀝니다.
 
+- WordPress 메일 브리지: \`WORDPRESS_WEBHOOK_URL\`, \`WORDPRESS_WEBHOOK_TOKEN\`
 - Cloudflare 메일: \`send_email\` 바인딩, \`NOTIFY_EMAIL_FROM\`, \`NOTIFY_EMAIL_TO\`
 - Resend 메일: \`RESEND_API_KEY\`, \`NOTIFY_EMAIL_FROM\`, \`NOTIFY_EMAIL_TO\`
 - 외부 알림 주소: \`NOTIFY_WEBHOOK_URL\`, 필요 시 \`NOTIFY_WEBHOOK_TOKEN\`
 
+권장 경로는 WordPress 메일 브리지입니다. WordPress에 \`jauction-lead-mail-bridge\` 플러그인을 설치하면 Worker가 \`/wp-json/jauction/v1/lead\`로 상담 내용을 전달하고, 플러그인은 \`wp_mail()\`을 호출합니다. WP Mail SMTP가 이미 설정되어 있으면 그 발송 경로로 메일이 나갑니다.
+
 Cloudflare 메일 발송은 Cloudflare Email Service에 등록된 발신 도메인 주소에서만 성공합니다. 무료 \`github.io\` 또는 \`pages.dev\` 주소만으로는 발신자 도메인 인증을 완료할 수 없습니다.
+
+## 검색 등록
+
+Google Search Console과 Naver Search Advisor에는 대표 주소 \`${siteUrl}/\`를 등록합니다.
+
+확인 태그나 확인 파일을 받으면 아래 도구로 반영합니다.
+
+\`\`\`powershell
+node tools/apply_search_verification.mjs --google-meta "구글에서 받은 content 값"
+node tools/apply_search_verification.mjs --naver-meta "네이버에서 받은 content 값"
+\`\`\`
+
+잘못 넣었으면 아래처럼 비웁니다.
+
+\`\`\`powershell
+node tools/apply_search_verification.mjs --clear
+\`\`\`
 
 ## 점검
 

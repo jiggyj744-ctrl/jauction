@@ -6,7 +6,7 @@ const JSON_HEADERS = {
 const MAX_BODY_BYTES = 12_000;
 const MAX_FIELD_LENGTH = 1500;
 const ADMIN_STATUSES = new Set(["new", "reviewing", "contacted", "offer", "hold", "closed", "spam"]);
-const NOTIFY_PROVIDERS = new Set(["auto", "cloudflare", "resend", "all"]);
+const NOTIFY_PROVIDERS = new Set(["auto", "wordpress", "cloudflare", "resend", "all"]);
 
 export default {
   async fetch(request, env) {
@@ -278,13 +278,17 @@ async function handleAdminUpdate(request, env, corsHeaders, id) {
 async function notifyLead(env, lead) {
   const attempts = [];
   const provider = normalizeNotifyProvider(env.NOTIFY_PROVIDER);
+  const wordpressReady = isWordPressMailReady(env);
   const cloudflareReady = isCloudflareEmailReady(env);
   const resendReady = isResendEmailReady(env);
 
-  if ((provider === "cloudflare" || provider === "all" || (provider === "auto" && cloudflareReady)) && cloudflareReady) {
+  if ((provider === "wordpress" || provider === "all" || (provider === "auto" && wordpressReady)) && wordpressReady) {
+    attempts.push(sendWordPressMailNotification(env, lead));
+  }
+  if ((provider === "cloudflare" || provider === "all" || (provider === "auto" && !wordpressReady && cloudflareReady)) && cloudflareReady) {
     attempts.push(sendCloudflareEmailNotification(env, lead));
   }
-  if ((provider === "resend" || provider === "all" || (provider === "auto" && !cloudflareReady && resendReady)) && resendReady) {
+  if ((provider === "resend" || provider === "all" || (provider === "auto" && !wordpressReady && !cloudflareReady && resendReady)) && resendReady) {
     attempts.push(sendResendEmailNotification(env, lead));
   }
   if (env.NOTIFY_WEBHOOK_URL) {
@@ -315,6 +319,23 @@ async function notifyLead(env, lead) {
     notified_at: new Date().toISOString(),
     error: failed.map((item) => `${item.channel}:${item.error}`).join(" | "),
   };
+}
+
+async function sendWordPressMailNotification(env, lead) {
+  const headers = {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${env.WORDPRESS_WEBHOOK_TOKEN}`,
+    "X-Jauction-Token": env.WORDPRESS_WEBHOOK_TOKEN,
+  };
+  const response = await fetchWithTimeout(env.WORDPRESS_WEBHOOK_URL, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(leadNotificationPayload(lead)),
+  });
+  if (!response.ok) {
+    return { ok: false, channel: "wordpress_wp_mail", error: clean(await response.text()) || String(response.status) };
+  }
+  return { ok: true, channel: "wordpress_wp_mail", error: "" };
 }
 
 async function sendCloudflareEmailNotification(env, lead) {
@@ -368,25 +389,29 @@ async function sendWebhookNotification(env, lead) {
   const response = await fetchWithTimeout(env.NOTIFY_WEBHOOK_URL, {
     method: "POST",
     headers,
-    body: JSON.stringify({
-      event: "lead.created",
-      id: lead.id,
-      created_at: lead.created_at,
-      name: lead.name,
-      phone: lead.phone,
-      type: lead.type,
-      case_or_address: lead.case_or_address,
-      share: lead.share,
-      owners: lead.owners,
-      status: lead.status,
-      message: lead.message,
-      source: lead.source,
-    }),
+    body: JSON.stringify(leadNotificationPayload(lead)),
   });
   if (!response.ok) {
     return { ok: false, channel: "webhook", error: clean(await response.text()) || String(response.status) };
   }
   return { ok: true, channel: "webhook", error: "" };
+}
+
+function leadNotificationPayload(lead) {
+  return {
+    event: "lead.created",
+    id: lead.id,
+    created_at: lead.created_at,
+    name: lead.name,
+    phone: lead.phone,
+    type: lead.type,
+    case_or_address: lead.case_or_address,
+    share: lead.share,
+    owners: lead.owners,
+    status: lead.status,
+    message: lead.message,
+    source: lead.source,
+  };
 }
 
 async function markNotification(env, id, notification) {
@@ -453,8 +478,17 @@ function isResendEmailReady(env) {
   return Boolean(env.RESEND_API_KEY && env.NOTIFY_EMAIL_TO && env.NOTIFY_EMAIL_FROM);
 }
 
+function isWordPressMailReady(env) {
+  return Boolean(env.WORDPRESS_WEBHOOK_URL && env.WORDPRESS_WEBHOOK_TOKEN);
+}
+
 function notificationConfig(env) {
   const provider = normalizeNotifyProvider(env.NOTIFY_PROVIDER);
+  const wordpress = {
+    url: Boolean(env.WORDPRESS_WEBHOOK_URL),
+    token: Boolean(env.WORDPRESS_WEBHOOK_TOKEN),
+    ready: isWordPressMailReady(env),
+  };
   const cloudflare = {
     binding: Boolean(env.EMAIL && typeof env.EMAIL.send === "function"),
     from: Boolean(env.NOTIFY_EMAIL_FROM),
@@ -472,9 +506,12 @@ function notificationConfig(env) {
     token: Boolean(env.NOTIFY_WEBHOOK_TOKEN),
     ready: Boolean(env.NOTIFY_WEBHOOK_URL),
   };
-  const configured = cloudflare.ready || resend.ready || webhook.ready;
+  const configured = wordpress.ready || cloudflare.ready || resend.ready || webhook.ready;
   const missing = [];
-  if (provider === "cloudflare") {
+  if (provider === "wordpress") {
+    if (!wordpress.url) missing.push("WORDPRESS_WEBHOOK_URL");
+    if (!wordpress.token) missing.push("WORDPRESS_WEBHOOK_TOKEN");
+  } else if (provider === "cloudflare") {
     if (!cloudflare.binding) missing.push("EMAIL_binding");
     if (!cloudflare.from) missing.push("NOTIFY_EMAIL_FROM");
     if (!cloudflare.to) missing.push("NOTIFY_EMAIL_TO");
@@ -484,14 +521,18 @@ function notificationConfig(env) {
     if (!resend.to) missing.push("NOTIFY_EMAIL_TO");
   } else if (!configured) {
     missing.push("notification_provider");
-    if (!cloudflare.binding && !resend.api_key) missing.push("EMAIL_binding_or_RESEND_API_KEY");
-    if (!cloudflare.from && !resend.from) missing.push("NOTIFY_EMAIL_FROM");
-    if (!cloudflare.to && !resend.to) missing.push("NOTIFY_EMAIL_TO");
+    if (!wordpress.url && !cloudflare.binding && !resend.api_key && !webhook.url) {
+      missing.push("WORDPRESS_WEBHOOK_URL_or_EMAIL_binding_or_RESEND_API_KEY_or_NOTIFY_WEBHOOK_URL");
+    }
+    if (wordpress.url && !wordpress.token) missing.push("WORDPRESS_WEBHOOK_TOKEN");
+    if ((cloudflare.binding || resend.api_key) && !cloudflare.from && !resend.from) missing.push("NOTIFY_EMAIL_FROM");
+    if ((cloudflare.binding || resend.api_key) && !cloudflare.to && !resend.to) missing.push("NOTIFY_EMAIL_TO");
   }
   return {
     provider,
     configured,
-    effective_email_channel: cloudflare.ready ? "cloudflare_email" : (resend.ready ? "resend_email" : ""),
+    effective_email_channel: wordpress.ready ? "wordpress_wp_mail" : (cloudflare.ready ? "cloudflare_email" : (resend.ready ? "resend_email" : "")),
+    wordpress_mail: wordpress,
     cloudflare_email: cloudflare,
     resend_email: resend,
     webhook,
@@ -1022,6 +1063,7 @@ function adminPageHtml() {
         "알림 설정",
         "provider=" + (item.provider || "-"),
         "configured=" + Boolean(item.configured),
+        "wp=" + ((item.wordpress_mail && item.wordpress_mail.ready) ? "ready" : "off"),
         "email=" + (item.effective_email_channel || "-"),
         "missing=" + ((item.missing || []).join(",") || "-"),
       ];

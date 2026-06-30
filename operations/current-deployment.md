@@ -8,9 +8,10 @@
 - GitHub 백업: `https://jiggyj744-ctrl.github.io/`
 - 관리자: `https://jauction-lead-api.jiggyj.workers.dev/admin`
 - 상담 저장: `https://jauction-lead-api.jiggyj.workers.dev/lead`
-- sitemap: `https://jiggyj744-ctrl.github.io/sitemap.xml`
-- robots: `https://jiggyj744-ctrl.github.io/robots.txt`
-- 상담 Worker 배포 버전: `2b215ddd-089a-4b38-b393-9e96f9efd9ab`
+- sitemap: `https://jauction-share-acquisition.pages.dev/sitemap.xml`
+- robots: `https://jauction-share-acquisition.pages.dev/robots.txt`
+- 상담 Worker 코드 배포 버전: `87904349-b310-45b6-bd65-1ff5e75157dd`
+- 상담 Worker 최근 secret 반영 버전: `175d37a6-724b-40fe-80e1-6c056b062338`
 
 ## 완료된 작업
 
@@ -23,6 +24,8 @@
 - 이메일 또는 외부 알림 주소 연결 준비
 - Cloudflare Email `send_email` 바인딩 추가
 - 관리자 알림 설정 점검과 테스트 발송 기능 추가
+- WordPress `wp_mail()` 브리지 알림 추가
+- WordPress MU 플러그인 배치로 관리자 로그인 없이 브리지 활성화
 - 공개 주소 전체 점검 도구 추가
 - Cloudflare Pages 대표 배포 생성
 - Cloudflare Pages 주소에서 상담 접수 허용
@@ -45,13 +48,16 @@
 - 상담 Worker 새 배포: 정상
 - Cloudflare Email 바인딩 인식: 정상
 - 알림 설정 점검 API: 정상
-- 알림 테스트 API: 정상, 현재 발송 제공자 미설정으로 `not_configured`
+- 알림 설정: WordPress `wp_mail()` 브리지 준비 완료
+- 알림 테스트 API: 정상, `sent / wordpress_wp_mail`
+- 실제 `/lead` 접수 알림: 정상, `sent / wordpress_wp_mail`
+- 시험 상담 삭제 완료 후 D1 보존 상담: 1건
 
 ## 아직 남은 외부 연결
 
-- 실제 이메일 발송용 발신 도메인 또는 Resend 같은 발송 계정 연결
 - Google Search Console 등록과 sitemap 제출
 - Naver Search Advisor 등록과 sitemap 제출
 - 나중에 별도 도메인 연결 시 주소 기준 재생성
+- WordPress/WP Mail SMTP 쪽 실제 수신함 도착 여부 운영 확인
 
-현재 사이트는 공개와 접수 기준으로 운영 가능한 상태입니다. 알림 발송 코드는 배포되어 있으며, 실제 메일 발송은 검증된 발신 도메인과 수신 주소 또는 Resend API 키를 연결하면 켤 수 있습니다. 무료 `github.io`와 `pages.dev` 주소는 Cloudflare Email Sending의 발신 도메인으로 등록할 수 없습니다.
+현재 사이트는 공개, 접수, 관리자 확인, WordPress 메일 알림 기준으로 운영 가능한 상태입니다. 무료 `github.io`와 `pages.dev` 주소는 Cloudflare Email Sending의 발신 도메인으로 등록할 수 없으므로, 실제 메일 발송은 WordPress `wp_mail()`과 WP Mail SMTP 경로를 우선 사용합니다.

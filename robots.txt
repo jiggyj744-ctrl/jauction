@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jauction-share-acquisition.pages.dev/sitemap.xml
