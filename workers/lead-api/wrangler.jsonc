@@ -7,6 +7,11 @@
     "ALLOWED_ORIGINS": "https://jiggyj744-ctrl.github.io,https://jauction-share-acquisition.pages.dev,http://127.0.0.1:4173",
     "MAX_LEADS_PER_IP_PER_HOUR": "5"
   },
+  "send_email": [
+    {
+      "name": "EMAIL"
+    }
+  ],
   "d1_databases": [
     {
       "binding": "DB",

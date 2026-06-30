@@ -49,6 +49,15 @@ if (command === "list") {
   if (status) params.set("status", status);
   const data = await api(`/admin/leads?${params.toString()}`);
   printCsv(data.leads || []);
+} else if (command === "notify-config") {
+  const data = await api("/admin/notification-config");
+  console.log(JSON.stringify(data.notification, null, 2));
+} else if (command === "notify-test") {
+  const data = await api("/admin/notification-test", {
+    method: "POST",
+    body: JSON.stringify({}),
+  });
+  console.log(JSON.stringify(data.notification, null, 2));
 } else {
   fail(`unknown command: ${command}`);
 }
@@ -123,7 +132,9 @@ function printHelp() {
   node workers/lead-api/scripts/leads.mjs list [--limit 25] [--status new] [--q keyword]
   node workers/lead-api/scripts/leads.mjs show <id>
   node workers/lead-api/scripts/leads.mjs update <id> <new|reviewing|contacted|offer|hold|closed|spam> [note]
-  node workers/lead-api/scripts/leads.mjs export [--limit 100] [--status new]`);
+  node workers/lead-api/scripts/leads.mjs export [--limit 100] [--status new]
+  node workers/lead-api/scripts/leads.mjs notify-config
+  node workers/lead-api/scripts/leads.mjs notify-test`);
 }
 
 function fail(message) {

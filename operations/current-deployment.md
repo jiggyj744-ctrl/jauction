@@ -10,6 +10,7 @@
 - 상담 저장: `https://jauction-lead-api.jiggyj.workers.dev/lead`
 - sitemap: `https://jiggyj744-ctrl.github.io/sitemap.xml`
 - robots: `https://jiggyj744-ctrl.github.io/robots.txt`
+- 상담 Worker 배포 버전: `2b215ddd-089a-4b38-b393-9e96f9efd9ab`
 
 ## 완료된 작업
 
@@ -20,6 +21,8 @@
 - 상담 상태 변경과 관리자 메모 저장
 - 상담 알림 상태 저장 칸 추가
 - 이메일 또는 외부 알림 주소 연결 준비
+- Cloudflare Email `send_email` 바인딩 추가
+- 관리자 알림 설정 점검과 테스트 발송 기능 추가
 - 공개 주소 전체 점검 도구 추가
 - Cloudflare Pages 대표 배포 생성
 - Cloudflare Pages 주소에서 상담 접수 허용
@@ -39,12 +42,16 @@
 - Cloudflare Pages 주소 접속: 정상
 - Cloudflare Pages 출처 상담 접수: 정상
 - sitemap, robots, canonical Cloudflare 대표 주소 기준 반영: 정상
+- 상담 Worker 새 배포: 정상
+- Cloudflare Email 바인딩 인식: 정상
+- 알림 설정 점검 API: 정상
+- 알림 테스트 API: 정상, 현재 발송 제공자 미설정으로 `not_configured`
 
 ## 아직 남은 외부 연결
 
-- 이메일 또는 문자 발송 계정 연결
+- 실제 이메일 발송용 발신 도메인 또는 Resend 같은 발송 계정 연결
 - Google Search Console 등록과 sitemap 제출
 - Naver Search Advisor 등록과 sitemap 제출
 - 나중에 별도 도메인 연결 시 주소 기준 재생성
 
-현재 사이트는 공개와 접수 기준으로 운영 가능한 상태입니다. 알림 발송은 받을 계정과 발송 계정을 연결하면 바로 켤 수 있습니다.
+현재 사이트는 공개와 접수 기준으로 운영 가능한 상태입니다. 알림 발송 코드는 배포되어 있으며, 실제 메일 발송은 검증된 발신 도메인과 수신 주소 또는 Resend API 키를 연결하면 켤 수 있습니다. 무료 `github.io`와 `pages.dev` 주소는 Cloudflare Email Sending의 발신 도메인으로 등록할 수 없습니다.

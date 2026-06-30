@@ -6,6 +6,7 @@ const JSON_HEADERS = {
 const MAX_BODY_BYTES = 12_000;
 const MAX_FIELD_LENGTH = 1500;
 const ADMIN_STATUSES = new Set(["new", "reviewing", "contacted", "offer", "hold", "closed", "spam"]);
+const NOTIFY_PROVIDERS = new Set(["auto", "cloudflare", "resend", "all"]);
 
 export default {
   async fetch(request, env) {
@@ -30,6 +31,14 @@ export default {
 
     if (url.pathname === "/admin/leads" && request.method === "GET") {
       return handleAdminList(request, env, corsHeaders);
+    }
+
+    if (url.pathname === "/admin/notification-config" && request.method === "GET") {
+      return handleNotificationConfig(request, env, corsHeaders);
+    }
+
+    if (url.pathname === "/admin/notification-test" && request.method === "POST") {
+      return handleNotificationTest(request, env, corsHeaders);
     }
 
     const leadMatch = url.pathname.match(/^\/admin\/leads\/(\d+)$/);
@@ -165,6 +174,7 @@ async function handleAdminList(request, env, corsHeaders) {
       notification_status,
       notification_channel,
       notified_at,
+      notification_error,
       source_url
     FROM leads
     ${whereSql}
@@ -173,6 +183,34 @@ async function handleAdminList(request, env, corsHeaders) {
   `).bind(...binds, limit, offset).all();
 
   return json({ ok: true, leads: results.results || [], limit, offset }, 200, corsHeaders);
+}
+
+async function handleNotificationConfig(request, env, corsHeaders) {
+  const auth = await requireAdmin(request, env);
+  if (!auth.ok) return json({ ok: false, error: auth.error }, auth.status, corsHeaders);
+  return json({ ok: true, notification: notificationConfig(env) }, 200, corsHeaders);
+}
+
+async function handleNotificationTest(request, env, corsHeaders) {
+  const auth = await requireAdmin(request, env);
+  if (!auth.ok) return json({ ok: false, error: auth.error }, auth.status, corsHeaders);
+
+  const now = new Date().toISOString();
+  const notification = await notifyLead(env, {
+    id: "test",
+    created_at: now,
+    name: "알림 점검",
+    phone: "0000000000",
+    type: "테스트",
+    case_or_address: "관리자 테스트",
+    share: "-",
+    owners: "-",
+    status: "테스트",
+    message: "상담 알림 발송 경로가 정상인지 확인하는 테스트입니다.",
+    source: "admin-notification-test",
+  });
+
+  return json({ ok: true, notification }, 200, corsHeaders);
 }
 
 async function handleAdminShow(request, env, corsHeaders, id) {
@@ -239,15 +277,27 @@ async function handleAdminUpdate(request, env, corsHeaders, id) {
 
 async function notifyLead(env, lead) {
   const attempts = [];
-  if (env.RESEND_API_KEY && env.NOTIFY_EMAIL_TO && env.NOTIFY_EMAIL_FROM) {
-    attempts.push(sendEmailNotification(env, lead));
+  const provider = normalizeNotifyProvider(env.NOTIFY_PROVIDER);
+  const cloudflareReady = isCloudflareEmailReady(env);
+  const resendReady = isResendEmailReady(env);
+
+  if ((provider === "cloudflare" || provider === "all" || (provider === "auto" && cloudflareReady)) && cloudflareReady) {
+    attempts.push(sendCloudflareEmailNotification(env, lead));
+  }
+  if ((provider === "resend" || provider === "all" || (provider === "auto" && !cloudflareReady && resendReady)) && resendReady) {
+    attempts.push(sendResendEmailNotification(env, lead));
   }
   if (env.NOTIFY_WEBHOOK_URL) {
     attempts.push(sendWebhookNotification(env, lead));
   }
 
   if (!attempts.length) {
-    return { status: "not_configured", channel: "", notified_at: "", error: "" };
+    return {
+      status: "not_configured",
+      channel: "",
+      notified_at: "",
+      error: notificationConfig(env).missing.join(","),
+    };
   }
 
   const results = await Promise.all(attempts.map(async (attempt) => {
@@ -267,7 +317,31 @@ async function notifyLead(env, lead) {
   };
 }
 
-async function sendEmailNotification(env, lead) {
+async function sendCloudflareEmailNotification(env, lead) {
+  const message = {
+    from: emailAddress(env.NOTIFY_EMAIL_FROM, env.NOTIFY_EMAIL_FROM_NAME || "Jauction 상담 접수"),
+    to: splitList(env.NOTIFY_EMAIL_TO),
+    subject: `[Jauction 상담] ${lead.type} / ${lead.name}`,
+    text: notificationText(lead),
+    headers: {
+      "X-Jauction-Lead-Id": String(lead.id),
+    },
+  };
+  if (env.NOTIFY_EMAIL_REPLY_TO) {
+    message.replyTo = env.NOTIFY_EMAIL_REPLY_TO;
+  }
+
+  try {
+    const result = await env.EMAIL.send(message);
+    return { ok: true, channel: "cloudflare_email", message_id: result?.messageId || "", error: "" };
+  } catch (error) {
+    const code = clean(error?.code || "");
+    const detail = clean(error?.message || "email_send_failed");
+    return { ok: false, channel: "cloudflare_email", error: [code, detail].filter(Boolean).join(":") };
+  }
+}
+
+async function sendResendEmailNotification(env, lead) {
   const response = await fetchWithTimeout("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -275,16 +349,17 @@ async function sendEmailNotification(env, lead) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: env.NOTIFY_EMAIL_FROM,
+      from: formatSender(env.NOTIFY_EMAIL_FROM, env.NOTIFY_EMAIL_FROM_NAME),
       to: splitList(env.NOTIFY_EMAIL_TO),
       subject: `[Jauction 상담] ${lead.type} / ${lead.name}`,
       text: notificationText(lead),
+      reply_to: env.NOTIFY_EMAIL_REPLY_TO || undefined,
     }),
   });
   if (!response.ok) {
-    return { ok: false, channel: "email", error: clean(await response.text()) || String(response.status) };
+    return { ok: false, channel: "resend_email", error: clean(await response.text()) || String(response.status) };
   }
-  return { ok: true, channel: "email", error: "" };
+  return { ok: true, channel: "resend_email", error: "" };
 }
 
 async function sendWebhookNotification(env, lead) {
@@ -334,7 +409,7 @@ async function markNotification(env, id, notification) {
 
 async function fetchWithTimeout(url, init) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 2500);
+  const timeout = setTimeout(() => controller.abort(), 7000);
   try {
     return await fetch(url, { ...init, signal: controller.signal });
   } finally {
@@ -363,6 +438,77 @@ function notificationText(lead) {
 
 function splitList(value) {
   return String(value || "").split(",").map((item) => item.trim()).filter(Boolean);
+}
+
+function normalizeNotifyProvider(value) {
+  const provider = clean(value).toLowerCase() || "auto";
+  return NOTIFY_PROVIDERS.has(provider) ? provider : "auto";
+}
+
+function isCloudflareEmailReady(env) {
+  return Boolean(env.EMAIL && typeof env.EMAIL.send === "function" && env.NOTIFY_EMAIL_TO && env.NOTIFY_EMAIL_FROM);
+}
+
+function isResendEmailReady(env) {
+  return Boolean(env.RESEND_API_KEY && env.NOTIFY_EMAIL_TO && env.NOTIFY_EMAIL_FROM);
+}
+
+function notificationConfig(env) {
+  const provider = normalizeNotifyProvider(env.NOTIFY_PROVIDER);
+  const cloudflare = {
+    binding: Boolean(env.EMAIL && typeof env.EMAIL.send === "function"),
+    from: Boolean(env.NOTIFY_EMAIL_FROM),
+    to: Boolean(env.NOTIFY_EMAIL_TO),
+    ready: isCloudflareEmailReady(env),
+  };
+  const resend = {
+    api_key: Boolean(env.RESEND_API_KEY),
+    from: Boolean(env.NOTIFY_EMAIL_FROM),
+    to: Boolean(env.NOTIFY_EMAIL_TO),
+    ready: isResendEmailReady(env),
+  };
+  const webhook = {
+    url: Boolean(env.NOTIFY_WEBHOOK_URL),
+    token: Boolean(env.NOTIFY_WEBHOOK_TOKEN),
+    ready: Boolean(env.NOTIFY_WEBHOOK_URL),
+  };
+  const configured = cloudflare.ready || resend.ready || webhook.ready;
+  const missing = [];
+  if (provider === "cloudflare") {
+    if (!cloudflare.binding) missing.push("EMAIL_binding");
+    if (!cloudflare.from) missing.push("NOTIFY_EMAIL_FROM");
+    if (!cloudflare.to) missing.push("NOTIFY_EMAIL_TO");
+  } else if (provider === "resend") {
+    if (!resend.api_key) missing.push("RESEND_API_KEY");
+    if (!resend.from) missing.push("NOTIFY_EMAIL_FROM");
+    if (!resend.to) missing.push("NOTIFY_EMAIL_TO");
+  } else if (!configured) {
+    missing.push("notification_provider");
+    if (!cloudflare.binding && !resend.api_key) missing.push("EMAIL_binding_or_RESEND_API_KEY");
+    if (!cloudflare.from && !resend.from) missing.push("NOTIFY_EMAIL_FROM");
+    if (!cloudflare.to && !resend.to) missing.push("NOTIFY_EMAIL_TO");
+  }
+  return {
+    provider,
+    configured,
+    effective_email_channel: cloudflare.ready ? "cloudflare_email" : (resend.ready ? "resend_email" : ""),
+    cloudflare_email: cloudflare,
+    resend_email: resend,
+    webhook,
+    missing: [...new Set(missing)],
+  };
+}
+
+function emailAddress(email, name) {
+  const value = clean(email);
+  const label = clean(name);
+  return label ? { email: value, name: label } : value;
+}
+
+function formatSender(email, name) {
+  const value = clean(email);
+  const label = clean(name);
+  return label ? `${label} <${value}>` : value;
 }
 
 function parseJson(text) {
@@ -584,10 +730,10 @@ function adminPageHtml() {
     }
     .token-row {
       display: grid;
-      grid-template-columns: minmax(180px, 1fr) auto auto;
+      grid-template-columns: minmax(180px, 1fr) auto auto auto auto;
       gap: 10px;
       align-items: center;
-      width: min(760px, 100%);
+      width: min(980px, 100%);
     }
     .status {
       color: var(--muted);
@@ -681,6 +827,8 @@ function adminPageHtml() {
       <input id="token" type="password" placeholder="관리자 토큰" autocomplete="off">
       <button id="saveToken" type="button">토큰 저장</button>
       <button id="clearToken" class="secondary" type="button">지우기</button>
+      <button id="notifyConfig" class="secondary" type="button">알림 점검</button>
+      <button id="notifyTest" class="secondary" type="button">테스트 발송</button>
     </div>
   </header>
   <main>
@@ -752,6 +900,8 @@ function adminPageHtml() {
     });
     document.getElementById("load").addEventListener("click", loadLeads);
     document.getElementById("exportCsv").addEventListener("click", exportCsv);
+    document.getElementById("notifyConfig").addEventListener("click", loadNotificationConfig);
+    document.getElementById("notifyTest").addEventListener("click", sendNotificationTest);
 
     async function loadLeads() {
       const params = new URLSearchParams();
@@ -863,6 +1013,34 @@ function adminPageHtml() {
       a.download = "jauction-leads.csv";
       a.click();
       URL.revokeObjectURL(url);
+    }
+
+    async function loadNotificationConfig() {
+      const data = await api("/admin/notification-config");
+      const item = data.notification || {};
+      const parts = [
+        "알림 설정",
+        "provider=" + (item.provider || "-"),
+        "configured=" + Boolean(item.configured),
+        "email=" + (item.effective_email_channel || "-"),
+        "missing=" + ((item.missing || []).join(",") || "-"),
+      ];
+      setStatus(parts.join(" / "), !item.configured);
+    }
+
+    async function sendNotificationTest() {
+      const data = await api("/admin/notification-test", {
+        method: "POST",
+        body: JSON.stringify({}),
+      });
+      const item = data.notification || {};
+      const message = [
+        "테스트 알림",
+        "status=" + (item.status || "-"),
+        "channel=" + (item.channel || "-"),
+        item.error ? "error=" + item.error : "",
+      ].filter(Boolean).join(" / ");
+      setStatus(message, item.status !== "sent");
     }
 
     function row(key, value) {
