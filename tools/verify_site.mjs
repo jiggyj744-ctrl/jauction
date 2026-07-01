@@ -45,7 +45,7 @@ const requiredText = {
     "FAQPage",
     "ProfessionalService",
   ],
-  "assets/main.js": ["localStorage", "jauction_last_submit", "sms:01068991601"],
+  "assets/main.js": ["localStorage", "jauction_last_submit", "sms:1688-0976"],
   "robots.txt": ["Sitemap: https://jauction-share-acquisition.pages.dev/sitemap.xml"],
   "sitemap.xml": [
     "https://jauction-share-acquisition.pages.dev/",

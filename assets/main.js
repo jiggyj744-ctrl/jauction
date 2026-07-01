@@ -56,8 +56,8 @@ window.addEventListener("DOMContentLoaded", () => {
         result,
         "접수 내용이 정리되었습니다. 아래 버튼으로 문자 전달 또는 전화 상담을 진행하세요.",
         [
-          { label: "문자로 보내기", href: "sms:01068991601?&body=" + encoded },
-          { label: "전화하기", href: "tel:01068991601" },
+          { label: "문자로 보내기", href: "sms:1688-0976?&body=" + encoded },
+          { label: "전화하기", href: "tel:1688-0976" },
         ],
         summary,
       );
