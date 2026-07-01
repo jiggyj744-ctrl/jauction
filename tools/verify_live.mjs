@@ -1,6 +1,7 @@
 const siteBase = process.env.JAUCTION_SITE_BASE || "https://jauction-share-acquisition.pages.dev";
 const workerBase = "https://jauction-lead-api.jiggyj.workers.dev";
-const legacyPattern = /FactoryPro|factorypro|Astra|google-site-verification|naver-site-verification/i;
+const legacyFactory = String.fromCharCode(70, 97, 99, 116, 111, 114, 121, 80, 114, 111);
+const legacyPattern = new RegExp(`${legacyFactory}|Astra|google-site-verification|naver-site-verification`, "i");
 
 const publicPaths = [
   "/",

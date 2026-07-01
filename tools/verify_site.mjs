@@ -30,8 +30,8 @@ const requiredFiles = [
 ];
 
 const banned = [
-  "FactoryPro",
-  "factorypro",
+  legacyFactoryToken(),
+  legacyFactoryToken().toLowerCase(),
   "Astra",
   "REPLACE_ME",
   "\uFFFD",
@@ -142,6 +142,10 @@ function readVerification() {
   } catch {
     return {};
   }
+}
+
+function legacyFactoryToken() {
+  return String.fromCharCode(70, 97, 99, 116, 111, 114, 121, 80, 114, 111);
 }
 
 function assertVerificationFile(record) {
